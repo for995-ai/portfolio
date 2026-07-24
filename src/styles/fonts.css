@@ -1,0 +1,17 @@
+/*
+ * 字體來源：index.html 以 Google Fonts <link> 載入
+ *   - Chakra Petch：標題（拉丁字元；中文字自動 fallback 至 Noto Sans TC）
+ *   - JetBrains Mono：數值與英文小標
+ *   - Noto Sans TC：中文內文與標題
+ * Tailwind utility（font-sans / font-mono / font-display）於 theme.css 的 @theme inline 註冊。
+ */
+
+:root {
+  --font-family-sans: 'Noto Sans TC', 'PingFang TC', 'Microsoft JhengHei', system-ui,
+    -apple-system, sans-serif;
+  /* CJK 字元 fallback 至 Noto Sans TC（拉丁字元不受影響），避免中文落入系統點陣等寬字 */
+  --font-family-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas,
+    'Noto Sans TC', monospace;
+  --font-family-display: 'Chakra Petch', 'Noto Sans TC', 'PingFang TC',
+    'Microsoft JhengHei', system-ui, sans-serif;
+}

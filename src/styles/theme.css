@@ -1,0 +1,598 @@
+/*
+ * Arcade dark theme — 推甄作品集「多巴胺電玩風」定稿版
+ *
+ * 結構：
+ *   1. shadcn 語意變數（與 default_shadcn_theme.css 同步，未改動；<html class="dark"> 強制深色）
+ *   2. arcade 底色階（藍紫色溫）／dopa 多巴胺色盤／漸層／文字階／間距與字級級數
+ *   3. @theme inline — Tailwind v4 utility 註冊
+ *   4. 全域基礎樣式
+ *   5. 版面輔助（不等間距、字級、漸層、中英混排補償）
+ *   6. 動效（進場時長分級、微互動、環境動畫；全部包在 no-preference 內）
+ *
+ * 色彩紀律（去 AI 感）：
+ *   - dopa-magenta 僅限 BOSS 卡（＋規格明定的 TitleScreen START 鍵與洋紅色球）
+ *   - dopa-orange 全站僅兩處：優勝獎項標記、裝備「系統分析與 AI」分類
+ *   - dopa-lime 僅用於數據（EXP 圖表、研究動機起點節點）
+ *   - dopa-violet 僅用於背景與邊框，不用於文字
+ *   - dopa-cyan 為日常互動色
+ */
+
+/* ============ 1. shadcn 語意變數（KEEP_IN_SYNC: default_shadcn_theme.css） ============ */
+
+:root {
+  --font-size: 16px;
+  --background: #ffffff;
+  --foreground: oklch(0.145 0 0);
+  --card: #ffffff;
+  --card-foreground: oklch(0.145 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.145 0 0);
+  --primary: #030213;
+  --primary-foreground: oklch(1 0 0);
+  --secondary: oklch(0.95 0.0058 264.53);
+  --secondary-foreground: #030213;
+  --muted: #ececf0;
+  --muted-foreground: #717182;
+  --accent: #e9ebef;
+  --accent-foreground: #030213;
+  --destructive: #d4183d;
+  --destructive-foreground: #ffffff;
+  --border: rgba(0, 0, 0, 0.1);
+  --input: transparent;
+  --input-background: #f3f3f5;
+  --switch-background: #cbced4;
+  --font-weight-medium: 500;
+  --font-weight-normal: 400;
+  --ring: oklch(0.708 0 0);
+  --chart-1: oklch(0.646 0.222 41.116);
+  --chart-2: oklch(0.6 0.118 184.704);
+  --chart-3: oklch(0.398 0.07 227.392);
+  --chart-4: oklch(0.828 0.189 84.429);
+  --chart-5: oklch(0.769 0.188 70.08);
+  --radius: 0.625rem;
+  --sidebar: oklch(0.985 0 0);
+  --sidebar-foreground: oklch(0.145 0 0);
+  --sidebar-primary: #030213;
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.97 0 0);
+  --sidebar-accent-foreground: oklch(0.205 0 0);
+  --sidebar-border: oklch(0.922 0 0);
+  --sidebar-ring: oklch(0.708 0 0);
+}
+
+.dark {
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(0.985 0 0);
+  --card: oklch(0.145 0 0);
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.145 0 0);
+  --popover-foreground: oklch(0.985 0 0);
+  --primary: oklch(0.985 0 0);
+  --primary-foreground: oklch(0.205 0 0);
+  --secondary: oklch(0.269 0 0);
+  --secondary-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.269 0 0);
+  --muted-foreground: oklch(0.708 0 0);
+  --accent: oklch(0.269 0 0);
+  --accent-foreground: oklch(0.985 0 0);
+  --destructive: oklch(0.396 0.141 25.723);
+  --destructive-foreground: oklch(0.637 0.237 25.331);
+  --border: oklch(0.269 0 0);
+  --input: oklch(0.269 0 0);
+  --ring: oklch(0.439 0 0);
+  --font-weight-medium: 500;
+  --font-weight-normal: 400;
+  --chart-1: oklch(0.488 0.243 264.376);
+  --chart-2: oklch(0.696 0.17 162.48);
+  --chart-3: oklch(0.769 0.188 70.08);
+  --chart-4: oklch(0.627 0.265 303.9);
+  --chart-5: oklch(0.645 0.246 16.439);
+  --sidebar: oklch(0.205 0 0);
+  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar-primary: oklch(0.488 0.243 264.376);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.269 0 0);
+  --sidebar-accent-foreground: oklch(0.985 0 0);
+  --sidebar-border: oklch(0.269 0 0);
+  --sidebar-ring: oklch(0.439 0 0);
+}
+
+/* ============ 2. arcade / dopa 自訂變數 ============ */
+
+:root {
+  /* 底色階（帶藍紫色溫） */
+  --arcade-bg: #0d0b1a;
+  --arcade-surface: #15122a;
+  --arcade-panel: #1d1838;
+  --arcade-panel-hi: #272045;
+  --arcade-elevated: #332a5c;
+  --arcade-border: rgba(255, 255, 255, 0.08);
+
+  /* 多巴胺色盤 */
+  --dopa-cyan: #00f0ff;
+  --dopa-magenta: #ff2e9f;
+  --dopa-violet: #8b5cff;
+  --dopa-lime: #b4ff3d;
+  --dopa-orange: #ff8a3d;
+
+  /* 漸層 */
+  --grad-hero: linear-gradient(135deg, #00f0ff 0%, #8b5cff 50%, #ff2e9f 100%);
+  --grad-boss: linear-gradient(120deg, #ff2e9f 0%, #ff8a3d 100%);
+  --grad-data: linear-gradient(90deg, #b4ff3d 0%, #00f0ff 100%);
+  --grad-panel: linear-gradient(
+    160deg,
+    rgba(139, 92, 255, 0.12) 0%,
+    rgba(0, 240, 255, 0.04) 100%
+  );
+
+  /* 文字階 */
+  --arcade-text: #f5f3ff;
+  --arcade-text-sec: #b4aed4;
+  --arcade-muted: #7a719e;
+  --arcade-faint: #4d4670;
+
+  /* 間距級數 */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px;
+  --space-9: 96px;
+  --space-10: 128px;
+  --space-11: 160px;
+
+  /* 字級 */
+  --text-hero: clamp(3rem, 8vw, 6rem);
+  --text-h1: clamp(1.875rem, 4vw, 3rem);
+  --text-h2: clamp(1.375rem, 2.5vw, 2rem);
+  --text-body: 1rem;
+  --text-sm: 0.875rem;
+  --text-xs: 0.75rem;
+}
+
+/* ============ 3. Tailwind v4 utility 註冊 ============ */
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-input-background: var(--input-background);
+  --color-switch-background: var(--switch-background);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+
+  /* arcade 底色階與文字階 */
+  --color-arcade-bg: var(--arcade-bg);
+  --color-arcade-surface: var(--arcade-surface);
+  --color-arcade-panel: var(--arcade-panel);
+  --color-arcade-panel-hi: var(--arcade-panel-hi);
+  --color-arcade-elevated: var(--arcade-elevated);
+  --color-arcade-border: var(--arcade-border);
+  --color-arcade-text: var(--arcade-text);
+  --color-arcade-text-sec: var(--arcade-text-sec);
+  --color-arcade-muted: var(--arcade-muted);
+  --color-arcade-faint: var(--arcade-faint);
+
+  /* 多巴胺色盤 */
+  --color-dopa-cyan: var(--dopa-cyan);
+  --color-dopa-magenta: var(--dopa-magenta);
+  --color-dopa-violet: var(--dopa-violet);
+  --color-dopa-lime: var(--dopa-lime);
+  --color-dopa-orange: var(--dopa-orange);
+
+  /* 字體（fonts.css 定義原始變數） */
+  --font-sans: var(--font-family-sans);
+  --font-mono: var(--font-family-mono);
+  --font-display: var(--font-family-display);
+}
+
+/* ============ 4. 全域基礎樣式 ============ */
+
+@layer base {
+  html {
+    font-size: var(--font-size);
+    color-scheme: dark;
+    background: var(--arcade-bg);
+  }
+
+  body {
+    min-height: 100svh;
+    margin: 0;
+    overflow-x: clip;
+    color: var(--arcade-text);
+    background-color: var(--arcade-bg);
+    font-family: var(--font-family-sans);
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  #root {
+    min-height: 100svh;
+  }
+
+  ::selection {
+    color: var(--arcade-bg);
+    background: rgba(245, 243, 255, 0.9);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--dopa-cyan);
+    outline-offset: 3px;
+  }
+
+  section[id] {
+    scroll-margin-top: 1.5rem;
+  }
+}
+
+/* ============ 5. 版面輔助 ============ */
+
+.arcade-container {
+  width: 100%;
+  max-width: 1200px;
+  margin-inline: auto;
+  padding-inline: 1.25rem;
+}
+
+@media (min-width: 768px) {
+  .arcade-container {
+    padding-inline: 2rem;
+  }
+}
+
+/* Section 間距刻意不等（手機約 0.62 倍） */
+.sgap-7 { padding-top: 30px; }
+.sgap-8 { padding-top: 40px; }
+.sgap-9 { padding-top: 60px; }
+.sgap-10 { padding-top: 80px; }
+.sgap-11 { padding-top: 100px; }
+
+@media (min-width: 768px) {
+  .sgap-7 { padding-top: var(--space-7); }
+  .sgap-8 { padding-top: var(--space-8); }
+  .sgap-9 { padding-top: var(--space-9); }
+  .sgap-10 { padding-top: var(--space-10); }
+  .sgap-11 { padding-top: var(--space-11); }
+}
+
+/* 字級 */
+.text-hero { font-size: var(--text-hero); }
+.text-h1 { font-size: var(--text-h1); }
+.text-h2 { font-size: var(--text-h2); }
+
+/* 中英混排補償 */
+.zh-heading { letter-spacing: 0.08em; font-weight: 700; }
+.zh-body { letter-spacing: 0.03em; line-height: 1.9; }
+.en-heading { letter-spacing: 0.02em; line-height: 1.15; }
+.cjk { font-size: 0.92em; }
+
+/* 漸層工具 */
+.bg-grad-hero { background-image: var(--grad-hero); }
+.bg-grad-boss { background-image: var(--grad-boss); }
+.bg-grad-panel { background-image: var(--grad-panel); }
+
+/* 漸層文字（全站僅 PLAYER 1 與 STAGE CLEAR 兩處使用） */
+.grad-hero-text {
+  background-image: var(--grad-hero);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* TitleScreen 網格背景（violet 色溫，格距 64px） */
+.arcade-grid-bg {
+  background-image:
+    linear-gradient(rgba(139, 92, 255, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(139, 92, 255, 0.06) 1px, transparent 1px);
+  background-size: 64px 64px;
+}
+
+/* 靜態掃描線橫紋（TitleScreen 第 4 層） */
+.arcade-scanline-static {
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.02) 0px,
+    rgba(255, 255, 255, 0.02) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+}
+
+/* 進場顯示（IntersectionObserver 加 .is-visible）；時長由變體決定 */
+.arcade-reveal {
+  --reveal-ms: 400ms;
+  opacity: 0;
+  transform: translateY(16px);
+}
+
+.arcade-reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* 進場時長分級（禁止全站共用單一參數） */
+.arcade-reveal-slow { --reveal-ms: 600ms; }   /* BOSS 卡：慢、有份量 */
+.arcade-reveal-calm { --reveal-ms: 450ms; }   /* 時間軸節點 */
+.arcade-reveal-grand { --reveal-ms: 500ms; }  /* StageClear */
+.arcade-reveal-soft { --reveal-ms: 350ms; }   /* Archive */
+.arcade-reveal-mid { --reveal-ms: 300ms; }    /* SideQuests */
+.arcade-reveal-fast { --reveal-ms: 250ms; }   /* 裝備格 */
+.arcade-reveal-swift { --reveal-ms: 200ms; }  /* 證照卡 */
+
+/* glitch 觸發時的 scanline 覆蓋層（平時透明） */
+.arcade-scanlines {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  z-index: 30;
+  opacity: 0;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.12) 0px,
+    rgba(255, 255, 255, 0.12) 1px,
+    transparent 1px,
+    transparent 4px
+  );
+}
+
+/* 3D 舞台啟用時：內容區塊加玻璃質感底，讓舞台透出但不干擾閱讀（對比度達 AA） */
+[data-stage3d='true'] .arcade-container {
+  background: rgba(13, 11, 26, 0.78);
+  backdrop-filter: blur(20px) saturate(1.15);
+  -webkit-backdrop-filter: blur(20px) saturate(1.15);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding-block: 24px;
+}
+
+[data-stage3d='true'] .bg-arcade-panel,
+[data-stage3d='true'] .bg-arcade-surface {
+  background-color: rgba(13, 11, 26, 0.78);
+  backdrop-filter: blur(20px) saturate(1.15);
+  -webkit-backdrop-filter: blur(20px) saturate(1.15);
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+/* TODO_待補 欄位：虛線框 + 灰字 */
+.arcade-todo {
+  border: 1.5px dashed rgba(122, 113, 158, 0.5);
+  border-radius: 4px;
+  color: var(--arcade-muted);
+}
+
+/* ============ 6. 動效（僅在允許動態時啟用） ============ */
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  .arcade-reveal {
+    transition:
+      opacity var(--reveal-ms) ease-out,
+      transform var(--reveal-ms) ease-out;
+  }
+
+  /* 微互動：120ms；按壓 scale(0.97) */
+  a:active,
+  button:active {
+    transform: scale(0.97);
+    transition: transform 120ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  /* 手把緩慢浮動：translateY ±8px，4s 週期 */
+  @keyframes arcade-float {
+    0%,
+    100% {
+      transform: translateY(8px);
+    }
+    50% {
+      transform: translateY(-8px);
+    }
+  }
+
+  .arcade-float {
+    animation: arcade-float 4s ease-in-out infinite;
+  }
+
+  /* 提示閃爍：只改 opacity，2s */
+  @keyframes arcade-blink {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.15;
+    }
+  }
+
+  .arcade-blink {
+    animation: arcade-blink 2s ease-in-out infinite;
+  }
+
+  /* START 鍵呼吸：opacity 0.65 → 1，3s */
+  @keyframes arcade-breathe {
+    0%,
+    100% {
+      opacity: 0.65;
+    }
+    50% {
+      opacity: 1;
+    }
+  }
+
+  .arcade-breathe {
+    animation: arcade-breathe 3s ease-in-out infinite;
+  }
+
+  /* 脈動光點／脈動環：只改 opacity */
+  @keyframes arcade-pulse {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.35;
+    }
+  }
+
+  .arcade-pulse {
+    animation: arcade-pulse 2s ease-in-out infinite;
+  }
+
+  .arcade-pulse-slow {
+    animation: arcade-pulse 3s ease-in-out infinite;
+  }
+
+  /* TitleScreen 模糊色球飄移：20s */
+  @keyframes arcade-drift-a {
+    0%,
+    100% {
+      transform: translate(0, 0);
+    }
+    50% {
+      transform: translate(44px, 32px);
+    }
+  }
+
+  @keyframes arcade-drift-b {
+    0%,
+    100% {
+      transform: translate(0, 0);
+    }
+    50% {
+      transform: translate(-52px, -24px);
+    }
+  }
+
+  .arcade-blob-a {
+    animation: arcade-drift-a 20s ease-in-out infinite;
+  }
+
+  .arcade-blob-b {
+    animation: arcade-drift-b 20s ease-in-out infinite;
+  }
+
+  /* 點擊 glitch：RGB 分離 + 水平位移，250ms 一次 */
+  @keyframes arcade-glitch {
+    0% {
+      transform: translateX(0);
+      filter: none;
+    }
+    20% {
+      transform: translateX(-6px);
+      filter: drop-shadow(3px 0 var(--dopa-cyan)) drop-shadow(-3px 0 var(--dopa-magenta));
+    }
+    40% {
+      transform: translateX(5px);
+      filter: drop-shadow(-3px 0 var(--dopa-cyan)) drop-shadow(3px 0 var(--dopa-magenta));
+    }
+    60% {
+      transform: translateX(-3px);
+      filter: drop-shadow(2px 0 var(--dopa-magenta)) drop-shadow(-2px 0 var(--dopa-cyan));
+    }
+    80% {
+      transform: translateX(2px);
+      filter: drop-shadow(-1px 0 var(--dopa-cyan)) drop-shadow(1px 0 var(--dopa-magenta));
+    }
+    100% {
+      transform: translateX(0);
+      filter: none;
+    }
+  }
+
+  .is-glitching {
+    animation: arcade-glitch 250ms steps(5, end) 1;
+  }
+
+  .is-glitching .arcade-scanlines,
+  .arcade-scanlines.is-glitching {
+    animation: arcade-blink 250ms linear 1;
+  }
+
+  /* GlitchText：hover / 觸發時的 RGB 分離文字（≤300ms） */
+  @keyframes arcade-text-glitch {
+    0%,
+    100% {
+      text-shadow: none;
+      transform: translateX(0);
+    }
+    25% {
+      text-shadow:
+        2px 0 var(--dopa-cyan),
+        -2px 0 var(--dopa-magenta);
+      transform: translateX(-2px);
+    }
+    50% {
+      text-shadow:
+        -2px 0 var(--dopa-cyan),
+        2px 0 var(--dopa-magenta);
+      transform: translateX(2px);
+    }
+    75% {
+      text-shadow:
+        1px 0 var(--dopa-magenta),
+        -1px 0 var(--dopa-cyan);
+      transform: translateX(-1px);
+    }
+  }
+
+  .arcade-text-glitch {
+    animation: arcade-text-glitch 280ms steps(4, end) 1;
+  }
+}
+
+/* 使用者要求減少動態：停用所有動畫與轉場 */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .arcade-reveal {
+    opacity: 1;
+    transform: none;
+  }
+}
