@@ -46,6 +46,7 @@ export const COMPETITIONS: EvidenceItem[] = [
   { title: "第五屆 潛力種子盃個股研究競賽", desc: "參賽證明", reflection: "透過財務報表與市場數據分析個股，培養了對數據的敏銳度與邏輯推演能力。", file: "/images/第五屆潛力種子盃個股研究競賽-參賽證明.png" },
   { title: "2025「集點子大賽」徵選", desc: "參賽證明", reflection: "將日常觀察轉化為創新提案，訓練了我不斷尋找痛點並提出資訊解決方案的思維模式。", file: "/images/2025「集點子大賽」徵選-參賽證明.png" },
   { title: "2025 第九屆 Healthy x Happy 創新創業競賽", desc: "參賽證明", reflection: "在快節奏的競賽中與團隊激盪創意，將系統構想具象化，強化了我的快速原型產出能力。", file: "/images/2025 第九屆 全國大專校院Healthy x Happy 創新創業競賽-參賽證明.png" },
+  { title: "2026 全國品牌大賽 — 六都創新永續城市行銷", desc: "進入初賽 ｜ 參賽作品：2027 星空探險計畫（詳見專案作品）" },
 ];
 
 export const PROJECT_IDS = ["soulscent-lab", "hotpot-ordering", "workstay-platform", "dog-adoption"] as const;
@@ -68,6 +69,52 @@ export const PROJECTS: Project[] = [
   { id: "workstay-platform", cat: "介面設計 / 專案統籌", title: "作保庇宿安心 - 換宿平台", desc: "針對打工換宿需求開發的媒合平台，解決資訊不對稱痛點。", tech: "專案管理 / 使用者研究 / UI 設計", reflection: "跨部門溝通是最大挑戰，學會利用工具收斂各方意見達成開發共識，確保如期推進。", image: "/images/project-accommodation.png", link: "https://gleeful-macaron-e3a192.netlify.app" },
   { id: "dog-adoption", cat: "後端開發 / 資料庫", title: "狗狗領養 & 志工管理系統", desc: "為動物收容所打造的管理系統，包含領養名冊與志工排班。", tech: "Python / PyMySQL / 後端架構設計", reflection: "從零建構後端資料庫與 API，讓我對 MVC 架構、關聯式資料庫設計與 SQL 語法有更紮實的掌握。", image: "/images/project-dog.png", link: "http://dog-adopt.xo.je/list_dogs.php" },
 ];
+
+/**
+ * 新增專案（2026 全國品牌大賽競賽作品）。
+ * 結構較舊版嚴格型別的 PROJECTS 豐富（含 subtitle / badge / award / narrative /
+ * challenge），故獨立為此匯出，不併入 PROJECTS，也不更動既有四個專案。
+ * 圖片：待截取首頁主視覺存為 public/images/project-starryrun.png 後，
+ * 將 image 改為 "/images/project-starryrun.png"；補圖前為 undefined（卡片顯示佔位）。
+ */
+export type ShowcaseProject = {
+  id: string;
+  cat: string;
+  title: string;
+  subtitle?: string;
+  badge?: string;
+  award?: string;
+  desc: string;
+  narrative: string;
+  challenge?: string;
+  technologies: string[];
+  image?: string;
+  link: string;
+};
+
+export const BRAND_COMPETITION_PROJECT: ShowcaseProject = {
+  id: "starry-run",
+  cat: "前端開發 / 品牌企劃",
+  title: "2027 星空探險計畫｜低碳光影路跑活動官網",
+  subtitle: "2026 全國品牌大賽 — 六都創新永續城市行銷競賽參賽作品",
+  badge: "競賽作品 ｜ 2026 全國品牌大賽 進入初賽",
+  award: "2026 全國品牌大賽",
+  desc: "以高雄亞洲新灣區為主題的低碳光影路跑品牌企劃，從城市行銷概念發展為完整可運作的活動官網。",
+  narrative:
+    "這是 2026 全國品牌大賽「六都創新永續城市行銷」的參賽作品。競賽命題要求以城市為主體提出行銷企劃，我們選擇高雄駁二與亞洲新灣區，將「工業港口轉型為智慧永續城市」的城市敘事，轉譯為一場結合光影科技與低碳理念的路跑賽事。我負責將企劃概念落實為完整的活動官網，涵蓋賽事簡章、時序表、路線圖、物資說明、線上報名、志工招募、成績查詢與電子證書下載等十二個區塊——讓評審看到的不只是一份企劃書，而是一個真正可以運作的品牌載體。",
+  // challenge（引言）為使用者的個人心得，請自行填寫，以下兩個方向擇一（或改寫）覆蓋此欄：
+  //   方向一：品牌企劃與網站實作的落差——企劃書可以只談概念，但要做成可運作的網站，
+  //           就必須把「永續」具體化為可執行的細節。
+  //   方向二：這個主題由我發想，並負責報名網站製作與企劃書撰寫。
+  // 現值為兩方向的事實綜合（僅根據上方 narrative 與方向二的既述事實，未加入未經證實的細節）：
+  challenge:
+    "這個主題由我發想，並負責報名網站製作與企劃書撰寫；最大的挑戰是把只談理念的企劃，落實成一個對外真正能運作的活動官網。",
+  technologies: ["HTML/CSS", "JavaScript", "響應式設計", "品牌企劃", "資訊架構", "表單設計"],
+  // 首頁主視覺截圖（含「點亮高雄，跑向續航」標語）；請存為此路徑。
+  // 檔案放入前，卡片會自動回退顯示「TODO_待補圖片」佔位框，不會破圖。
+  image: "/images/project-starryrun.png",
+  link: "https://mellow-kulfi-531c3d.netlify.app/",
+};
 
 export const ARTICLES = [
   { title: "AI 賦能餐飲：從「食癒所」看系統分析與體驗升級", date: "2026.05", desc: "探討如何透過系統分析將 AI 技術融入火鍋店點餐流程，降低人力成本並提升顧客的情緒價值與數位體驗。", img: "/images/project-hotpot.png" },

@@ -255,12 +255,14 @@ export default function StageComponent({ anchorsRef, onReady, onFail }: StagePro
 
     /* ===== Stage02 — 專案：側廊展示台（左右交錯，代表作較大＋洋紅光環） ===== */
     const rotors: Group[] = [];
+    /* 六座對應六件專案（代表作較大＋洋紅光環）；全數落於側廊並逐幀夾制於安全區外 */
     const PED: Array<{ x: number; z: number; boss: boolean }> = [
       { x: 3.8, z: 1.2, boss: true },
       { x: -3.7, z: 0.4, boss: false },
       { x: 3.7, z: -0.5, boss: false },
       { x: -3.8, z: -1.4, boss: false },
       { x: 3.9, z: -2.2, boss: false },
+      { x: -3.9, z: -3.1, boss: false },
     ];
     for (const cfg of PED) {
       const unit = new Group();

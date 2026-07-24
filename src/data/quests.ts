@@ -11,9 +11,11 @@
  */
 
 import {
+  BRAND_COMPETITION_PROJECT,
   PROJECT_CASE_STUDIES,
   PROJECTS,
   type ProjectId,
+  type ShowcaseProject,
 } from './portfolioData';
 
 export interface Quest {
@@ -21,8 +23,12 @@ export interface Quest {
   title: string;
   /** 舊版專案分類（如 全端開發 / AI 創新） */
   category?: string;
-  /** 徽章列（如發表資訊） */
+  /** 競賽脈絡副標（如 六都創新永續城市行銷競賽參賽作品） */
+  subtitle?: string;
+  /** 徽章列（如發表資訊、競賽狀態） */
   badge?: string;
+  /** 獎項標記（dopa-orange 低調 chip，如 2026 全國品牌大賽） */
+  award?: string;
   /** 一句話定位（舊版 description） */
   positioning?: string;
   /** 連貫段落敘事（problem + role + impact 串接） */
@@ -58,6 +64,24 @@ function projectQuest(projectId: ProjectId, id: string): Quest {
   };
 }
 
+/** 由新版 ShowcaseProject（結構完整）組出敘事卡；challenge→quote，無圖時佔位 */
+function showcaseQuest(p: ShowcaseProject, id: string): Quest {
+  return {
+    id,
+    title: p.title,
+    category: p.cat,
+    subtitle: p.subtitle,
+    badge: p.badge,
+    award: p.award,
+    positioning: p.desc,
+    narrative: p.narrative,
+    quote: p.challenge,
+    techs: p.technologies,
+    image: p.image ? { src: p.image, alt: `${p.title} 專案畫面` } : { todo: true },
+    link: p.link,
+  };
+}
+
 export const quests: Quest[] = [
   {
     id: '01',
@@ -72,8 +96,9 @@ export const quests: Quest[] = [
     image: { todo: true },
     boss: true,
   },
-  projectQuest('hotpot-ordering', '02'),
-  projectQuest('dog-adoption', '03'),
-  projectQuest('workstay-platform', '04'),
-  projectQuest('soulscent-lab', '05'),
+  showcaseQuest(BRAND_COMPETITION_PROJECT, '02'),
+  projectQuest('hotpot-ordering', '03'),
+  projectQuest('dog-adoption', '04'),
+  projectQuest('workstay-platform', '05'),
+  projectQuest('soulscent-lab', '06'),
 ];

@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Gamepad2 } from 'lucide-react';
 import { useInView } from '@/hooks/useInView';
 import { useStage3D } from '@/hooks/stage3d';
@@ -168,7 +169,12 @@ export function BossQuestCard({ quest }: { quest: Quest }) {
  */
 export function QuestShowcase({ quest, index }: { quest: Quest; index: number }) {
   const { ref, inView } = useInView<HTMLDivElement>({ threshold: 0.15 });
+  const [imgFailed, setImgFailed] = useState(false);
   const imageRight = index % 2 === 1;
+
+  /* 有 src 且未載入失敗 → 顯示圖；否則（todo 或圖檔尚未放入）→ 佔位框，永不破圖 */
+  const showImage = quest.image != null && 'src' in quest.image && !imgFailed;
+  const showTodo = !showImage && quest.image != null;
 
   return (
     <div ref={ref} className={`arcade-reveal ${inView ? 'is-visible' : ''}`}>
@@ -176,7 +182,7 @@ export function QuestShowcase({ quest, index }: { quest: Quest; index: number })
         className="grid items-center gap-6 md:grid-cols-12 md:gap-10"
         aria-label={`${quest.id} ${quest.title}`}
       >
-        {quest.image && 'src' in quest.image && (
+        {showImage && quest.image && 'src' in quest.image ? (
           <div
             className={`overflow-hidden rounded-[12px] border border-arcade-border transition-colors duration-[220ms] ease-[cubic-bezier(0.16,1,0.3,1)] hover:border-dopa-cyan/50 md:col-span-5 ${
               imageRight ? 'md:order-2' : ''
@@ -186,10 +192,22 @@ export function QuestShowcase({ quest, index }: { quest: Quest; index: number })
               src={encodeURI(quest.image.src)}
               alt={quest.image.alt}
               loading="lazy"
+              onError={() => setImgFailed(true)}
               className="aspect-[16/10] w-full object-cover transition-transform duration-[220ms] ease-[cubic-bezier(0.16,1,0.3,1)] hover:scale-[1.04]"
             />
           </div>
-        )}
+        ) : showTodo ? (
+          /* 圖檔尚未放入或載入失敗：維持兩欄版面，顯示虛線框佔位標記 */
+          <div
+            className={`flex aspect-[16/10] items-center justify-center rounded-[12px] border border-dashed border-arcade-faint bg-arcade-surface md:col-span-5 ${
+              imageRight ? 'md:order-2' : ''
+            }`}
+          >
+            <span className="arcade-todo px-3 py-1.5 font-mono text-xs">
+              TODO_待補圖片
+            </span>
+          </div>
+        ) : null}
 
         <div className={`md:col-span-7 ${imageRight ? 'md:order-1' : ''}`}>
           <p className="font-mono text-xs font-bold tracking-[0.25em] text-arcade-muted">
@@ -201,8 +219,19 @@ export function QuestShowcase({ quest, index }: { quest: Quest; index: number })
           <h3 className="zh-heading text-h2 mt-2 font-sans text-arcade-text">
             {quest.title}
           </h3>
+          {/* 獎項標記：dopa-orange 低調 outline chip（不搶代表作的實色漸層權重） */}
+          {quest.award && (
+            <span className="mt-2 inline-block rounded-sm border border-dopa-orange/70 px-2 py-0.5 font-mono text-[10px] font-bold tracking-[0.15em] text-dopa-orange">
+              {quest.award}
+            </span>
+          )}
           {quest.positioning && (
             <p className="mt-1.5 text-sm text-arcade-muted">{quest.positioning}</p>
+          )}
+          {quest.badge && (
+            <p className="mt-2 inline-block rounded-[2px] bg-arcade-bg/70 px-3 py-1 text-xs leading-relaxed text-arcade-text-sec">
+              {quest.badge}
+            </p>
           )}
           <p className="zh-body mt-4 max-w-[68ch] text-sm text-arcade-text-sec">
             {quest.narrative}
