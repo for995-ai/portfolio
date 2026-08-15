@@ -1,4 +1,5 @@
 import { Header } from '@/components/v2/Header';
+import { Hero } from '@/components/v2/Hero';
 import { Container, Section, PixelMark } from '@/components/v2/primitives';
 
 interface SectionHeadingProps {
@@ -41,12 +42,7 @@ export function PortfolioV2() {
       <Header />
 
       <main>
-        <Section id="profile" className="pt-24 md:pt-32">
-          <Container>
-            <SectionHeading num="01" en="PROFILE" zh="簡介" />
-            <Placeholder label="Profile / Hero — Phase 3" />
-          </Container>
-        </Section>
+        <Hero />
 
         <Section id="education" className="pt-24 md:pt-32">
           <Container>

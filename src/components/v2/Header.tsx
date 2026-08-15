@@ -69,7 +69,7 @@ export function Header() {
                   className={`font-mono text-xs tracking-[0.12em] transition-colors duration-150 ${
                     isActive
                       ? 'text-v2-purple-lt'
-                      : 'text-v2-text-muted hover:text-v2-text'
+                      : 'text-v2-text-sec hover:text-v2-text'
                   }`}
                 >
                   {label}
