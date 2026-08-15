@@ -1,6 +1,7 @@
 import { Header } from '@/components/v2/Header';
 import { Hero } from '@/components/v2/Hero';
 import { Education } from '@/components/v2/Education';
+import { Experience } from '@/components/v2/Experience';
 import { Container, Section, PixelMark } from '@/components/v2/primitives';
 
 interface SectionHeadingProps {
@@ -11,8 +12,8 @@ interface SectionHeadingProps {
 
 function SectionHeading({ num, en, zh }: SectionHeadingProps) {
   return (
-    <div className="mb-10 md:mb-12">
-      <PixelMark className="mb-3 block tracking-[0.2em] text-v2-text-muted">
+    <div className="mb-6 md:mb-8">
+      <PixelMark className="mb-2 block tracking-[0.2em] text-v2-text-muted">
         {num}
       </PixelMark>
       <h2
@@ -20,9 +21,9 @@ function SectionHeading({ num, en, zh }: SectionHeadingProps) {
         style={{ fontFamily: 'var(--font-family-v2-display)', fontSize: 'var(--v2-text-h2)' }}
       >
         {en}
-        <span className="ml-4 text-[0.6em] font-normal text-v2-text-muted">{zh}</span>
+        <span className="ml-3 text-[0.6em] font-normal text-v2-text-muted">{zh}</span>
       </h2>
-      <div className="mt-5 h-px bg-v2-border" />
+      <div className="mt-3 h-px bg-v2-border" />
     </div>
   );
 }
@@ -45,63 +46,65 @@ export function PortfolioV2() {
       <main>
         <Hero />
 
-        <Section id="education" className="pt-20 md:pt-24">
+        <Section id="education" className="pt-14 md:pt-16">
           <Container>
             <SectionHeading num="02" en="EDUCATION" zh="教育背景" />
             <Education />
           </Container>
         </Section>
 
-        <Section id="experience" className="pt-20 md:pt-24">
+        <Section id="experience" className="pt-14 md:pt-16">
           <Container>
             <SectionHeading num="03" en="EXPERIENCE" zh="經歷" />
-            <Placeholder label="Experience Timeline — Phase 6" />
+            <div className="v2-reading-col">
+              <Experience />
+            </div>
           </Container>
         </Section>
 
-        <Section id="projects" className="pt-20 md:pt-24">
+        <Section id="projects" className="pt-14 md:pt-16">
           <Container>
             <SectionHeading num="04" en="PROJECTS" zh="專案作品" />
             <Placeholder label="Projects — Phase 4" />
           </Container>
         </Section>
 
-        <Section id="research" className="pt-20 md:pt-24">
+        <Section id="research" className="pt-14 md:pt-16">
           <Container>
             <SectionHeading num="05" en="RESEARCH & AWARDS" zh="研究與競賽" />
             <Placeholder label="Research & Awards — Phase 7" />
           </Container>
         </Section>
 
-        <Section id="skills" className="pt-20 md:pt-24">
+        <Section id="skills" className="pt-14 md:pt-16">
           <Container>
             <SectionHeading num="06" en="SKILLS & DEVELOPMENT" zh="技能與開發" />
             <Placeholder label="Skills & GitHub — Phase 8" />
           </Container>
         </Section>
 
-        <Section id="certifications" className="pt-20 md:pt-24">
+        <Section id="certifications" className="pt-14 md:pt-16">
           <Container>
             <SectionHeading num="07" en="CERTIFICATIONS" zh="證照" />
             <Placeholder label="Certifications — Phase 8" />
           </Container>
         </Section>
 
-        <Section id="leadership" className="pt-20 md:pt-24">
+        <Section id="leadership" className="pt-14 md:pt-16">
           <Container>
             <SectionHeading num="08" en="LEADERSHIP & SERVICE" zh="領導與服務" />
             <Placeholder label="Leadership — Phase 9" />
           </Container>
         </Section>
 
-        <Section id="notes" className="pt-20 md:pt-24">
+        <Section id="notes" className="pt-14 md:pt-16">
           <Container>
             <SectionHeading num="09" en="NOTES" zh="文章" />
             <Placeholder label="Notes — Phase 9" />
           </Container>
         </Section>
 
-        <Section id="contact" className="pt-20 pb-24 md:pt-24">
+        <Section id="contact" className="pt-14 pb-20 md:pt-16">
           <Container>
             <SectionHeading num="10" en="CONTACT" zh="聯絡" />
             <Placeholder label="Contact — Phase 10" />
