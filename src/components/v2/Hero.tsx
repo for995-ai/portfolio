@@ -1,6 +1,11 @@
 import { characterInfo } from '@/data/player';
-import { COMPETITIONS, PROFILE_PILLARS } from '@/data/portfolioData';
-import { quests } from '@/data/quests';
+import { PROFILE_PILLARS } from '@/data/portfolioData';
+import {
+  projectCount,
+  competitionCount,
+  researchCount,
+  TUTORING_HOURS,
+} from '@/data/portfolioV2';
 import { Container, LinkButton, PixelMark } from '@/components/v2/primitives';
 
 // Verified from git user config — update if GitHub username differs
@@ -9,16 +14,11 @@ const GITHUB_URL = 'https://github.com/for995-ai';
 // School name is established project fact; not in data/*.ts so hardcoded here
 const SCHOOL = '國立聯合大學';
 
-// Proof values derived from real data:
-//   quests.length              → quests.ts array count
-//   COMPETITIONS.length        → portfolioData.ts COMPETITIONS
-//   '1'                        → quests[0].badge: 已發表於 2026 前瞻管理學術與產業趨勢研討會
-//   '150'                      → savePoints[0].period: 累積 150 小時
 const PROOF = [
-  { value: String(quests.length),       label: '件作品'  },
-  { value: String(COMPETITIONS.length), label: '項競賽'  },
-  { value: '1',                         label: '篇研討會' },
-  { value: '150',                       label: '小時課輔' },
+  { value: String(projectCount),     label: '件作品'  },
+  { value: String(competitionCount), label: '項競賽'  },
+  { value: String(researchCount),    label: '篇研討會' },
+  { value: String(TUTORING_HOURS),   label: '小時課輔' },
 ] as const;
 
 // positioning from player.ts characterInfo[0]
