@@ -2,6 +2,7 @@ import { Header } from '@/components/v2/Header';
 import { Hero } from '@/components/v2/Hero';
 import { Education } from '@/components/v2/Education';
 import { Experience } from '@/components/v2/Experience';
+import { Projects } from '@/components/v2/Projects';
 import { Container, Section, PixelMark } from '@/components/v2/primitives';
 
 interface SectionHeadingProps {
@@ -65,7 +66,7 @@ export function PortfolioV2() {
         <Section id="projects" className="pt-14 md:pt-16">
           <Container>
             <SectionHeading num="04" en="PROJECTS" zh="專案作品" />
-            <Placeholder label="Projects — Phase 4" />
+            <Projects />
           </Container>
         </Section>
 
