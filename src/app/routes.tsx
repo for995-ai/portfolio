@@ -1,9 +1,9 @@
 import { createBrowserRouter } from "react-router";
-import { Home } from "./components/Home";
+import { PortfolioV2 } from "./components/PortfolioV2";
 
 export const router = createBrowserRouter([
   {
     path: "/",
-    Component: Home,
+    Component: PortfolioV2,
   },
 ]);
