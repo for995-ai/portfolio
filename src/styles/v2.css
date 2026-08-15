@@ -1,0 +1,246 @@
+/*
+ * Portfolio V2 — Design System Layer
+ *
+ * Additive on top of V1 arcade tokens; --v2-* namespace prevents collisions.
+ * V1 files (theme.css, fonts.css) are untouched.
+ *
+ * Color discipline:
+ *   --v2-purple : primary brand — CTA, active nav, section marks
+ *   --v2-cyan   : interaction accent — links, focus, hover indicators
+ *   --v2-pink   : Featured / Award highlights ONLY (same rule as V1 dopa-magenta)
+ */
+
+/* ============ Design Tokens ============ */
+
+:root {
+  /* Surface */
+  --v2-bg:          #0c0a18;
+  --v2-surface:     #12101f;
+  --v2-panel:       #191628;
+  --v2-panel-hi:    #1f1c32;
+  --v2-border:      rgba(255, 255, 255, 0.09);
+  --v2-border-strong: rgba(255, 255, 255, 0.18);
+
+  /* Brand purple */
+  --v2-purple:      #7c3aed;
+  --v2-purple-lt:   #a78bfa;
+  --v2-purple-dim:  rgba(124, 58, 237, 0.15);
+
+  /* Interaction cyan */
+  --v2-cyan:        #22d3ee;
+  --v2-cyan-dim:    rgba(34, 211, 238, 0.12);
+
+  /* Featured / Award — disciplined use only */
+  --v2-pink:        #f472b6;
+  --v2-pink-dim:    rgba(244, 114, 182, 0.12);
+
+  /* Text hierarchy */
+  --v2-text:        #f1f0fb;
+  --v2-text-sec:    #a09dc0;
+  --v2-text-muted:  #6b6891;
+  --v2-text-faint:  #3d3a56;
+
+  /* Typography scale */
+  --v2-text-hero: clamp(3.5rem, 7vw, 5.5rem);
+  --v2-text-h1:   clamp(2rem, 4vw, 3.25rem);
+  --v2-text-h2:   clamp(1.5rem, 2.5vw, 2rem);
+  --v2-text-h3:   clamp(1.125rem, 2vw, 1.375rem);
+  --v2-text-body: 1rem;
+  --v2-text-sm:   0.875rem;
+  --v2-text-xs:   0.75rem;
+  --v2-text-meta: 0.7rem;
+
+  /* Geometry */
+  --v2-radius-sm:   4px;
+  --v2-radius:      6px;
+  --v2-radius-lg:   10px;
+  --v2-radius-pill: 999px;
+
+  /* Hard shadow (no blur — professional offset) */
+  --v2-shadow-xs: 2px 2px 0 rgba(0, 0, 0, 0.50);
+  --v2-shadow-sm: 3px 3px 0 rgba(0, 0, 0, 0.55);
+  --v2-shadow:    4px 4px 0 rgba(0, 0, 0, 0.60);
+  --v2-shadow-lg: 6px 6px 0 rgba(0, 0, 0, 0.65);
+
+  /* Layout */
+  --v2-container-max: 1200px;
+  --v2-nav-h: 60px;
+}
+
+/* ============ Tailwind v4 utility registration ============ */
+
+@theme inline {
+  --color-v2-bg:         var(--v2-bg);
+  --color-v2-surface:    var(--v2-surface);
+  --color-v2-panel:      var(--v2-panel);
+  --color-v2-panel-hi:   var(--v2-panel-hi);
+  --color-v2-purple:     var(--v2-purple);
+  --color-v2-purple-lt:  var(--v2-purple-lt);
+  --color-v2-cyan:       var(--v2-cyan);
+  --color-v2-pink:       var(--v2-pink);
+  --color-v2-text:       var(--v2-text);
+  --color-v2-text-sec:   var(--v2-text-sec);
+  --color-v2-text-muted: var(--v2-text-muted);
+  --color-v2-text-faint: var(--v2-text-faint);
+  --font-v2-display:     var(--font-family-v2-display);
+}
+
+/* ============ Shared primitive classes ============ */
+
+/* Container */
+.v2-container {
+  width: 100%;
+  max-width: var(--v2-container-max);
+  margin-inline: auto;
+  padding-inline: 1.25rem;
+}
+
+@media (min-width: 768px) {
+  .v2-container {
+    padding-inline: 2rem;
+  }
+}
+
+/* Section anchor offset */
+section[id].v2-section {
+  scroll-margin-top: calc(var(--v2-nav-h) + 1rem);
+}
+
+/* ---- Button ---- */
+.v2-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 44px;
+  padding: 0.625rem 1.375rem;
+  border-radius: var(--v2-radius);
+  border: 1.5px solid transparent;
+  font-family: var(--font-family-v2-display);
+  font-size: 0.9rem;
+  font-weight: 600;
+  line-height: 1.4;
+  letter-spacing: 0.01em;
+  cursor: pointer;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .v2-btn {
+    transition:
+      background-color 120ms ease,
+      border-color 120ms ease,
+      color 120ms ease;
+  }
+  .v2-btn:active {
+    transform: translate(2px, 2px);
+    transition: transform 80ms ease;
+  }
+}
+
+.v2-btn--primary {
+  color: #fff;
+  background: var(--v2-purple);
+  border-color: var(--v2-purple);
+  box-shadow: var(--v2-shadow-sm);
+}
+.v2-btn--primary:hover {
+  background: var(--v2-purple-lt);
+  border-color: var(--v2-purple-lt);
+}
+
+.v2-btn--secondary {
+  color: var(--v2-text);
+  background: transparent;
+  border-color: var(--v2-border-strong);
+  box-shadow: var(--v2-shadow-xs);
+}
+.v2-btn--secondary:hover {
+  border-color: var(--v2-purple-lt);
+  color: var(--v2-purple-lt);
+}
+
+.v2-btn--ghost {
+  color: var(--v2-text-sec);
+  background: transparent;
+  border-color: transparent;
+  box-shadow: none;
+  min-height: unset;
+  padding: 0.25rem 0;
+}
+.v2-btn--ghost:hover {
+  color: var(--v2-text);
+}
+
+.v2-btn:focus-visible {
+  outline: 2px solid var(--v2-cyan);
+  outline-offset: 2px;
+}
+
+/* ---- Tag ---- */
+.v2-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.2rem 0.55rem;
+  border-radius: var(--v2-radius-sm);
+  background: var(--v2-purple-dim);
+  border: 1px solid rgba(124, 58, 237, 0.30);
+  color: var(--v2-purple-lt);
+  font-family: var(--font-family-mono);
+  font-size: 0.72rem;
+  line-height: 1.5;
+  letter-spacing: 0.02em;
+}
+
+.v2-tag--featured {
+  background: var(--v2-pink-dim);
+  border-color: rgba(244, 114, 182, 0.30);
+  color: var(--v2-pink);
+}
+
+.v2-tag--meta {
+  background: transparent;
+  border-color: var(--v2-border);
+  color: var(--v2-text-muted);
+  font-family: var(--font-family-mono);
+}
+
+/* ---- PixelMark ▚ ---- */
+.v2-pixel-mark {
+  display: inline-block;
+  font-family: var(--font-family-pixel);
+  font-size: 0.55rem;
+  color: var(--v2-purple-lt);
+  line-height: 1;
+  letter-spacing: 0;
+  user-select: none;
+  vertical-align: middle;
+}
+
+/* ---- Reveal (IntersectionObserver, same pattern as V1 arcade-reveal) ---- */
+.v2-reveal {
+  --v2-reveal-ms: 400ms;
+  opacity: 0;
+  transform: translateY(12px);
+}
+
+.v2-reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .v2-reveal {
+    transition:
+      opacity var(--v2-reveal-ms) ease-out,
+      transform var(--v2-reveal-ms) ease-out;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .v2-reveal {
+    opacity: 1;
+    transform: none;
+  }
+}

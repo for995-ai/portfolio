@@ -17,4 +17,7 @@
   /* 像素字（僅拉丁字元：大標／導覽／標籤／按鈕）；中文自動 fallback 至 Noto Sans TC */
   --font-family-pixel: 'Press Start 2P', 'Noto Sans TC', 'PingFang TC', system-ui,
     sans-serif;
+  /* V2 英文 display — Space Grotesk；CJK 自動 fallback 至 Noto Sans TC */
+  --font-family-v2-display: 'Space Grotesk', 'Noto Sans TC', 'PingFang TC',
+    'Microsoft JhengHei', system-ui, sans-serif;
 }
