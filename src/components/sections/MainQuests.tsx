@@ -1,29 +1,43 @@
-import { BossQuestCard, QuestShowcase } from '@/components/arcade/QuestCard';
-import { quests } from '@/data/quests';
+import { useState } from 'react';
+import { QuestCard } from '@/components/arcade/QuestCard';
+import { QuestModal } from '@/components/arcade/QuestModal';
+import { useInView } from '@/hooks/useInView';
+import { quests, type Quest } from '@/data/quests';
 
 /**
- * Section 3 — MainQuests：BOSS 卡直接開場，
- * 完整 LEVEL 標記縮小、右對齊放在 BOSS 卡上方（結構刻意不同於他區）。
+ * Projects — Project Select（關卡選擇）。
+ * 桌機 3 欄 / 平板 2 欄 / 手機 1 欄；點擊卡片開啟詳情 Modal。
  */
 export function MainQuests() {
-  const bossQuest = quests.find((q) => q.boss);
-  const otherQuests = quests.filter((q) => !q.boss);
+  const head = useInView<HTMLDivElement>();
+  const [active, setActive] = useState<Quest | null>(null);
 
   return (
     <section id="level-2" aria-label="專案作品" className="sgap-11">
       <div className="arcade-container">
-        <p className="mb-4 text-right font-mono text-xs font-bold tracking-[0.25em] text-arcade-muted">
-          專案作品
-        </p>
+        <div ref={head.ref} className={`arcade-reveal ${head.inView ? 'is-visible' : ''}`}>
+          <div className="flex flex-wrap items-end justify-between gap-3">
+            <div>
+              <p className="px-title text-[0.6rem] text-px-coral">PROJECT SELECT</p>
+              <h2 className="zh-heading text-h1 mt-2 whitespace-nowrap font-sans text-px-white">
+                專案作品
+              </h2>
+            </div>
+            <p className="px-title text-[0.55rem] text-px-peach">
+              {quests.length} STAGES
+            </p>
+          </div>
+          <div className="px-rule mt-4 w-40" aria-hidden="true" />
+        </div>
 
-        {bossQuest && <BossQuestCard quest={bossQuest} />}
-
-        <div className="flex flex-col gap-20 md:gap-28">
-          {otherQuests.map((quest, i) => (
-            <QuestShowcase key={quest.id} quest={quest} index={i} />
+        <div className="mt-8 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+          {quests.map((quest, i) => (
+            <QuestCard key={quest.id} quest={quest} index={i} onOpen={setActive} />
           ))}
         </div>
       </div>
+
+      <QuestModal quest={active} onClose={() => setActive(null)} />
     </section>
   );
 }

@@ -171,20 +171,15 @@ export function TitleScreen() {
       id="title-screen"
       ref={sectionRef}
       aria-label="開場畫面 蘇洺崴"
-      className="arcade-grid-bg relative min-h-svh overflow-hidden"
+      className="relative min-h-svh overflow-hidden"
     >
-      {/* 背景第 3 層：兩團模糊色球（洋紅左上、青色右下，20s 飄移） */}
+      {/* 保留原本藍紫科技感：極淡色球（像素夕陽之上的一層冷色調） */}
       <div
-        className="arcade-blob-a pointer-events-none absolute -left-[10vw] -top-[12vh] h-[45vw] w-[45vw] rounded-full blur-3xl"
-        style={{ background: 'rgba(255,46,159,0.18)' }}
+        className="arcade-blob-b pointer-events-none absolute -bottom-[18vh] -right-[12vw] h-[50vw] w-[50vw] rounded-full blur-3xl"
+        style={{ background: 'rgba(0,240,255,0.10)' }}
         aria-hidden="true"
       />
-      <div
-        className="arcade-blob-b pointer-events-none absolute -bottom-[15vh] -right-[12vw] h-[50vw] w-[50vw] rounded-full blur-3xl"
-        style={{ background: 'rgba(0,240,255,0.15)' }}
-        aria-hidden="true"
-      />
-      {/* 背景第 4 層：靜態掃描線橫紋 */}
+      {/* 靜態掃描線橫紋 */}
       <div className="arcade-scanline-static pointer-events-none absolute inset-0" aria-hidden="true" />
 
       {/* glitch 時的 scanline 覆蓋層 */}
@@ -196,22 +191,49 @@ export function TitleScreen() {
         }`}
       >
         {/* 文字群：左對齊，距左緣 8vw、垂直略高於中線 */}
-        <div className="md:absolute md:left-[8vw] md:top-[42%] md:max-w-xl md:-translate-y-1/2">
-          <h1 className="zh-heading grad-hero-text text-hero font-display font-bold [filter:drop-shadow(0_0_28px_rgba(139,92,255,0.45))]">
+        <div className="md:absolute md:left-[8vw] md:top-[44%] md:max-w-xl md:-translate-y-1/2">
+          <span className="px-tag px-tag--coral">PLAYER 01</span>
+
+          {/* 大型像素姓名標題：階梯式硬陰影堆疊出立體感 */}
+          <h1
+            className="zh-heading mt-3 font-sans text-[clamp(2.75rem,9vw,5rem)] font-black leading-[1.05] text-px-white"
+            style={{ textShadow: '3px 3px 0 #17102b, 6px 6px 0 #d6337f, 9px 9px 0 #5b2a86' }}
+          >
             蘇洺崴
           </h1>
-          <p className="mt-2 font-mono text-sm tracking-[0.15em] text-arcade-text-sec">
+          <p className="px-title mt-3 text-[0.72rem] text-px-cream md:text-[0.85rem]">
             SU MING-WEI
           </p>
-          <p className="mt-4 font-mono text-xs tracking-[0.2em] text-arcade-muted">
+
+          <div className="px-rule mt-4 w-32" aria-hidden="true" />
+
+          {/* 專業定位（沿用既有真實定位，未新增頭銜） */}
+          <p className="px-title mt-4 text-[0.6rem] leading-[1.9] text-px-peach md:text-[0.68rem]">
+            UI/UX DESIGNER
+            <span className="mx-2 text-px-coral">/</span>
+            FRONT-END CREATOR
+            <span className="mx-2 text-px-coral">/</span>
+            INTERACTIVE LEARNING
+          </p>
+          <p className="mt-3 text-[0.95rem] leading-[1.7] text-px-cream">
             國立聯合大學 資訊管理學系
           </p>
-          <div className="bg-grad-hero mt-5 h-[3px] w-16" aria-hidden="true" />
-          <p className="mt-5 text-base text-arcade-text-sec">
-            Frontend Developer × Interactive Learning Designer
+          <p className="zh-body mt-3 max-w-[46ch] text-base leading-[1.7] text-px-peach">
+            把介面設計、前端實作與遊戲化學習結合，做成看得懂、用得動、記得住的數位體驗。
           </p>
-          <p className="arcade-blink mt-8 font-mono text-xs font-bold tracking-[0.25em] text-dopa-cyan">
-            [ 向下捲動 or 按下 START ]
+
+          {/* 主要動作 */}
+          <div className="mt-6 flex flex-wrap gap-3">
+            <a href="#level-2" className="px-btn px-btn--primary">
+              查看作品
+            </a>
+            <a href="#stage-clear" className="px-btn">
+              聯絡我
+            </a>
+          </div>
+
+          <p className="px-title px-blink mt-6 text-[0.55rem] text-px-cream">
+            ▶ PRESS START / SCROLL
           </p>
         </div>
 

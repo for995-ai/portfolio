@@ -27,9 +27,9 @@ function CertificationCard({
         type="button"
         onClick={() => img && onOpen({ src: img, title })}
         aria-label={`放大檢視 ${title}`}
-        className="group block h-full w-full cursor-zoom-in overflow-hidden rounded-[8px] border border-dashed border-arcade-faint bg-arcade-panel text-left transition-all duration-[220ms] ease-[cubic-bezier(0.16,1,0.3,1)] hover:-translate-y-0.5 hover:border-solid hover:border-arcade-muted"
+        className="px-card group flex h-full w-full cursor-zoom-in flex-col overflow-hidden text-left transition-transform duration-150 hover:-translate-y-1"
       >
-        <div className="relative aspect-[4/3] border-b border-arcade-border bg-arcade-surface">
+        <div className="relative m-3 mb-0 aspect-[4/3] shrink-0 overflow-hidden rounded-[2px] border-[3px] border-px-ink bg-px-deep">
           {img && (
             <img
               src={encodeURI(img)}
@@ -38,14 +38,14 @@ function CertificationCard({
               className="h-full w-full object-contain p-2.5"
             />
           )}
-          <div className="absolute inset-0 flex items-center justify-center bg-arcade-bg/70 opacity-0 transition-opacity duration-[220ms] group-hover:opacity-100">
-            <span className="rounded-full border border-white/40 bg-arcade-panel px-3 py-1.5 font-mono text-[11px] font-bold tracking-[0.2em] text-arcade-text">
-              [ 查看證照 ]
-            </span>
+          <div className="absolute inset-0 flex items-center justify-center bg-px-night/75 opacity-0 transition-opacity duration-150 group-hover:opacity-100">
+            <span className="px-tag px-tag--cream !text-[0.5rem]">[ 查看證照 ]</span>
           </div>
         </div>
-        <div className="p-3.5">
-          <h3 className="zh-heading font-sans text-sm text-arcade-text">{title}</h3>
+        <div className="p-4">
+          <h3 className="zh-heading font-sans text-[0.95rem] leading-[1.6] text-px-white">
+            {title}
+          </h3>
         </div>
       </button>
     </div>
@@ -64,11 +64,9 @@ export function Certifications() {
       <div className="arcade-container">
         <h2
           ref={label.ref}
-          className={`arcade-reveal mb-4 inline-block rounded-sm border border-arcade-faint px-2 py-1 font-mono text-xs font-bold tracking-[0.3em] text-arcade-muted ${
-            label.inView ? 'is-visible' : ''
-          }`}
+          className={`arcade-reveal px-tag mb-4 ${label.inView ? 'is-visible' : ''}`}
         >
-          證照
+          CERTS ／證照
         </h2>
 
         <CertGrid />

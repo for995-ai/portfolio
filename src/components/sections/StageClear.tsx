@@ -34,45 +34,30 @@ export function StageClear() {
           inView ? 'is-visible' : ''
         }`}
       >
-        {/* 大標：光暈＋脈動維持（脈動只作用於獨立光暈層 opacity）；漸層文字移至英文副標 */}
-        <div className="relative">
-          <span
-            className="arcade-pulse-slow pointer-events-none absolute inset-0 select-none font-display text-4xl font-bold tracking-[0.2em] text-dopa-violet/40 blur-xl md:text-6xl"
-            aria-hidden="true"
-          >
-            感謝瀏覽
-          </span>
-          <GlitchText
-            as="h2"
-            className="zh-heading relative font-display text-4xl font-bold tracking-[0.2em] text-arcade-text [filter:drop-shadow(0_0_22px_rgba(139,92,255,0.5))] md:text-6xl"
-          >
-            感謝瀏覽
-          </GlitchText>
-        </div>
+        {/* 大標：像素階梯陰影（取代光暈） */}
+        <p className="px-title px-blink text-[0.62rem] text-px-coral">CONTINUE?</p>
+        <GlitchText
+          as="h2"
+          className="zh-heading mt-4 font-sans text-4xl font-black leading-[1.15] text-px-white md:text-6xl"
+        >
+          <span style={{ textShadow: '3px 3px 0 #17102b, 6px 6px 0 #d6337f' }}>感謝瀏覽</span>
+        </GlitchText>
 
-        <p className="en-heading grad-hero-text mt-6 font-display text-base font-bold tracking-[0.15em] md:text-lg">
+        <p className="px-title mt-6 text-[0.6rem] text-px-cream md:text-[0.7rem]">
           THANK YOU FOR VISITING
         </p>
 
-        <p className="zh-body mt-4 text-sm text-arcade-text-sec md:text-base">
+        <p className="zh-body mt-4 text-base leading-[1.7] text-px-peach">
           下一階段：研究所
         </p>
 
         <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
           {/* 聯絡我：--grad-hero 底＋深色字（視覺樣式不變） */}
-          <a
-            href="mailto:for995@gmail.com"
-            className="bg-grad-hero rounded-full px-7 py-3 font-mono text-sm font-bold tracking-[0.15em] text-arcade-bg transition-opacity duration-[120ms] hover:opacity-85"
-          >
-            [ 聯絡我 ]
+          <a href="mailto:for995@gmail.com" className="px-btn px-btn--primary">
+            聯絡我 ▶
           </a>
-          {/* 回到頂端：透明底＋cyan 框（視覺樣式不變） */}
-          <a
-            href="#title-screen"
-            onClick={replay}
-            className="rounded-full border-2 border-dopa-cyan/70 px-7 py-3 font-mono text-sm font-bold tracking-[0.15em] text-dopa-cyan transition-colors duration-[120ms] hover:bg-dopa-cyan/10"
-          >
-            [ 回到頂端 ]
+          <a href="#title-screen" onClick={replay} className="px-btn">
+            回到頂端 ↑
           </a>
         </div>
       </div>

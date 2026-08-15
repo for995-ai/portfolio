@@ -14,4 +14,7 @@
     'Noto Sans TC', monospace;
   --font-family-display: 'Chakra Petch', 'Noto Sans TC', 'PingFang TC',
     'Microsoft JhengHei', system-ui, sans-serif;
+  /* 像素字（僅拉丁字元：大標／導覽／標籤／按鈕）；中文自動 fallback 至 Noto Sans TC */
+  --font-family-pixel: 'Press Start 2P', 'Noto Sans TC', 'PingFang TC', system-ui,
+    sans-serif;
 }

@@ -47,23 +47,15 @@ export function SavePointNode({ point, index, visible, onOpenImage }: SavePointN
       </span>
 
       <div
-        className={
-          highlight
-            ? 'rounded-[8px] border border-dopa-lime/25 bg-arcade-panel p-5 md:p-6'
-            : ''
-        }
+        className={highlight ? 'px-panel px-window p-5 pt-6 md:p-6 md:pt-7' : ''}
       >
         {/* 直接顯示年份與職稱，不加存檔點標記 */}
         <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5">
           {point.period && (
-            <span className="font-mono text-xs tracking-wider text-arcade-muted">
-              {point.period}
-            </span>
+            <span className="px-title text-[0.52rem] text-px-cream">{point.period}</span>
           )}
           {point.tag && (
-            <span className="rounded-sm border border-dopa-lime/60 px-2 py-0.5 font-mono text-[11px] font-bold tracking-[0.15em] text-dopa-lime">
-              {point.tag.label}
-            </span>
+            <span className="px-tag px-tag--coral !text-[0.5rem]">{point.tag.label}</span>
           )}
         </div>
 
