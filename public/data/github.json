@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-08-16T14:06:20.299Z",
+  "generatedAt": "2026-08-16T19:01:42.832Z",
   "profile": {
     "login": "for995-ai",
     "name": null,
     "avatarUrl": "https://avatars.githubusercontent.com/u/265744366?v=4",
     "htmlUrl": "https://github.com/for995-ai",
-    "publicRepos": 4,
+    "publicRepos": 9,
     "followers": 0,
     "following": 0,
     "totalStars": 0
@@ -13,27 +13,82 @@
   "languages": [
     {
       "language": "TypeScript",
-      "bytes": 148977,
-      "percentage": 71.32898271082405
-    },
-    {
-      "language": "CSS",
-      "bytes": 53957,
-      "percentage": 25.83417520911237
-    },
-    {
-      "language": "JavaScript",
-      "bytes": 3636,
-      "percentage": 1.7408873929301585
+      "bytes": 631881,
+      "percentage": 70.4539448817054
     },
     {
       "language": "HTML",
-      "bytes": 2289,
-      "percentage": 1.095954687133425
+      "bytes": 182888,
+      "percentage": 20.391784325728004
+    },
+    {
+      "language": "CSS",
+      "bytes": 68312,
+      "percentage": 7.616702959511457
+    },
+    {
+      "language": "JavaScript",
+      "bytes": 11506,
+      "percentage": 1.2829046763692884
+    },
+    {
+      "language": "Python",
+      "bytes": 2284,
+      "percentage": 0.2546631566858556
     }
   ],
   "contributions": null,
   "repos": [
+    {
+      "id": 1322824288,
+      "name": "photo-swipe-cleaner",
+      "description": "iPhone 相簿左右滑動整理 App，React Native + Expo",
+      "htmlUrl": "https://github.com/for995-ai/photo-swipe-cleaner",
+      "language": "TypeScript",
+      "stars": 0,
+      "forks": 0,
+      "updatedAt": "2026-08-16T18:23:16Z"
+    },
+    {
+      "id": 1336231657,
+      "name": "ai-food-ordering",
+      "description": "食癒所｜AI 智能點餐系統 — 前端互動原型 + FastAPI 後端原始碼",
+      "htmlUrl": "https://github.com/for995-ai/ai-food-ordering",
+      "language": "HTML",
+      "stars": 0,
+      "forks": 0,
+      "updatedAt": "2026-08-16T18:18:42Z"
+    },
+    {
+      "id": 1336223700,
+      "name": "starry-run",
+      "description": "星空探險 Starry Run｜路跑活動報名網站（作品集展示版本，報名流程為模擬送出）",
+      "htmlUrl": "https://github.com/for995-ai/starry-run",
+      "language": "HTML",
+      "stars": 0,
+      "forks": 0,
+      "updatedAt": "2026-08-16T18:09:34Z"
+    },
+    {
+      "id": 1336210062,
+      "name": "work-exchange-platform",
+      "description": "作保庇宿｜安心打工換宿智慧媒合平台 — 前端媒合原型，含雙向評核機制介面",
+      "htmlUrl": "https://github.com/for995-ai/work-exchange-platform",
+      "language": "TypeScript",
+      "stars": 0,
+      "forks": 0,
+      "updatedAt": "2026-08-16T18:05:31Z"
+    },
+    {
+      "id": 1336204252,
+      "name": "mbti-aroma-advisor",
+      "description": "基於 MBTI 人格分析與芳療知識庫的智能精油顧問系統｜MBTI-based aromatherapy recommendation prototype",
+      "htmlUrl": "https://github.com/for995-ai/mbti-aroma-advisor",
+      "language": "HTML",
+      "stars": 0,
+      "forks": 0,
+      "updatedAt": "2026-08-16T17:48:09Z"
+    },
     {
       "id": 1310593962,
       "name": "portfolio",
