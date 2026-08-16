@@ -1,10 +1,11 @@
 name: Deploy portfolio to GitHub Pages
 
-# Deploys the V2 redesign branch. main is deliberately not a trigger — it is
-# not merged yet, and production is served from this branch until it is.
+# main is the only production deployment branch. Development branches cannot
+# publish to the live site — they are excluded here and from the github-pages
+# environment's branch policy.
 on:
   push:
-    branches: [redesign/portfolio-v2]
+    branches: [main]
   workflow_dispatch:
 
 permissions:
