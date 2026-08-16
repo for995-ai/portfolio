@@ -123,7 +123,10 @@ const EXTRA_LINKS: Partial<Record<string, ProjectLink[]>> = {
     { label: 'GitHub',   url: 'https://github.com/for995-ai/photo-swipe-cleaner',  type: 'github' },
   ],
   A0: [
-    { label: 'GitHub', url: 'https://github.com/for995-ai/portfolio', type: 'github' },
+    // This site itself — the demo link points back to the deployed portfolio,
+    // which is a different destination from the source repository.
+    { label: '查看作品', url: 'https://for995-ai.github.io/portfolio/', type: 'demo' },
+    { label: 'GitHub',   url: 'https://github.com/for995-ai/portfolio',  type: 'github' },
   ],
 };
 
