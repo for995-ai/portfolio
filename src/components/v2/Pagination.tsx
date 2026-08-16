@@ -1,4 +1,5 @@
 import { useCallback, useMemo, useState } from 'react';
+import { scrollToSection } from '@/lib/scrollToSection';
 
 /** Every paginated section shows at most this many items per page. */
 export const PAGE_SIZE = 6;
@@ -84,10 +85,9 @@ export function usePagination<T>(items: readonly T[], anchorId: string, pageSize
 
   const goTo = useCallback((next: number) => {
     setPage(next);
-    const el = document.getElementById(anchorId);
-    if (!el) return;
-    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    el.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'start' });
+    // Same scroller the nav uses, so a page change lands the heading in
+    // exactly the same place a nav click would.
+    scrollToSection(anchorId);
   }, [anchorId]);
 
   const onPrevious = useCallback(() => { if (page > 1) goTo(page - 1); }, [page, goTo]);

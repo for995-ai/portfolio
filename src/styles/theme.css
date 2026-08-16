@@ -292,8 +292,10 @@
     outline-offset: 3px;
   }
 
-  /* 固定 HUD header 的 anchor offset（沿用既有 scroll-margin 機制） */
-  section[id] {
+  /* 固定 HUD header 的 anchor offset（僅供 legacy pixel 版面使用）。
+     Portfolio V2 的導覽捲動改由 src/lib/scrollToSection.ts 量測處理，
+     兩者疊加會造成落點偏移，因此這裡限定在 legacy 版面內。 */
+  .pixel-root section[id] {
     scroll-margin-top: calc(var(--hud-h) + 1rem);
   }
 }

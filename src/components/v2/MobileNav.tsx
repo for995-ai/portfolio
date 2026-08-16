@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import { scrollToSection } from '@/lib/scrollToSection';
 
 interface NavLink {
   href: string;
@@ -10,12 +11,6 @@ interface MobileNavProps {
   activeId: string;
 }
 
-function scrollTo(id: string) {
-  const el = document.getElementById(id);
-  if (!el) return;
-  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  el.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth' });
-}
 
 export function MobileNav({ links, activeId }: MobileNavProps) {
   const [open, setOpen] = useState(false);
@@ -187,7 +182,7 @@ export function MobileNav({ links, activeId }: MobileNavProps) {
                     onClick={e => {
                       e.preventDefault();
                       setOpen(false);
-                      setTimeout(() => scrollTo(id), 80);
+                      setTimeout(() => scrollToSection(id), 80);
                     }}
                     style={{
                       display: 'flex',

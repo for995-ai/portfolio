@@ -1,4 +1,5 @@
 import { BubbleLink } from '@/components/v2/primitives';
+import { scrollToSection, scrollToTop } from '@/lib/scrollToSection';
 
 // Dark 4-column footer — no phone, no full address, no birthday
 
@@ -53,12 +54,6 @@ const COLUMNS: Col[] = [
 const LINK_IDLE   = 'rgba(255,255,255,0.55)';
 const LINK_ACTIVE = 'rgba(255,255,255,0.88)';
 
-function scrollTo(href: string) {
-  const el = document.getElementById(href.slice(1));
-  if (!el) return;
-  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  el.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth' });
-}
 
 function FooterItem({ item }: { item: Col['items'][number] }) {
   const baseStyle: React.CSSProperties = {
@@ -98,7 +93,7 @@ function FooterItem({ item }: { item: Col['items'][number] }) {
   return (
     <a
       href={item.href}
-      onClick={e => { e.preventDefault(); scrollTo(item.href!); }}
+      onClick={e => { e.preventDefault(); scrollToSection(item.href!.slice(1)); }}
       style={{ ...baseStyle, textDecoration: 'none', transition: 'color 150ms ease' }}
       {...hover}
     >
@@ -188,7 +183,7 @@ export function Footer() {
           </p>
           <button
             type="button"
-            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            onClick={scrollToTop}
             style={{
               fontFamily: 'var(--font-family-mono)',
               fontSize: '0.72rem',

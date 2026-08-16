@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useScrollspy } from '@/hooks/useScrollspy';
 import { MobileNav } from './MobileNav';
+import { scrollToSection } from '@/lib/scrollToSection';
 
 const NAV_LINKS = [
   { href: '#hero',       label: '首頁'   },
@@ -17,12 +18,6 @@ const NAV_LINKS = [
 
 const SECTION_IDS = NAV_LINKS.map(l => l.href.slice(1));
 
-function scrollTo(id: string) {
-  const el = document.getElementById(id);
-  if (!el) return;
-  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  el.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth' });
-}
 
 export function Header() {
   const [scrolled, setScrolled] = useState(false);
@@ -55,6 +50,7 @@ export function Header() {
       >
         {/* Pill */}
         <div
+          data-nav-pill
           style={{
             display: 'flex',
             alignItems: 'center',
@@ -76,7 +72,7 @@ export function Header() {
           <a
             href="#hero"
             aria-label="回到頂部"
-            onClick={e => { e.preventDefault(); scrollTo('hero'); }}
+            onClick={e => { e.preventDefault(); scrollToSection('hero'); }}
             style={{
               fontFamily: 'var(--font-family-mono)',
               fontSize: '0.72rem',
@@ -101,7 +97,7 @@ export function Header() {
                   key={href}
                   href={href}
                   aria-current={isActive ? 'location' : undefined}
-                  onClick={e => { e.preventDefault(); scrollTo(id); }}
+                  onClick={e => { e.preventDefault(); scrollToSection(id); }}
                   className="v2-nav-link"
                   style={isActive ? {
                     background: 'var(--v2-lavender)',

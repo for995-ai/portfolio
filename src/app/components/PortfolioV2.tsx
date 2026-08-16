@@ -23,7 +23,7 @@ interface SectionHeadingProps { en: string; zh: string; }
 
 function SectionHeading({ en, zh }: SectionHeadingProps) {
   return (
-    <div className="v2-section-divider">
+    <div className="v2-section-divider" data-section-heading>
       <h2
         style={{
           fontFamily: 'var(--font-family-v2-display)',

@@ -130,22 +130,19 @@
   max-width: var(--v2-reading-max);
 }
 
-/* ── Anchor offset — single source of truth ──────────────────────────────────
-   The floating nav occupies --v2-nav-top + --v2-nav-h from the viewport top
-   (18 + 66 = 84px). The extra 28px is the breathing room below it.
+/* ── Anchor offset ────────────────────────────────────────────────────────────
+   Deliberately NOT handled here.
 
-   This is the ONLY scroll offset in the codebase: no scroll-padding-top on
-   html, and no manual offset in the JS scroll handlers, so the values can
-   never stack. `footer[id]` is included because the 聯絡 target is a
-   <footer>, which the previous section-only selector missed entirely. */
-:root {
-  --anchor-offset: calc(var(--v2-nav-top) + var(--v2-nav-h) + 28px);
-}
+   `scroll-margin-top` aligns the *section wrapper*, but each wrapper carries
+   vertical padding, so the visible heading landed ~56px lower than the nav
+   gap suggested — readers saw cards instead of the heading. It also cannot
+   react to the nav's real height per breakpoint, nor to layout that shifts
+   while a smooth scroll is still animating.
 
-section[id],
-footer[id] {
-  scroll-margin-top: var(--anchor-offset);
-}
+   All navigation scrolling therefore goes through src/lib/scrollToSection.ts,
+   which measures the nav and the heading at click time. Keeping a CSS offset
+   as well would stack two corrections, so there is none — no
+   scroll-margin-top, no scroll-padding-top. */
 
 /* ============================================================
    Bubble Button system
