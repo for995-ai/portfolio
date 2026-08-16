@@ -126,7 +126,7 @@ export function PortfolioV2() {
         <Hero />
 
         {/* 01 — About / Intro + Stats */}
-        <Section id="about" className="py-12 md:py-16">
+        <Section id="about" className="py-12 md:py-14">
           <Container>
             <AboutIntro />
             <StatCards />
@@ -134,7 +134,7 @@ export function PortfolioV2() {
         </Section>
 
         {/* 02 — Education */}
-        <Section id="education" className="py-12 md:py-16">
+        <Section id="education" className="py-12 md:py-14">
           <Container>
             <SectionHeading en="Education" zh="教育背景" />
             <Education />
@@ -142,17 +142,15 @@ export function PortfolioV2() {
         </Section>
 
         {/* 03 — Experience */}
-        <Section id="experience" className="py-12 md:py-16">
+        <Section id="experience" className="py-12 md:py-14">
           <Container>
             <SectionHeading en="Experience" zh="工作經歷" />
-            <div style={{ maxWidth: '860px' }}>
-              <Experience />
-            </div>
+            <Experience />
           </Container>
         </Section>
 
         {/* 04 — Projects */}
-        <Section id="projects" className="py-12 md:py-16">
+        <Section id="projects" className="py-12 md:py-14">
           <Container>
             <SectionHeading en="Projects" zh="專案作品" />
             <Projects />
@@ -160,7 +158,7 @@ export function PortfolioV2() {
         </Section>
 
         {/* 05 — GitHub */}
-        <Section id="github" className="py-12 md:py-16">
+        <Section id="github" className="py-12 md:py-14">
           <Container>
             <SectionHeading en="GitHub" zh="開發主頁" />
             <GitHub />
@@ -168,7 +166,7 @@ export function PortfolioV2() {
         </Section>
 
         {/* 06 — Research & Competitions */}
-        <Section id="research" className="py-12 md:py-16">
+        <Section id="research" className="py-12 md:py-14">
           <Container>
             <SectionHeading en="Research" zh="研究與實作" />
             <Research />
@@ -176,7 +174,7 @@ export function PortfolioV2() {
         </Section>
 
         {/* 07 — Awards & Certifications */}
-        <Section id="awards" className="py-12 md:py-16">
+        <Section id="awards" className="py-12 md:py-14">
           <Container>
             <SectionHeading en="Awards & Certifications" zh="獎項證明" />
             <Awards />
@@ -184,7 +182,7 @@ export function PortfolioV2() {
         </Section>
 
         {/* 08 — Leadership & Service */}
-        <Section id="leadership" className="py-12 md:py-16">
+        <Section id="leadership" className="py-12 md:py-14">
           <Container>
             <SectionHeading en="Leadership & Service" zh="社團與服務" />
             <Leadership />

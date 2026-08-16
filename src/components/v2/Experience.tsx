@@ -105,12 +105,10 @@ function AccordionEntry({
       <div className="v2-accordion-body" data-open={open} aria-hidden={!open}>
         <div className="v2-accordion-inner">
           <div className="v2-exp-body-inner">
+            <div className={`v2-exp-layout ${media.length > 0 ? 'v2-exp-layout--with-media' : ''}`}>
             {/* Media gallery — 1 / 2 / 3 / 4+ */}
             {media.length > 0 && (
-              <div
-                className={`v2-media-grid v2-media-grid--${Math.min(media.length, 4)}`}
-                style={{ marginBottom: '20px' }}
-              >
+              <div className={`v2-exp-media v2-exp-media--${Math.min(media.length, 4)}`}>
                 {media.map((src, i) => (
                   <button
                     key={src}
@@ -124,13 +122,13 @@ function AccordionEntry({
                       alt={`${exp.organization} ${exp.position}`}
                       loading="lazy"
                       decoding="async"
-                      className="v2-media-img"
                     />
                   </button>
                 ))}
               </div>
             )}
 
+            <div>
             {/* Sub-heading + full description */}
             {detail && (
               <>
@@ -168,6 +166,8 @@ function AccordionEntry({
                 {link.label} ↗
               </a>
             )}
+            </div>
+            </div>
           </div>
         </div>
       </div>

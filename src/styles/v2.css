@@ -130,9 +130,21 @@
   max-width: var(--v2-reading-max);
 }
 
-/* Section anchor offset — nav floats at top:18px, height:64px → bottom 82px */
-section[id].v2-section {
-  scroll-margin-top: calc(var(--v2-nav-h) + 40px);
+/* ── Anchor offset — single source of truth ──────────────────────────────────
+   The floating nav occupies --v2-nav-top + --v2-nav-h from the viewport top
+   (18 + 66 = 84px). The extra 28px is the breathing room below it.
+
+   This is the ONLY scroll offset in the codebase: no scroll-padding-top on
+   html, and no manual offset in the JS scroll handlers, so the values can
+   never stack. `footer[id]` is included because the 聯絡 target is a
+   <footer>, which the previous section-only selector missed entirely. */
+:root {
+  --anchor-offset: calc(var(--v2-nav-top) + var(--v2-nav-h) + 28px);
+}
+
+section[id],
+footer[id] {
+  scroll-margin-top: var(--anchor-offset);
 }
 
 /* ============================================================
@@ -567,11 +579,14 @@ section[id].v2-section {
   font-size: 0.62rem;
 }
 
+/* Pinned to the card bottom so buttons align across a row regardless of how
+   long each description runs. */
 .v2-project-actions {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-  margin-top: 16px;
+  margin-top: auto;
+  padding-top: 16px;
 }
 .v2-project-actions .v2-bubble-btn {
   height: 38px;
@@ -1156,6 +1171,48 @@ section[id].v2-section {
 
 @media (min-width: 768px) {
   .v2-exp-body-inner { padding: 0 30px 28px; }
+}
+
+/* Expanded body: media beside content on desktop, stacked on mobile.
+   Without media the content simply fills the width — no empty column. */
+.v2-exp-layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+  align-items: start;
+}
+
+@media (min-width: 900px) {
+  .v2-exp-layout--with-media {
+    grid-template-columns: minmax(0, 38fr) minmax(0, 62fr);
+    gap: 28px;
+  }
+}
+
+/* A single image stays a reasonable size rather than becoming a tall banner */
+.v2-exp-media {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: 1fr;
+}
+.v2-exp-media--1 { max-width: 420px; }
+.v2-exp-media--2,
+.v2-exp-media--3,
+.v2-exp-media--4 { grid-template-columns: repeat(2, 1fr); }
+
+.v2-exp-media img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border-radius: var(--radius);
+  display: block;
+  cursor: pointer;
+  transition: opacity 150ms ease;
+}
+.v2-exp-media img:hover { opacity: 0.88; }
+
+@media (max-width: 899px) {
+  .v2-exp-media--1 { max-width: 100%; }
 }
 
 .v2-exp-subheading {
