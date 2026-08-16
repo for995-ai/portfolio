@@ -1,128 +1,223 @@
-import { useEffect, useRef } from 'react';
-import { X } from 'lucide-react';
-import { PixelMark } from '@/components/v2/primitives';
+import { useState, useEffect, useRef } from 'react';
 
-export interface NavLink {
-  id: string;
+interface NavLink {
+  href: string;
   label: string;
 }
 
-const FOCUSABLE =
-  'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])';
-
 interface MobileNavProps {
-  id: string;
-  open: boolean;
-  activeId: string;
   links: readonly NavLink[];
-  onClose: () => void;
-  onNavigate: (id: string) => void;
+  activeId: string;
 }
 
-export function MobileNav({ id, open, activeId, links, onClose, onNavigate }: MobileNavProps) {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const closeRef = useRef<HTMLButtonElement>(null);
+function scrollTo(id: string) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  el.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth' });
+}
 
-  // Lock body scroll while open
+export function MobileNav({ links, activeId }: MobileNavProps) {
+  const [open, setOpen] = useState(false);
+  const drawerRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
-    document.body.style.overflow = open ? 'hidden' : '';
+    if (open) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
     return () => { document.body.style.overflow = ''; };
   }, [open]);
 
-  // Focus first element on open
   useEffect(() => {
-    if (open) closeRef.current?.focus();
-  }, [open]);
-
-  // Esc + Tab focus trap — single handler while open
-  useEffect(() => {
-    if (!open) return;
-
-    const handler = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
-        onClose();
-        return;
-      }
-      if (e.key !== 'Tab') return;
-
-      const container = containerRef.current;
-      if (!container) return;
-      const focusable = Array.from(container.querySelectorAll<HTMLElement>(FOCUSABLE));
-      if (focusable.length === 0) return;
-
-      const first = focusable[0];
-      const last = focusable[focusable.length - 1];
-
-      if (e.shiftKey) {
-        if (document.activeElement === first) {
-          e.preventDefault();
-          last.focus();
-        }
-      } else {
-        if (document.activeElement === last) {
-          e.preventDefault();
-          first.focus();
-        }
-      }
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setOpen(false);
     };
-
-    document.addEventListener('keydown', handler);
-    return () => document.removeEventListener('keydown', handler);
-  }, [open, onClose]);
-
-  if (!open) return null;
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, []);
 
   return (
-    <div
-      ref={containerRef}
-      id={id}
-      role="dialog"
-      aria-modal="true"
-      aria-label="行動導覽選單"
-      className="fixed inset-0 z-50 flex flex-col bg-v2-bg"
-    >
-      {/* Header row — mirrors desktop header height */}
-      <div
-        className="flex shrink-0 items-center justify-between border-b border-v2-border px-5"
-        style={{ height: 'var(--v2-nav-h)' }}
+    <>
+      {/* Hamburger toggle */}
+      <button
+        type="button"
+        aria-label={open ? '關閉選單' : '開啟選單'}
+        aria-expanded={open}
+        aria-controls="mobile-nav-drawer"
+        onClick={() => setOpen(v => !v)}
+        style={{
+          width: 38,
+          height: 38,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: '5px',
+          background: 'none',
+          border: 'none',
+          cursor: 'pointer',
+          borderRadius: '10px',
+          padding: '6px',
+        }}
       >
-        <span className="flex items-center gap-2 font-mono text-sm font-bold tracking-[0.12em] text-v2-text">
-          <PixelMark>▚</PixelMark>
-          SU MING-WEI
-        </span>
-        <button
-          ref={closeRef}
-          type="button"
-          aria-label="關閉選單"
-          onClick={onClose}
-          className="flex h-11 w-11 items-center justify-center text-v2-text-sec hover:text-v2-text"
-        >
-          <X size={20} aria-hidden />
-        </button>
-      </div>
+        <span
+          style={{
+            display: 'block',
+            width: 20,
+            height: 1.5,
+            background: 'var(--v2-text)',
+            borderRadius: 2,
+            transformOrigin: 'center',
+            transition: 'transform 200ms ease, opacity 200ms ease',
+            transform: open ? 'translateY(6.5px) rotate(45deg)' : 'none',
+          }}
+        />
+        <span
+          style={{
+            display: 'block',
+            width: 20,
+            height: 1.5,
+            background: 'var(--v2-text)',
+            borderRadius: 2,
+            transition: 'opacity 200ms ease',
+            opacity: open ? 0 : 1,
+          }}
+        />
+        <span
+          style={{
+            display: 'block',
+            width: 20,
+            height: 1.5,
+            background: 'var(--v2-text)',
+            borderRadius: 2,
+            transformOrigin: 'center',
+            transition: 'transform 200ms ease, opacity 200ms ease',
+            transform: open ? 'translateY(-6.5px) rotate(-45deg)' : 'none',
+          }}
+        />
+      </button>
 
-      {/* Nav links */}
-      <nav aria-label="行動導覽" className="flex flex-1 flex-col justify-center px-8">
-        {links.map(({ id: linkId, label }) => {
-          const isActive = activeId === linkId;
-          return (
-            <a
-              key={linkId}
-              href={`#${linkId}`}
-              onClick={(e) => { e.preventDefault(); onNavigate(linkId); }}
-              aria-current={isActive ? 'true' : undefined}
-              className={`flex min-h-[56px] items-center gap-3 border-b font-mono text-sm tracking-[0.1em] transition-colors duration-150 ${
-                isActive
-                  ? 'border-v2-border text-v2-purple-lt'
-                  : 'border-v2-border text-v2-text-sec hover:text-v2-text'
-              }`}
-            >
-              {isActive && <PixelMark className="shrink-0">▸</PixelMark>}
-              {label}
-            </a>
-          );
-        })}
-      </nav>
-    </div>
+      {/* Backdrop */}
+      {open && (
+        <div
+          aria-hidden
+          onClick={() => setOpen(false)}
+          style={{
+            position: 'fixed',
+            inset: 0,
+            zIndex: 40,
+            background: 'rgba(23,21,37,0.38)',
+            backdropFilter: 'blur(2px)',
+          }}
+        />
+      )}
+
+      {/* Drawer */}
+      <div
+        ref={drawerRef}
+        id="mobile-nav-drawer"
+        role="dialog"
+        aria-label="行動選單"
+        aria-modal="true"
+        style={{
+          position: 'fixed',
+          top: 0,
+          right: 0,
+          bottom: 0,
+          zIndex: 50,
+          width: 'min(280px, 80vw)',
+          background: 'var(--v2-surface)',
+          boxShadow: '-4px 0 32px rgba(23,21,37,0.14)',
+          transform: open ? 'translateX(0)' : 'translateX(100%)',
+          transition: 'transform 260ms ease-out',
+          display: 'flex',
+          flexDirection: 'column',
+          padding: '24px 20px 32px',
+          overflowY: 'auto',
+        }}
+      >
+        {/* Drawer header */}
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '28px' }}>
+          <span
+            style={{
+              fontFamily: 'var(--font-family-mono)',
+              fontSize: '0.7rem',
+              fontWeight: 700,
+              letterSpacing: '0.18em',
+              color: 'var(--v2-purple)',
+            }}
+          >
+            SMW
+          </span>
+          <button
+            type="button"
+            aria-label="關閉選單"
+            onClick={() => setOpen(false)}
+            style={{
+              width: 32,
+              height: 32,
+              borderRadius: '50%',
+              border: '1px solid var(--v2-border)',
+              background: 'none',
+              cursor: 'pointer',
+              fontSize: '0.85rem',
+              color: 'var(--v2-text-sec)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            ✕
+          </button>
+        </div>
+
+        {/* Nav links */}
+        <nav aria-label="行動導覽" style={{ flex: 1 }}>
+          <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '4px' }}>
+            {links.map(({ href, label }) => {
+              const id = href.slice(1);
+              const isActive = activeId === id;
+              return (
+                <li key={href}>
+                  <a
+                    href={href}
+                    aria-current={isActive ? 'location' : undefined}
+                    onClick={e => {
+                      e.preventDefault();
+                      setOpen(false);
+                      setTimeout(() => scrollTo(id), 80);
+                    }}
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '10px',
+                      padding: '10px 14px',
+                      borderRadius: '10px',
+                      textDecoration: 'none',
+                      fontFamily: 'var(--font-family-v2-display)',
+                      fontSize: '0.9375rem',
+                      fontWeight: isActive ? 600 : 500,
+                      color: isActive ? 'var(--v2-purple)' : 'var(--v2-text-sec)',
+                      background: isActive ? 'var(--v2-lavender)' : 'transparent',
+                      transition: 'background 140ms ease, color 140ms ease',
+                    }}
+                  >
+                    {isActive && (
+                      <span
+                        aria-hidden
+                        style={{ width: 4, height: 4, borderRadius: 1, background: 'var(--v2-purple)', flexShrink: 0 }}
+                      />
+                    )}
+                    {label}
+                  </a>
+                </li>
+              );
+            })}
+          </ul>
+        </nav>
+      </div>
+    </>
   );
 }

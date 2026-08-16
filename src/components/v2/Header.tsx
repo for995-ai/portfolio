@@ -1,22 +1,21 @@
-import { useEffect, useRef, useState } from 'react';
-import { Menu } from 'lucide-react';
-import { PixelMark } from '@/components/v2/primitives';
-import { MobileNav, type NavLink } from '@/components/v2/MobileNav';
+import { useEffect, useState } from 'react';
 import { useScrollspy } from '@/hooks/useScrollspy';
+import { MobileNav } from './MobileNav';
 
-export const NAV_LINKS: readonly NavLink[] = [
-  { id: 'education',  label: 'EDUCATION'  },
-  { id: 'experience', label: 'EXPERIENCE' },
-  { id: 'projects',   label: 'PROJECTS'   },
-  { id: 'research',   label: 'RESEARCH'   },
-  { id: 'skills',     label: 'SKILLS'     },
-  { id: 'contact',    label: 'CONTACT'    },
+const NAV_LINKS = [
+  { href: '#hero',       label: '首頁'   },
+  { href: '#about',      label: '簡介'   },
+  { href: '#education',  label: '學歷'   },
+  { href: '#experience', label: '經歷'   },
+  { href: '#projects',   label: '專案'   },
+  { href: '#github',     label: 'GitHub' },
+  { href: '#research',   label: '研究'   },
+  { href: '#awards',     label: '獎項證明' },
+  { href: '#leadership', label: '社團服務' },
+  { href: '#contact',    label: '聯絡'   },
 ] as const;
 
-const SCROLLSPY_IDS = [
-  'profile', 'education', 'experience', 'projects',
-  'research', 'skills', 'certifications', 'leadership', 'notes', 'contact',
-];
+const SECTION_IDS = NAV_LINKS.map(l => l.href.slice(1));
 
 function scrollTo(id: string) {
   const el = document.getElementById(id);
@@ -26,51 +25,89 @@ function scrollTo(id: string) {
 }
 
 export function Header() {
-  const [drawerOpen, setDrawerOpen] = useState(false);
-  const activeId = useScrollspy(SCROLLSPY_IDS);
-  const menuBtnRef = useRef<HTMLButtonElement>(null);
-  const prevOpenRef = useRef(false);
+  const [scrolled, setScrolled] = useState(false);
+  const activeId = useScrollspy(SECTION_IDS, '-20% 0px -75% 0px');
 
-  // Restore focus to the menu button when drawer closes
   useEffect(() => {
-    if (prevOpenRef.current && !drawerOpen) {
-      menuBtnRef.current?.focus();
-    }
-    prevOpenRef.current = drawerOpen;
-  }, [drawerOpen]);
+    const onScroll = () => setScrolled(window.scrollY > 24);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
 
   return (
-    <>
-      <header
-        className="sticky top-0 z-40 border-b border-v2-border bg-v2-bg"
-        style={{ height: 'var(--v2-nav-h)' }}
+    <header
+      style={{
+        position: 'fixed',
+        top: 'var(--v2-nav-top, 18px)',
+        left: 0,
+        right: 0,
+        zIndex: 50,
+        pointerEvents: 'none',
+      }}
+    >
+      <div
+        style={{
+          maxWidth: '1280px',
+          marginInline: 'auto',
+          paddingInline: '20px',
+          pointerEvents: 'auto',
+        }}
       >
-        <div className="v2-container flex h-full items-center justify-between">
+        {/* Pill */}
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            height: 'var(--v2-nav-h, 64px)',
+            paddingInline: '18px 14px',
+            background: 'rgba(255,255,255,0.92)',
+            backdropFilter: 'blur(14px)',
+            WebkitBackdropFilter: 'blur(14px)',
+            borderRadius: '33px',
+            border: '1px solid rgba(230,226,237,0.70)',
+            boxShadow: scrolled
+              ? '0 4px 24px rgba(23,21,37,0.11), 0 1px 4px rgba(23,21,37,0.06)'
+              : '0 2px 12px rgba(23,21,37,0.07), 0 1px 3px rgba(23,21,37,0.04)',
+            transition: 'box-shadow 300ms ease',
+          }}
+        >
           {/* Logo */}
           <a
-            href="#profile"
-            onClick={(e) => { e.preventDefault(); scrollTo('profile'); }}
-            className="flex items-center gap-2 font-mono text-sm font-bold tracking-[0.12em] text-v2-text transition-colors duration-150 hover:text-v2-purple-lt"
+            href="#hero"
+            aria-label="回到頂部"
+            onClick={e => { e.preventDefault(); scrollTo('hero'); }}
+            style={{
+              fontFamily: 'var(--font-family-mono)',
+              fontSize: '0.72rem',
+              fontWeight: 700,
+              letterSpacing: '0.18em',
+              color: 'var(--v2-purple)',
+              textDecoration: 'none',
+              flexShrink: 0,
+              padding: '6px 10px',
+            }}
           >
-            <PixelMark>▚</PixelMark>
-            SU MING-WEI
+            SMW
           </a>
 
-          {/* Desktop nav */}
-          <nav aria-label="主要導覽" className="hidden items-center gap-6 md:flex">
-            {NAV_LINKS.map(({ id, label }) => {
+          {/* Desktop nav links */}
+          <nav aria-label="主要導覽" className="hidden lg:flex items-center gap-1">
+            {NAV_LINKS.map(({ href, label }) => {
+              const id = href.slice(1);
               const isActive = activeId === id;
               return (
                 <a
-                  key={id}
-                  href={`#${id}`}
-                  onClick={(e) => { e.preventDefault(); scrollTo(id); }}
-                  aria-current={isActive ? 'true' : undefined}
-                  className={`font-mono text-xs tracking-[0.12em] transition-colors duration-150 ${
-                    isActive
-                      ? 'text-v2-purple-lt'
-                      : 'text-v2-text-sec hover:text-v2-text'
-                  }`}
+                  key={href}
+                  href={href}
+                  aria-current={isActive ? 'location' : undefined}
+                  onClick={e => { e.preventDefault(); scrollTo(id); }}
+                  className="v2-nav-link"
+                  style={isActive ? {
+                    background: 'var(--v2-lavender)',
+                    color: 'var(--v2-purple)',
+                    fontWeight: 600,
+                  } : undefined}
                 >
                   {label}
                 </a>
@@ -78,29 +115,12 @@ export function Header() {
             })}
           </nav>
 
-          {/* Mobile menu button */}
-          <button
-            ref={menuBtnRef}
-            type="button"
-            aria-label={drawerOpen ? '關閉選單' : '開啟選單'}
-            aria-expanded={drawerOpen}
-            aria-controls="v2-mobile-nav"
-            onClick={() => setDrawerOpen((v) => !v)}
-            className="flex h-11 w-11 items-center justify-center text-v2-text-sec hover:text-v2-text md:hidden"
-          >
-            <Menu size={20} aria-hidden />
-          </button>
+          {/* Mobile hamburger */}
+          <div className="lg:hidden">
+            <MobileNav links={NAV_LINKS} activeId={activeId} />
+          </div>
         </div>
-      </header>
-
-      <MobileNav
-        id="v2-mobile-nav"
-        open={drawerOpen}
-        activeId={activeId}
-        links={NAV_LINKS}
-        onClose={() => setDrawerOpen(false)}
-        onNavigate={(id) => { scrollTo(id); setDrawerOpen(false); }}
-      />
-    </>
+      </div>
+    </header>
   );
 }

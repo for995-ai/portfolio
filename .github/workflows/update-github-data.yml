@@ -1,0 +1,71 @@
+name: Update GitHub snapshot
+
+# Refreshes public/data/github.json so the site never calls the GitHub API from
+# a visitor's browser. Runs daily, and on demand from the Actions tab.
+on:
+  schedule:
+    - cron: '17 3 * * *'   # 03:17 UTC daily
+  workflow_dispatch:
+    inputs:
+      token_source:
+        description: >-
+          Credential used for the PUBLIC contribution calendar (GraphQL).
+          Use "github_token" first — if it works, no personal token is needed.
+        type: choice
+        required: false
+        default: github_token
+        options:
+          - github_token
+          - gh_pat
+
+permissions:
+  contents: write        # only what the snapshot commit needs
+
+jobs:
+  snapshot:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        # No `token:` input, so credentials persist as GITHUB_TOKEN — the push
+        # below is authenticated by the workflow token, never by a personal one.
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - name: Generate snapshot
+        # Two distinct credentials, deliberately named apart:
+        #
+        #   SNAPSHOT_TOKEN — REST only, purely to lift the anonymous rate limit
+        #                    (Actions runners share outbound IPs). All data
+        #                    fetched with it is public.
+        #   GRAPHQL_TOKEN  — the PUBLIC contribution calendar only.
+        #
+        # Defaults to the built-in workflow token. Select "gh_pat" on dispatch
+        # only if the built-in token proves insufficient. No `repo` scope is
+        # requested, and no private repository content is ever read.
+        #
+        # Token values are never echoed, printed, or written to the JSON.
+        env:
+          SNAPSHOT_TOKEN: ${{ github.token }}
+          GRAPHQL_TOKEN: ${{ inputs.token_source == 'gh_pat' && secrets.GH_PAT || github.token }}
+        run: node scripts/update-github-snapshot.mjs
+
+      - name: Commit if changed
+        run: |
+          if git diff --quiet -- public/data/github.json; then
+            echo "snapshot unchanged"
+            exit 0
+          fi
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add public/data/github.json
+          git commit -m "chore: refresh GitHub snapshot"
+          git push

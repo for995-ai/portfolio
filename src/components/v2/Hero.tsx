@@ -1,169 +1,160 @@
 import { characterInfo } from '@/data/player';
-import { PROFILE_PILLARS } from '@/data/portfolioData';
-import {
-  projectCount,
-  competitionCount,
-  researchCount,
-  TUTORING_HOURS,
-} from '@/data/portfolioV2';
-import { Container, LinkButton, PixelMark } from '@/components/v2/primitives';
+import { Container } from '@/components/v2/primitives';
+import { HeroBackdrop } from './HeroBackdrop';
+import { heroBackgrounds } from '@/data/heroBackgrounds';
 
-// Verified from git user config — update if GitHub username differs
-const GITHUB_URL = 'https://github.com/for995-ai';
-
-// School name is established project fact; not in data/*.ts so hardcoded here
 const SCHOOL = '國立聯合大學';
+const DEPT   = characterInfo[1].value;        // 資訊管理學系
+const EMAIL  = 'for995@gmail.com';
 
-const PROOF = [
-  { value: String(projectCount),     label: '件作品'  },
-  { value: String(competitionCount), label: '項競賽'  },
-  { value: String(researchCount),    label: '篇研討會' },
-  { value: String(TUTORING_HOURS),   label: '小時課輔' },
-] as const;
+const KEYWORDS = ['UI/UX 設計', '前端互動開發', 'AI 應用'] as const;
 
-// positioning from player.ts characterInfo[0]
-const positioning = characterInfo[0].value; // 文化科技 × 互動學習研究者
-// supporting from portfolioData.ts
-const supporting = PROFILE_PILLARS.join('・');  // 前端互動開發・UI/UX 設計・AI 輔助體驗
-// location from player.ts characterInfo[2]
-const location = characterInfo[2].value.replace(' / ', '・'); // 苗栗・台灣
+// Panel sits on photography when backgrounds exist, on gradient when they don't.
+const hasPhoto = heroBackgrounds.length > 0;
 
-function PhotoFrame({ className = '' }: { className?: string }) {
+function Avatar() {
   return (
     <div
-      className={`overflow-hidden border-[3px] border-v2-text-faint bg-v2-panel ${className}`}
-      style={{ borderRadius: 'var(--v2-radius-sm)', boxShadow: 'var(--v2-shadow)' }}
+      className="v2-avatar mx-auto"
+      style={{
+        width: 'clamp(112px, 11.5vw, 142px)',
+        height: 'clamp(112px, 11.5vw, 142px)',
+        marginBottom: '22px',
+        border: '3px solid rgba(255,255,255,0.88)',
+        boxShadow: '0 4px 22px rgba(23,21,37,0.16)',
+      }}
     >
-      <picture>
-        <source srcSet="/images/su-ming-wei-web.webp" type="image/webp" />
-        <img
-          src="/images/su-ming-wei.png"
-          alt="蘇洺崴 SU MING-WEI"
-          className="h-full w-full object-cover"
-          loading="eager"
-          decoding="async"
-        />
-      </picture>
+      <img
+        src="/images/profile/optimized/su-ming-wei-avatar.webp"
+        alt="蘇洺崴個人照片"
+        width={640}
+        height={640}
+        loading="eager"
+        decoding="async"
+      />
     </div>
-  );
-}
-
-function SchoolMeta() {
-  return (
-    <dl className="space-y-1.5">
-      <dd className="font-mono text-xs tracking-[0.1em] text-v2-text-sec">{SCHOOL}</dd>
-      <dd className="font-mono text-xs tracking-[0.1em] text-v2-text-sec">{characterInfo[1].value}</dd>
-      <dd className="font-mono text-xs tracking-[0.1em] text-v2-text-muted">{location}</dd>
-    </dl>
   );
 }
 
 export function Hero() {
   return (
     <section
-      id="profile"
-      className="v2-section pb-10 pt-14 md:pb-16 md:pt-20"
-      aria-label="Profile"
+      id="hero"
+      aria-label="個人首頁"
+      className="v2-section relative flex items-center justify-center overflow-hidden"
+      style={{
+        minHeight: '100svh',
+        paddingTop: 'calc(var(--v2-nav-h) + 40px)',
+        paddingBottom: '48px',
+      }}
     >
-      <Container>
-        {/* Pixel identity mark */}
-        <PixelMark className="mb-6 block tracking-[0.15em] text-v2-text-muted">
-          00 ▚
-        </PixelMark>
+      <HeroBackdrop />
 
-        {/* Two-column grid: text left / photo right */}
-        <div className="grid grid-cols-1 gap-10 md:grid-cols-[3fr_2fr] md:items-start md:gap-12">
+      <Container className="relative z-10 w-full">
+        {/* Identity panel — content-driven height, no CTAs.
+            The photography carries the story; this only establishes who. */}
+        <div
+          className="mx-auto w-full text-center"
+          style={{
+            maxWidth: '720px',
+            background: hasPhoto ? 'rgba(255,255,255,0.81)' : 'rgba(255,255,255,0.86)',
+            backdropFilter: 'blur(16px)',
+            WebkitBackdropFilter: 'blur(16px)',
+            borderRadius: '28px',
+            border: '1px solid rgba(255,255,255,0.60)',
+            boxShadow: hasPhoto
+              ? '0 18px 60px rgba(23,21,37,0.18), 0 2px 8px rgba(23,21,37,0.08)'
+              : '0 10px 44px rgba(23,21,37,0.10), 0 1px 4px rgba(23,21,37,0.05)',
+            padding: 'clamp(34px, 3.6vw, 52px) clamp(22px, 4.5vw, 56px)',
+          }}
+        >
+          <Avatar />
 
-          {/* ── Left: text content ── */}
-          <div>
-            {/* Mobile: name + small photo in one row */}
-            <div className="flex items-start justify-between gap-4 md:block">
-              <div>
-                <h1
-                  className="font-bold leading-[1.1] text-v2-text"
-                  style={{
-                    fontFamily: 'var(--font-family-v2-display)',
-                    fontSize: 'clamp(2.5rem, 6vw, 3.75rem)',
-                  }}
-                >
-                  蘇洺崴
-                </h1>
-                <p className="mt-2 font-mono text-sm tracking-[0.22em] text-v2-text-muted">
-                  SU MING-WEI
-                </p>
-              </div>
-              {/* Mobile-only small photo (80×80) */}
-              <PhotoFrame className="h-20 w-20 shrink-0 md:hidden" />
-            </div>
+          {/* Name — lavender highlight block */}
+          <h1
+            style={{
+              display: 'inline-block',
+              fontFamily: 'var(--font-family-v2-display)',
+              fontSize: 'var(--v2-text-hero)',
+              fontWeight: 800,
+              lineHeight: 1.08,
+              letterSpacing: '-0.015em',
+              color: 'var(--v2-text)',
+              background: 'var(--v2-lavender)',
+              padding: '4px 24px 9px',
+              borderRadius: '12px',
+              borderLeft: '5px solid var(--v2-purple)',
+              marginBottom: '12px',
+            }}
+          >
+            蘇洺崴
+          </h1>
 
-            {/* Positioning */}
-            <p
-              className="mt-5 text-lg leading-snug text-v2-text-sec md:text-xl"
-              style={{ fontFamily: 'var(--font-family-v2-display)' }}
-            >
-              {positioning}
-            </p>
+          {/* Latin name */}
+          <p
+            className="font-mono text-v2-text-muted"
+            style={{
+              fontSize: 'clamp(0.8125rem, 1vw, 0.9375rem)',
+              letterSpacing: '0.3em',
+              marginBottom: '16px',
+            }}
+          >
+            MING WEI SU
+          </p>
 
-            {/* Supporting / pillars */}
-            <p className="mt-2 text-base text-v2-text-sec">
-              {supporting}
-            </p>
+          {/* School / dept */}
+          <p
+            style={{
+              fontFamily: 'var(--font-family-v2-display)',
+              fontSize: 'clamp(0.875rem, 1.15vw, 1.125rem)',
+              fontWeight: 600,
+              color: 'var(--v2-text-sec)',
+              marginBottom: '22px',
+            }}
+          >
+            {SCHOOL}・{DEPT}
+          </p>
 
-            {/* Mobile-only school meta */}
-            <div className="mt-5 md:hidden">
-              <SchoolMeta />
-            </div>
-
-            {/* CTAs */}
-            <div className="mt-9 flex flex-wrap gap-3">
-              {/* Primary */}
-              <LinkButton
-                variant="primary"
-                href="#projects"
-                onClick={(e: React.MouseEvent<HTMLAnchorElement>) => {
-                  e.preventDefault();
-                  const el = document.getElementById('projects');
-                  if (!el) return;
-                  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-                  el.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth' });
-                }}
-              >
-                查看作品 ▶
-              </LinkButton>
-
-              {/* Tertiary — GitHub */}
-              <LinkButton
-                variant="ghost"
-                href={GITHUB_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                GitHub ↗
-              </LinkButton>
-            </div>
-          </div>
-
-          {/* ── Right: desktop photo + school info ── */}
-          <div className="hidden md:block">
-            <PhotoFrame className="h-[260px] w-[260px]" />
-            <div className="mt-5">
-              <SchoolMeta />
-            </div>
-          </div>
-        </div>
-
-        {/* ── Proof strip ── */}
-        <div className="mt-10 border-t border-v2-border pt-7 md:mt-14">
-          <div className="flex flex-wrap gap-6 md:gap-10">
-            {PROOF.map(({ value, label }) => (
-              <div key={label}>
-                <p className="font-mono text-2xl font-bold leading-none text-v2-text md:text-3xl">
-                  {value}
-                </p>
-                <p className="mt-1.5 text-xs tracking-widest text-v2-text-muted">{label}</p>
-              </div>
+          {/* Keyword chips */}
+          <div
+            style={{
+              display: 'flex',
+              flexWrap: 'wrap',
+              gap: '9px',
+              justifyContent: 'center',
+              marginBottom: '22px',
+            }}
+          >
+            {KEYWORDS.map(kw => (
+              <span key={kw} className="v2-keyword-chip v2-keyword-chip--hero">{kw}</span>
             ))}
           </div>
+
+          {/* Email — the only interactive element left in the panel */}
+          <a
+            href={`mailto:${EMAIL}`}
+            style={{
+              display: 'inline-block',
+              fontFamily: 'var(--font-family-mono)',
+              fontSize: 'clamp(0.8125rem, 1vw, 0.9375rem)',
+              color: 'var(--v2-text-sec)',
+              letterSpacing: '0.03em',
+              textDecoration: 'none',
+              borderBottom: '1px solid var(--v2-border)',
+              paddingBottom: '2px',
+              transition: 'color 150ms ease, border-color 150ms ease',
+            }}
+            onMouseEnter={e => {
+              e.currentTarget.style.color = 'var(--v2-purple)';
+              e.currentTarget.style.borderColor = 'var(--v2-purple)';
+            }}
+            onMouseLeave={e => {
+              e.currentTarget.style.color = 'var(--v2-text-sec)';
+              e.currentTarget.style.borderColor = 'var(--v2-border)';
+            }}
+          >
+            {EMAIL}
+          </a>
         </div>
       </Container>
     </section>

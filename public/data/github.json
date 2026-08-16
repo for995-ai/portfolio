@@ -1,0 +1,78 @@
+{
+  "generatedAt": "2026-08-16T14:06:20.299Z",
+  "profile": {
+    "login": "for995-ai",
+    "name": null,
+    "avatarUrl": "https://avatars.githubusercontent.com/u/265744366?v=4",
+    "htmlUrl": "https://github.com/for995-ai",
+    "publicRepos": 4,
+    "followers": 0,
+    "following": 0,
+    "totalStars": 0
+  },
+  "languages": [
+    {
+      "language": "TypeScript",
+      "bytes": 148977,
+      "percentage": 71.32898271082405
+    },
+    {
+      "language": "CSS",
+      "bytes": 53957,
+      "percentage": 25.83417520911237
+    },
+    {
+      "language": "JavaScript",
+      "bytes": 3636,
+      "percentage": 1.7408873929301585
+    },
+    {
+      "language": "HTML",
+      "bytes": 2289,
+      "percentage": 1.095954687133425
+    }
+  ],
+  "contributions": null,
+  "repos": [
+    {
+      "id": 1310593962,
+      "name": "portfolio",
+      "description": "蘇洺崴 個人作品集網站",
+      "htmlUrl": "https://github.com/for995-ai/portfolio",
+      "language": "TypeScript",
+      "stars": 0,
+      "forks": 0,
+      "updatedAt": "2026-07-24T05:09:01Z"
+    },
+    {
+      "id": 1261744738,
+      "name": "U1233140.github.io",
+      "description": null,
+      "htmlUrl": "https://github.com/for995-ai/U1233140.github.io",
+      "language": null,
+      "stars": 0,
+      "forks": 0,
+      "updatedAt": "2026-06-07T05:06:49Z"
+    },
+    {
+      "id": 1243841381,
+      "name": "-",
+      "description": null,
+      "htmlUrl": "https://github.com/for995-ai/-",
+      "language": null,
+      "stars": 0,
+      "forks": 0,
+      "updatedAt": "2026-05-19T18:05:26Z"
+    },
+    {
+      "id": 1173293792,
+      "name": "for995.github",
+      "description": null,
+      "htmlUrl": "https://github.com/for995-ai/for995.github",
+      "language": "JavaScript",
+      "stars": 0,
+      "forks": 0,
+      "updatedAt": "2026-05-05T12:27:48Z"
+    }
+  ]
+}
