@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
+import { publicUrl } from '@/lib/publicUrl';
 import {
   heroBackgrounds,
   HERO_SLIDE_INTERVAL_MS,
@@ -55,7 +56,7 @@ export function HeroBackdrop() {
   useEffect(() => {
     if (slides.length < 3 || reduced) return;
     const img = new Image();
-    img.src = slides[(index + 2) % slides.length].src;
+    img.src = publicUrl(slides[(index + 2) % slides.length].src);
   }, [index, slides, reduced]);
 
   // Mounted window: previous, current, next.
@@ -88,7 +89,7 @@ export function HeroBackdrop() {
             }}
           >
             <img
-              src={slide.src}
+              src={publicUrl(slide.src)}
               alt=""
               loading={isFirst ? 'eager' : 'lazy'}
               decoding="async"

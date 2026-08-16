@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { publicUrl } from '@/lib/publicUrl';
 import { COMPETITIONS, CERTIFICATIONS } from '@/data/portfolioV2';
 import { Lightbox } from './Lightbox';
 import { Pagination, usePagination } from './Pagination';
@@ -56,7 +57,7 @@ function GalleryCard({ item, onOpen }: { item: GalleryItem; onOpen: (i: GalleryI
       className="v2-card v2-award-card"
     >
       <div className="v2-award-media">
-        <img src={item.src} alt={item.title} loading="lazy" decoding="async" />
+        <img src={publicUrl(item.src)} alt={item.title} loading="lazy" decoding="async" />
         <span className="v2-award-zoom" aria-hidden>⤢</span>
       </div>
 

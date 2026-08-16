@@ -1,4 +1,5 @@
 import { PROJECTS, type Project } from '@/data/portfolioV2';
+import { publicUrl } from '@/lib/publicUrl';
 import { Pagination, usePagination } from './Pagination';
 import { useInView } from '@/hooks/useInView';
 
@@ -170,7 +171,7 @@ function ProjectCard({ project }: { project: Project }) {
       {/* Image */}
       {src ? (
         <div className="v2-project-media">
-          <img src={src} alt={project.title} loading="lazy" decoding="async" />
+          <img src={publicUrl(src)} alt={project.title} loading="lazy" decoding="async" />
         </div>
       ) : (
         <PlaceholderImg title={project.title} />

@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { publicUrl } from '@/lib/publicUrl';
 import { EXPERIENCE, type Experience } from '@/data/portfolioV2';
 import { Lightbox } from './Lightbox';
 import { Pagination, usePagination } from './Pagination';
@@ -119,7 +120,7 @@ function AccordionEntry({
                     style={{ padding: 0, border: 'none', background: 'none', cursor: 'pointer' }}
                   >
                     <img
-                      src={src}
+                      src={publicUrl(src)}
                       alt={`${exp.organization} ${exp.position}`}
                       loading="lazy"
                       decoding="async"

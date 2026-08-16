@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { publicUrl } from '@/lib/publicUrl';
 import { LEADERSHIP, SERVICE, EXPERIENCE } from '@/data/portfolioV2';
 import { Lightbox } from './Lightbox';
 import { useInView } from '@/hooks/useInView';
@@ -126,7 +127,7 @@ function EvidenceCard({
           }}
         >
           <img
-            src={item.src}
+            src={publicUrl(item.src)}
             alt={alt}
             loading="lazy"
             decoding="async"

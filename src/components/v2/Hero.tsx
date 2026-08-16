@@ -1,4 +1,5 @@
 import { characterInfo } from '@/data/player';
+import { publicUrl } from '@/lib/publicUrl';
 import { Container } from '@/components/v2/primitives';
 import { HeroBackdrop } from './HeroBackdrop';
 import { heroBackgrounds } from '@/data/heroBackgrounds';
@@ -25,7 +26,7 @@ function Avatar() {
       }}
     >
       <img
-        src="/images/profile/optimized/su-ming-wei-avatar.webp"
+        src={publicUrl('/images/profile/optimized/su-ming-wei-avatar.webp')}
         alt="蘇洺崴個人照片"
         width={640}
         height={640}

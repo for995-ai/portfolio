@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react';
+import { publicUrl } from '@/lib/publicUrl';
 
 interface LightboxProps {
   src: string;
@@ -47,7 +48,7 @@ export function Lightbox({ src, alt, onClose }: LightboxProps) {
         onClick={e => e.stopPropagation()}
       >
         <img
-          src={src}
+          src={publicUrl(src)}
           alt={alt}
           style={{
             maxWidth: '88vw',

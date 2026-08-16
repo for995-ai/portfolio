@@ -9,9 +9,11 @@
 // The live API remains only as a last-resort fallback if the snapshot is
 // missing. No token is read, stored, or shipped by anything in this file.
 
+import { publicUrl } from './publicUrl';
+
 const USER = 'for995-ai';
 const API  = 'https://api.github.com';
-const SNAPSHOT_URL = '/data/github.json';
+const SNAPSHOT_URL = publicUrl('/data/github.json');
 
 /**
  * Allowlist of public repositories worth showing in a portfolio.
