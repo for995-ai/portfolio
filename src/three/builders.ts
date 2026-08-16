@@ -16,6 +16,16 @@ import type { StageMaterials } from './materials';
 
 const geoCache = new Map<string, BufferGeometry>();
 
+/**
+ * Level B 輕量模式（每次掛載前由 Stage 設定一次）：
+ * 倒角段數減半、圓柱／環／球段數降階，並讓 addScrews / addSeam 直接略過。
+ * 快取鍵含 LITE，避免與完整版幾何撞鍵。
+ */
+let LITE = false;
+export function setLiteDetail(v: boolean) {
+  LITE = v;
+}
+
 export function disposeSharedGeometries() {
   for (const g of geoCache.values()) g.dispose();
   geoCache.clear();
@@ -23,52 +33,59 @@ export function disposeSharedGeometries() {
 
 /** 倒角盒（快取共用；絕不使用銳利直角） */
 export function rbox(w: number, h: number, d: number, r = 0.03): BufferGeometry {
-  const key = `rb:${w}:${h}:${d}:${r}`;
+  const seg = LITE ? 1 : 2;
+  const key = `rb:${w}:${h}:${d}:${r}:${seg}`;
   let g = geoCache.get(key);
   if (!g) {
-    g = new RoundedBoxGeometry(w, h, d, 2, Math.min(r, Math.min(w, h, d) / 2.5));
+    g = new RoundedBoxGeometry(w, h, d, seg, Math.min(r, Math.min(w, h, d) / 2.5));
     geoCache.set(key, g);
   }
   return g;
 }
 
 export function cyl(rTop: number, rBottom: number, h: number, seg = 24): BufferGeometry {
-  const key = `cy:${rTop}:${rBottom}:${h}:${seg}`;
+  const s = LITE ? Math.min(seg, 12) : seg;
+  const key = `cy:${rTop}:${rBottom}:${h}:${s}`;
   let g = geoCache.get(key);
   if (!g) {
-    g = new CylinderGeometry(rTop, rBottom, h, seg);
+    g = new CylinderGeometry(rTop, rBottom, h, s);
     geoCache.set(key, g);
   }
   return g;
 }
 
 export function torus(r: number, tube: number, seg = 24): BufferGeometry {
-  const key = `to:${r}:${tube}:${seg}`;
+  const s = LITE ? Math.min(seg, 14) : seg;
+  const radial = LITE ? 8 : 12;
+  const key = `to:${r}:${tube}:${s}:${radial}`;
   let g = geoCache.get(key);
   if (!g) {
-    g = new TorusGeometry(r, tube, 12, seg);
+    g = new TorusGeometry(r, tube, radial, s);
     geoCache.set(key, g);
   }
   return g;
 }
 
 export function sphere(r: number): BufferGeometry {
-  const key = `sp:${r}`;
+  const wSeg = LITE ? 12 : 20;
+  const hSeg = LITE ? 8 : 14;
+  const key = `sp:${r}:${wSeg}`;
   let g = geoCache.get(key);
   if (!g) {
-    g = new SphereGeometry(r, 20, 14);
+    g = new SphereGeometry(r, wSeg, hSeg);
     geoCache.set(key, g);
   }
   return g;
 }
 
-/** 螺絲／鉚釘（材質 B，直徑 0.03–0.05） */
+/** 螺絲／鉚釘（材質 B，直徑 0.03–0.05）；輕量模式略過 */
 export function addScrews(
   parent: Group,
   mats: StageMaterials,
   positions: Array<[number, number, number]>,
   r = 0.02,
 ) {
+  if (LITE) return;
   for (const [x, y, z] of positions) {
     const s = new Mesh(cyl(r, r, 0.025, 10), mats.polish);
     s.rotation.x = Math.PI / 2;
@@ -77,7 +94,7 @@ export function addScrews(
   }
 }
 
-/** 分模線：細長凹槽（材質 C） */
+/** 分模線：細長凹槽（材質 C）；輕量模式略過 */
 export function addSeam(
   parent: Group,
   mats: StageMaterials,
@@ -86,6 +103,7 @@ export function addSeam(
   pos: [number, number, number],
   vertical = false,
 ) {
+  if (LITE) return;
   const g = vertical ? rbox(0.015, w, h, 0.006) : rbox(w, 0.015, h, 0.006);
   const m = new Mesh(g, mats.seam);
   m.position.set(...pos);

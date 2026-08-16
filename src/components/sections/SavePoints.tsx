@@ -17,14 +17,18 @@ export function SavePoints() {
       <div className="arcade-container">
         <div className="md:grid md:grid-cols-[56px_minmax(0,1fr)] md:gap-8">
           {/* 桌機：垂直標題；手機：一般橫排 */}
-          <h2 className="zh-heading text-h2 whitespace-nowrap font-sans text-arcade-text md:hidden">
-            經歷
-          </h2>
+          <div className="md:hidden">
+            <p className="px-title text-[0.6rem] text-px-coral">QUEST LOG</p>
+            <h2 className="zh-heading text-h2 mt-2 whitespace-nowrap font-sans text-px-white">
+              經歷
+            </h2>
+            <div className="px-rule mt-4 w-40" aria-hidden="true" />
+          </div>
           <h2
-            className="hidden font-mono text-sm font-bold tracking-[0.35em] text-arcade-muted md:block md:[writing-mode:vertical-rl]"
+            className="px-title hidden text-[0.62rem] text-px-coral md:block md:[writing-mode:vertical-rl]"
             aria-hidden="true"
           >
-            經歷
+            QUEST LOG ／ 經歷
           </h2>
 
           <div ref={ref} className="relative mt-8 md:mt-0">

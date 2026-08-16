@@ -1,0 +1,101 @@
+name: Update GitHub snapshot
+
+# Refreshes public/data/github.json so the site never calls the GitHub API from
+# a visitor's browser, then rebuilds and redeploys the site in the SAME run.
+#
+# Why deploy here rather than let the commit trigger deploy-pages.yml:
+# commits pushed with GITHUB_TOKEN deliberately do not trigger further
+# workflow runs, so a separate on:push deploy would never fire and the live
+# site would keep serving a stale snapshot. Doing both here removes that
+# dependency entirely — no PAT is used just to trigger a build.
+on:
+  schedule:
+    - cron: '17 3 * * *'   # 03:17 UTC daily
+  workflow_dispatch:
+    inputs:
+      token_source:
+        description: >-
+          Credential used for the PUBLIC contribution calendar (GraphQL).
+          Use "github_token" first — if it works, no personal token is needed.
+        type: choice
+        required: false
+        default: github_token
+        options:
+          - github_token
+          - gh_pat
+
+permissions:
+  contents: write        # commit the refreshed snapshot
+  pages: write           # publish the rebuilt site
+  id-token: write        # required by actions/deploy-pages
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  snapshot:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        # No `token:` input, so the push below is authenticated by the
+        # workflow token, never by a personal one.
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Generate snapshot
+        # Two distinct credentials, deliberately named apart:
+        #   SNAPSHOT_TOKEN — REST only, purely to lift the anonymous rate
+        #                    limit (Actions runners share outbound IPs).
+        #   GRAPHQL_TOKEN  — the PUBLIC contribution calendar only.
+        # No `repo` scope is requested and no private repository content is
+        # ever read. Token values are never echoed or written to the JSON.
+        env:
+          SNAPSHOT_TOKEN: ${{ github.token }}
+          GRAPHQL_TOKEN: ${{ inputs.token_source == 'gh_pat' && secrets.GH_PAT || github.token }}
+        run: node scripts/update-github-snapshot.mjs
+
+      - name: Commit if changed
+        run: |
+          if git diff --quiet -- public/data/github.json; then
+            echo "snapshot unchanged"
+            exit 0
+          fi
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add public/data/github.json
+          git commit -m "chore: refresh GitHub snapshot"
+          git push
+
+      - name: Install
+        run: pnpm install --frozen-lockfile
+
+      - name: Build
+        run: pnpm build
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: snapshot
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy
+        id: deployment
+        uses: actions/deploy-pages@v4

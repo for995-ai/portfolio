@@ -112,20 +112,20 @@ export function EquipmentGrid() {
               <div
                 onMouseEnter={() => setHovered(item)}
                 onMouseLeave={() => setHovered(null)}
-                className="bg-grad-panel flex h-full flex-col gap-1 rounded-[4px] border border-transparent bg-arcade-panel px-3 py-2.5 transition-colors duration-[120ms] ease-[cubic-bezier(0.4,0,0.2,1)] hover:border-dopa-cyan/60"
+                className="flex h-full flex-col gap-1 rounded-[2px] border-2 border-px-ink bg-px-panel-hi px-3 py-2.5 transition-colors duration-[120ms] hover:bg-px-violet"
               >
                 {showLabel && (
                   <span
-                    className={`font-mono text-[10px] font-bold tracking-[0.15em] ${
-                      category === ORANGE_CATEGORY ? 'text-dopa-orange' : 'text-arcade-muted'
+                    className={`px-title text-[0.5rem] ${
+                      category === ORANGE_CATEGORY ? 'text-px-coral' : 'text-px-peach'
                     }`}
                   >
                     {category}
                   </span>
                 )}
                 <span className="flex items-center gap-2">
-                  <Icon className="h-4 w-4 shrink-0 text-arcade-muted" aria-hidden="true" />
-                  <span className="text-sm text-arcade-text-sec">{item.name}</span>
+                  <Icon className="h-4 w-4 shrink-0 text-px-cream" aria-hidden="true" />
+                  <span className="text-[0.95rem] leading-[1.6] text-px-white">{item.name}</span>
                 </span>
               </div>
             </li>
@@ -137,7 +137,7 @@ export function EquipmentGrid() {
         <button
           type="button"
           onClick={() => setExpanded(true)}
-          className="mt-4 rounded-full border border-arcade-faint px-5 py-2 font-mono text-xs font-bold tracking-widest text-arcade-text-sec transition-colors duration-[120ms] hover:border-dopa-cyan/60 hover:text-arcade-text"
+          className="px-btn mt-4 !text-[0.55rem]"
         >
           [ 展開全部 +{hiddenCount} ]
         </button>
@@ -145,7 +145,7 @@ export function EquipmentGrid() {
 
       {/* 狀態列：顯示 hover 中裝備的使用專案 */}
       <p
-        className="mt-4 min-h-[1.5rem] font-mono text-xs tracking-wider text-arcade-muted"
+        className="mt-4 min-h-[1.5rem] text-sm leading-[1.6] text-px-peach"
         aria-live="polite"
       >
         {hovered

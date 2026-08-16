@@ -19,7 +19,7 @@ function ArchiveCard({
       style={{ transitionDelay: `${(index % 3) * 60}ms` }}
     >
       {/* 僅左側 2px 細線，無框無漸層（刻意最安靜） */}
-      <article className="group flex h-full flex-col border-l-2 border-arcade-border py-1 pl-5">
+      <article className="group flex h-full flex-col border-l-4 border-px-magenta py-1 pl-5">
         <p className="font-mono text-xs tracking-[0.2em] text-arcade-muted">
           {article.date}
         </p>
@@ -53,10 +53,11 @@ export function Archive() {
       <div className="arcade-container">
         <h2
           ref={title.ref}
-          className={`arcade-reveal zh-heading text-h2 whitespace-nowrap font-sans text-arcade-text ${
+          className={`arcade-reveal zh-heading text-h2 whitespace-nowrap font-sans text-px-white ${
             title.inView ? 'is-visible' : ''
           }`}
         >
+          <span className="px-title block text-[0.6rem] text-px-coral">NOTES</span>
           文章
         </h2>
 
