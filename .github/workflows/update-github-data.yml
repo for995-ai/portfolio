@@ -12,17 +12,6 @@ on:
   schedule:
     - cron: '17 3 * * *'   # 03:17 UTC daily
   workflow_dispatch:
-    inputs:
-      token_source:
-        description: >-
-          Credential used for the PUBLIC contribution calendar (GraphQL).
-          Use "github_token" first — if it works, no personal token is needed.
-        type: choice
-        required: false
-        default: github_token
-        options:
-          - github_token
-          - gh_pat
 
 permissions:
   contents: write        # commit the refreshed snapshot
@@ -52,15 +41,19 @@ jobs:
           cache: pnpm
 
       - name: Generate snapshot
-        # Two distinct credentials, deliberately named apart:
+        # Verified 2026-08-16: the built-in workflow token CAN read this
+        # account's PUBLIC contributionCalendar, so no personal access token
+        # is needed and none is configured. No `repo` scope is requested and
+        # no private repository content is ever read.
+        #
         #   SNAPSHOT_TOKEN — REST only, purely to lift the anonymous rate
         #                    limit (Actions runners share outbound IPs).
         #   GRAPHQL_TOKEN  — the PUBLIC contribution calendar only.
-        # No `repo` scope is requested and no private repository content is
-        # ever read. Token values are never echoed or written to the JSON.
+        #
+        # Token values are never echoed or written to the JSON.
         env:
           SNAPSHOT_TOKEN: ${{ github.token }}
-          GRAPHQL_TOKEN: ${{ inputs.token_source == 'gh_pat' && secrets.GH_PAT || github.token }}
+          GRAPHQL_TOKEN: ${{ github.token }}
         run: node scripts/update-github-snapshot.mjs
 
       - name: Commit if changed
