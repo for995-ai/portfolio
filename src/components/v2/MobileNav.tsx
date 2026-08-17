@@ -1,4 +1,5 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
+import { createPortal } from 'react-dom';
 import { scrollToSection } from '@/lib/scrollToSection';
 
 interface NavLink {
@@ -11,208 +12,156 @@ interface MobileNavProps {
   activeId: string;
 }
 
+const CLOSE_MS = 200;
 
+/**
+ * Mobile navigation — a fold-out panel that drops from under the floating nav
+ * pill, matching the light, rounded surface language used elsewhere. It is
+ * deliberately not a side drawer or full-screen overlay.
+ *
+ * The panel is only mounted while open (plus its closing animation), so its
+ * links never sit in the tab order behind the page.
+ */
 export function MobileNav({ links, activeId }: MobileNavProps) {
   const [open, setOpen] = useState(false);
-  const drawerRef = useRef<HTMLDivElement>(null);
+  const [mounted, setMounted] = useState(false);   // keeps the panel alive during close
+  const panelRef = useRef<HTMLDivElement>(null);
+  const buttonRef = useRef<HTMLButtonElement>(null);
+  const closeTimer = useRef<number | undefined>(undefined);
 
+  const close = useCallback(() => setOpen(false), []);
+
+  // Mount on open; unmount only after the close animation has finished.
   useEffect(() => {
+    window.clearTimeout(closeTimer.current);
     if (open) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = '';
+      setMounted(true);
+    } else if (mounted) {
+      closeTimer.current = window.setTimeout(() => setMounted(false), CLOSE_MS);
     }
-    return () => { document.body.style.overflow = ''; };
+    return () => window.clearTimeout(closeTimer.current);
+  }, [open, mounted]);
+
+  // Lock background scrolling while the panel is open, and always release it.
+  useEffect(() => {
+    if (!open) return;
+    const previous = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => { document.body.style.overflow = previous; };
   }, [open]);
 
+  // Escape closes; Tab is trapped inside the panel.
   useEffect(() => {
+    if (!open) return;
+
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') setOpen(false);
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        close();
+        return;
+      }
+      if (e.key !== 'Tab') return;
+
+      const focusables = panelRef.current?.querySelectorAll<HTMLElement>('a[href], button');
+      if (!focusables || focusables.length === 0) return;
+
+      const first = focusables[0];
+      const last = focusables[focusables.length - 1];
+      const active = document.activeElement;
+
+      // The toggle sits outside the panel, so wrap from either end.
+      if (e.shiftKey && (active === first || active === buttonRef.current)) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && active === last) {
+        e.preventDefault();
+        first.focus();
+      }
     };
+
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, []);
+  }, [open, close]);
+
+  // Move focus into the panel on open, and back to the toggle on close.
+  const wasOpen = useRef(false);
+  useEffect(() => {
+    if (open) {
+      const first = panelRef.current?.querySelector<HTMLElement>('a[href]');
+      first?.focus();
+    } else if (wasOpen.current) {
+      buttonRef.current?.focus();
+    }
+    wasOpen.current = open;
+  }, [open, mounted]);
 
   return (
     <>
-      {/* Hamburger toggle */}
+      {/* Hamburger toggle — morphs to ✕ */}
       <button
+        ref={buttonRef}
         type="button"
-        aria-label={open ? '關閉選單' : '開啟選單'}
+        aria-label={open ? '關閉導覽選單' : '開啟導覽選單'}
         aria-expanded={open}
-        aria-controls="mobile-nav-drawer"
+        aria-controls="mobile-nav-panel"
         onClick={() => setOpen(v => !v)}
-        style={{
-          width: 38,
-          height: 38,
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          gap: '5px',
-          background: 'none',
-          border: 'none',
-          cursor: 'pointer',
-          borderRadius: '10px',
-          padding: '6px',
-        }}
+        className="v2-burger"
       >
-        <span
-          style={{
-            display: 'block',
-            width: 20,
-            height: 1.5,
-            background: 'var(--v2-text)',
-            borderRadius: 2,
-            transformOrigin: 'center',
-            transition: 'transform 200ms ease, opacity 200ms ease',
-            transform: open ? 'translateY(6.5px) rotate(45deg)' : 'none',
-          }}
-        />
-        <span
-          style={{
-            display: 'block',
-            width: 20,
-            height: 1.5,
-            background: 'var(--v2-text)',
-            borderRadius: 2,
-            transition: 'opacity 200ms ease',
-            opacity: open ? 0 : 1,
-          }}
-        />
-        <span
-          style={{
-            display: 'block',
-            width: 20,
-            height: 1.5,
-            background: 'var(--v2-text)',
-            borderRadius: 2,
-            transformOrigin: 'center',
-            transition: 'transform 200ms ease, opacity 200ms ease',
-            transform: open ? 'translateY(-6.5px) rotate(-45deg)' : 'none',
-          }}
-        />
+        <span className="v2-burger-bar" data-open={open} />
+        <span className="v2-burger-bar" data-open={open} />
+        <span className="v2-burger-bar" data-open={open} />
       </button>
 
-      {/* Backdrop */}
-      {open && (
-        <div
-          aria-hidden
-          onClick={() => setOpen(false)}
-          style={{
-            position: 'fixed',
-            inset: 0,
-            zIndex: 40,
-            background: 'rgba(23,21,37,0.38)',
-            backdropFilter: 'blur(2px)',
-          }}
-        />
+      {/* Portalled to <body>: the nav pill uses backdrop-filter, which would
+          otherwise become the containing block for position:fixed children and
+          offset the panel by the pill's own position. */}
+      {mounted && createPortal(
+        <>
+          {/* Backdrop — click to dismiss */}
+          <div
+            aria-hidden
+            onClick={close}
+            className="v2-mobile-backdrop"
+            data-open={open}
+          />
+
+          {/* Fold-out panel, aligned to the nav pill's edges */}
+          <div
+            ref={panelRef}
+            id="mobile-nav-panel"
+            className="v2-mobile-panel"
+            data-open={open}
+          >
+            <nav aria-label="行動版導覽">
+              <ul>
+                {links.map(({ href, label }) => {
+                  const id = href.slice(1);
+                  const isActive = activeId === id;
+                  return (
+                    <li key={href}>
+                      <a
+                        href={href}
+                        aria-current={isActive ? 'location' : undefined}
+                        className="v2-mobile-link"
+                        data-active={isActive}
+                        onClick={e => {
+                          e.preventDefault();
+                          close();
+                          // Let the scroll lock release before scrolling.
+                          window.setTimeout(() => scrollToSection(id), 60);
+                        }}
+                      >
+                        {label}
+                      </a>
+                    </li>
+                  );
+                })}
+              </ul>
+            </nav>
+          </div>
+        </>,
+        document.body,
       )}
-
-      {/* Drawer */}
-      <div
-        ref={drawerRef}
-        id="mobile-nav-drawer"
-        role="dialog"
-        aria-label="行動選單"
-        aria-modal="true"
-        style={{
-          position: 'fixed',
-          top: 0,
-          right: 0,
-          bottom: 0,
-          zIndex: 50,
-          width: 'min(280px, 80vw)',
-          background: 'var(--v2-surface)',
-          boxShadow: '-4px 0 32px rgba(23,21,37,0.14)',
-          transform: open ? 'translateX(0)' : 'translateX(100%)',
-          transition: 'transform 260ms ease-out',
-          display: 'flex',
-          flexDirection: 'column',
-          padding: '24px 20px 32px',
-          overflowY: 'auto',
-        }}
-      >
-        {/* Drawer header */}
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '28px' }}>
-          <span
-            style={{
-              fontFamily: 'var(--font-family-mono)',
-              fontSize: '0.7rem',
-              fontWeight: 700,
-              letterSpacing: '0.18em',
-              color: 'var(--v2-purple)',
-            }}
-          >
-            SMW
-          </span>
-          <button
-            type="button"
-            aria-label="關閉選單"
-            onClick={() => setOpen(false)}
-            style={{
-              width: 32,
-              height: 32,
-              borderRadius: '50%',
-              border: '1px solid var(--v2-border)',
-              background: 'none',
-              cursor: 'pointer',
-              fontSize: '0.85rem',
-              color: 'var(--v2-text-sec)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
-          >
-            ✕
-          </button>
-        </div>
-
-        {/* Nav links */}
-        <nav aria-label="行動導覽" style={{ flex: 1 }}>
-          <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '4px' }}>
-            {links.map(({ href, label }) => {
-              const id = href.slice(1);
-              const isActive = activeId === id;
-              return (
-                <li key={href}>
-                  <a
-                    href={href}
-                    aria-current={isActive ? 'location' : undefined}
-                    onClick={e => {
-                      e.preventDefault();
-                      setOpen(false);
-                      setTimeout(() => scrollToSection(id), 80);
-                    }}
-                    style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '10px',
-                      padding: '10px 14px',
-                      borderRadius: '10px',
-                      textDecoration: 'none',
-                      fontFamily: 'var(--font-family-v2-display)',
-                      fontSize: '0.9375rem',
-                      fontWeight: isActive ? 600 : 500,
-                      color: isActive ? 'var(--v2-purple)' : 'var(--v2-text-sec)',
-                      background: isActive ? 'var(--v2-lavender)' : 'transparent',
-                      transition: 'background 140ms ease, color 140ms ease',
-                    }}
-                  >
-                    {isActive && (
-                      <span
-                        aria-hidden
-                        style={{ width: 4, height: 4, borderRadius: 1, background: 'var(--v2-purple)', flexShrink: 0 }}
-                      />
-                    )}
-                    {label}
-                  </a>
-                </li>
-              );
-            })}
-          </ul>
-        </nav>
-      </div>
     </>
   );
 }

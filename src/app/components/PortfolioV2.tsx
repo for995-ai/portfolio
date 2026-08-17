@@ -16,6 +16,7 @@ import { Leadership } from '@/components/v2/Leadership';
 import { Footer }     from '@/components/v2/Footer';
 import { Container, Section } from '@/components/v2/primitives';
 import { useInView } from '@/hooks/useInView';
+import { useCountUp } from '@/hooks/useCountUp';
 
 // ── Section heading ───────────────────────────────────────────────────────────
 
@@ -78,12 +79,55 @@ function AboutIntro() {
 
 // ── Stat cards ────────────────────────────────────────────────────────────────
 
+// Duration is scaled loosely to magnitude so larger numbers do not feel rushed;
+// the small stagger keeps the four cards from firing in unison.
 const STATS = [
-  { value: projectCount,     label: '件作品',  context: 'UI/UX · 前端 · AI'  },
-  { value: competitionCount, label: '項競賽',  context: '創意・設計・解題'      },
-  { value: researchCount,    label: '篇研討會', context: 'Conference Paper'    },
-  { value: TUTORING_HOURS,   label: '小時課輔', context: '偏鄉教育服務'         },
+  { value: projectCount,     label: '件作品',  context: 'UI/UX · 前端 · AI',  duration: 850,  delay: 0   },
+  { value: competitionCount, label: '項競賽',  context: '創意・設計・解題',      duration: 800,  delay: 80  },
+  { value: researchCount,    label: '篇研討會', context: 'Conference Paper',   duration: 550,  delay: 160 },
+  { value: TUTORING_HOURS,   label: '小時課輔', context: '偏鄉教育服務',         duration: 1300, delay: 240 },
 ] as const;
+
+function AnimatedStat({
+  value,
+  label,
+  context,
+  duration,
+  delay,
+}: {
+  value: number;
+  label: string;
+  context: string;
+  duration: number;
+  delay: number;
+}) {
+  const { ref, display } = useCountUp<HTMLDivElement>({ value, duration, delay });
+
+  return (
+    <div ref={ref} className="v2-stat-card px-5 py-6 text-center">
+      <p
+        className="font-bold leading-none text-v2-text"
+        style={{
+          fontFamily: 'var(--font-family-v2-display)',
+          fontSize: 'clamp(2rem, 3.5vw, 2.5rem)',
+          // Fixed-width digits so the card never reflows while counting.
+          fontVariantNumeric: 'tabular-nums',
+        }}
+      >
+        {display}
+      </p>
+      <p
+        className="mt-2 text-v2-text"
+        style={{ fontFamily: 'var(--font-family-v2-display)', fontSize: '0.82rem', fontWeight: 500 }}
+      >
+        {label}
+      </p>
+      <p className="mt-2 font-mono text-v2-text-faint" style={{ fontSize: '0.65rem', letterSpacing: '0.06em' }}>
+        {context}
+      </p>
+    </div>
+  );
+}
 
 function StatCards() {
   const { ref, inView } = useInView<HTMLDivElement>({ threshold: 0.15 });
@@ -92,24 +136,8 @@ function StatCards() {
       ref={ref}
       className={`v2-reveal ${inView ? 'is-visible' : ''} mt-8 grid grid-cols-2 gap-3 md:mt-12 md:grid-cols-4 md:gap-5`}
     >
-      {STATS.map(({ value, label, context }) => (
-        <div key={label} className="v2-stat-card px-5 py-6 text-center">
-          <p
-            className="font-bold leading-none text-v2-text"
-            style={{ fontFamily: 'var(--font-family-v2-display)', fontSize: 'clamp(2rem, 3.5vw, 2.5rem)' }}
-          >
-            {value}
-          </p>
-          <p
-            className="mt-2 text-v2-text"
-            style={{ fontFamily: 'var(--font-family-v2-display)', fontSize: '0.82rem', fontWeight: 500 }}
-          >
-            {label}
-          </p>
-          <p className="mt-2 font-mono text-v2-text-faint" style={{ fontSize: '0.65rem', letterSpacing: '0.06em' }}>
-            {context}
-          </p>
-        </div>
+      {STATS.map(stat => (
+        <AnimatedStat key={stat.label} {...stat} />
       ))}
     </div>
   );
