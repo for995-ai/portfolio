@@ -118,9 +118,9 @@ const EXTRA_LINKS: Partial<Record<string, ProjectLink[]>> = {
     { label: 'GitHub',   url: 'https://github.com/for995-ai/work-exchange-platform',  type: 'github' },
   ],
   A7: [
-    // Native app — 查看作品 opens the project showcase, not a web port.
-    { label: '查看作品', url: 'https://for995-ai.github.io/photo-swipe-cleaner/', type: 'case-study' },
-    { label: 'GitHub',   url: 'https://github.com/for995-ai/photo-swipe-cleaner',  type: 'github' },
+    // Native app — 查看作品 opens the deployed portfolio demo.
+    { label: '查看作品', url: 'https://for995-ai.github.io/photo-swipe-cleaner/demo/', type: 'demo' },
+    { label: 'GitHub',   url: 'https://github.com/for995-ai/photo-swipe-cleaner',      type: 'github' },
   ],
   A0: [
     // This site itself — the demo link points back to the deployed portfolio,
