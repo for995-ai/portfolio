@@ -596,6 +596,12 @@
   object-fit: cover;
   display: block;
 }
+/* Drawn previews fill the same box as a screenshot would. */
+.v2-project-media > svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
 
 .v2-project-media--empty {
   display: flex;

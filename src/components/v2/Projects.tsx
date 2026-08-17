@@ -1,6 +1,7 @@
 import { PROJECTS, type Project } from '@/data/portfolioV2';
 import { publicUrl } from '@/lib/publicUrl';
 import { Pagination, usePagination } from './Pagination';
+import { PhotoCleanerPreview } from './PhotoCleanerPreview';
 import { useInView } from '@/hooks/useInView';
 
 // ── Source chip mapping ───────────────────────────────────────────────────────
@@ -34,6 +35,14 @@ const PROJECT_IMAGES: Partial<Record<string, string>> = {
   A4: '/images/project-hotpot.png',
   A5: '/images/project-accommodation.png',
   A6: '/images/project-dog.png',
+};
+
+// ── Drawn previews ────────────────────────────────────────────────────────────
+// A project with no screenshot can supply a vector hero instead of falling
+// through to the plain placeholder. Ids absent here behave exactly as before.
+
+const PROJECT_PREVIEWS: Partial<Record<string, () => React.ReactElement>> = {
+  A7: PhotoCleanerPreview,
 };
 
 // ── Card copy ─────────────────────────────────────────────────────────────────
@@ -165,6 +174,7 @@ function PlaceholderImg({ title }: { title: string }) {
 
 function ProjectCard({ project }: { project: Project }) {
   const src        = PROJECT_IMAGES[project.id];
+  const Preview    = PROJECT_PREVIEWS[project.id];
   const sourceType = SOURCE_MAP[project.id];
   const blurb      = BLURB[project.id];
   const links      = linksFor(project);
@@ -175,6 +185,10 @@ function ProjectCard({ project }: { project: Project }) {
       {src ? (
         <div className="v2-project-media">
           <img src={publicUrl(src)} alt={project.title} loading="lazy" decoding="async" />
+        </div>
+      ) : Preview ? (
+        <div className="v2-project-media">
+          <Preview />
         </div>
       ) : (
         <PlaceholderImg title={project.title} />
