@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-25T03:58:26.444Z",
+  "generatedAt": "2026-08-26T04:01:50.698Z",
   "profile": {
     "login": "for995-ai",
     "name": null,
@@ -14,32 +14,32 @@
     {
       "language": "TypeScript",
       "bytes": 1022280,
-      "percentage": 76.20379453570162
+      "percentage": 74.3362291313842
     },
     {
       "language": "HTML",
-      "bytes": 183616,
-      "percentage": 13.68728326629435
+      "bytes": 163470,
+      "percentage": 11.886903173403935
     },
     {
       "language": "CSS",
-      "bytes": 112008,
-      "percentage": 8.349409768708052
+      "bytes": 135443,
+      "percentage": 9.848888643270016
     },
     {
       "language": "JavaScript",
-      "bytes": 21320,
-      "percentage": 1.589256269809796
+      "bytes": 51734,
+      "percentage": 3.761895447316812
     },
     {
       "language": "Python",
       "bytes": 2284,
-      "percentage": 0.17025615948619016
+      "percentage": 0.1660836046250357
     }
   ],
   "contributions": {
-    "total": 55,
-    "currentStreak": 0,
+    "total": 56,
+    "currentStreak": 1,
     "longestStreak": 3,
     "weeks": [
       {
@@ -2084,6 +2084,11 @@
           },
           {
             "date": "2026-08-25",
+            "count": 1,
+            "level": 1
+          },
+          {
+            "date": "2026-08-26",
             "count": 0,
             "level": 0
           }
@@ -2093,6 +2098,16 @@
   },
   "repos": [
     {
+      "id": 1336231657,
+      "name": "ai-food-ordering",
+      "description": "食癒所｜AI 智能點餐系統 — 前端互動原型 + FastAPI 後端原始碼",
+      "htmlUrl": "https://github.com/for995-ai/ai-food-ordering",
+      "language": "JavaScript",
+      "stars": 0,
+      "forks": 0,
+      "updatedAt": "2026-08-25T13:44:05Z"
+    },
+    {
       "id": 1310593962,
       "name": "portfolio",
       "description": "蘇洺崴 個人作品集網站",
@@ -2100,7 +2115,7 @@
       "language": "TypeScript",
       "stars": 0,
       "forks": 0,
-      "updatedAt": "2026-08-24T04:04:38Z"
+      "updatedAt": "2026-08-25T03:58:32Z"
     },
     {
       "id": 1322824288,
@@ -2111,16 +2126,6 @@
       "stars": 0,
       "forks": 0,
       "updatedAt": "2026-08-17T10:33:01Z"
-    },
-    {
-      "id": 1336231657,
-      "name": "ai-food-ordering",
-      "description": "食癒所｜AI 智能點餐系統 — 前端互動原型 + FastAPI 後端原始碼",
-      "htmlUrl": "https://github.com/for995-ai/ai-food-ordering",
-      "language": "HTML",
-      "stars": 0,
-      "forks": 0,
-      "updatedAt": "2026-08-16T18:18:42Z"
     },
     {
       "id": 1336223700,
