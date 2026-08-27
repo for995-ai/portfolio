@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-26T04:01:50.698Z",
+  "generatedAt": "2026-08-27T14:09:03.797Z",
   "profile": {
     "login": "for995-ai",
     "name": null,
@@ -39,7 +39,7 @@
   ],
   "contributions": {
     "total": 56,
-    "currentStreak": 1,
+    "currentStreak": 0,
     "longestStreak": 3,
     "weeks": [
       {
@@ -2091,12 +2091,27 @@
             "date": "2026-08-26",
             "count": 0,
             "level": 0
+          },
+          {
+            "date": "2026-08-27",
+            "count": 0,
+            "level": 0
           }
         ]
       }
     ]
   },
   "repos": [
+    {
+      "id": 1310593962,
+      "name": "portfolio",
+      "description": "蘇洺崴 個人作品集網站",
+      "htmlUrl": "https://github.com/for995-ai/portfolio",
+      "language": "TypeScript",
+      "stars": 0,
+      "forks": 0,
+      "updatedAt": "2026-08-26T04:02:24Z"
+    },
     {
       "id": 1336231657,
       "name": "ai-food-ordering",
@@ -2106,16 +2121,6 @@
       "stars": 0,
       "forks": 0,
       "updatedAt": "2026-08-25T13:44:05Z"
-    },
-    {
-      "id": 1310593962,
-      "name": "portfolio",
-      "description": "蘇洺崴 個人作品集網站",
-      "htmlUrl": "https://github.com/for995-ai/portfolio",
-      "language": "TypeScript",
-      "stars": 0,
-      "forks": 0,
-      "updatedAt": "2026-08-25T03:58:32Z"
     },
     {
       "id": 1322824288,
