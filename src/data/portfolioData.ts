@@ -67,7 +67,7 @@ export const PROJECTS: Project[] = [
   { id: "soulscent-lab", cat: "全端開發 / AI 創新", title: "SoulScent Lab 智能精油系統", desc: "整合 AI 推薦演算法的客製化精油調配系統。", tech: "React / Node.js / AI API 介接", reflection: "體會到 AI 介接與前端狀態管理的整合挑戰，學會處理非同步資料流與優化等待體驗。", image: "/images/project-soulscent.png", link: "https://gleaming-melba-0c0cbc.netlify.app" },
   { id: "hotpot-ordering", cat: "UI/UX / 系統分析", title: "食癒所 - AI 火鍋點餐", desc: "從使用者體驗出發，重新設計的現代化餐飲點餐介面。", tech: "Figma / 系統需求分析 / 流程塑模", reflection: "實際走過完整的系統分析流程，了解如何收斂需求並轉化為直覺的 UI 介面。", image: "/images/project-hotpot.png", link: "https://tranquil-kashata-043095.netlify.app" },
   { id: "workstay-platform", cat: "介面設計 / 專案統籌", title: "作保庇宿安心 - 換宿平台", desc: "針對打工換宿需求開發的媒合平台，解決資訊不對稱痛點。", tech: "專案管理 / 使用者研究 / UI 設計", reflection: "跨部門溝通是最大挑戰，學會利用工具收斂各方意見達成開發共識，確保如期推進。", image: "/images/project-accommodation.png", link: "https://gleeful-macaron-e3a192.netlify.app" },
-  { id: "dog-adoption", cat: "後端開發 / 資料庫", title: "狗狗領養 & 志工管理系統", desc: "整合狗狗資料、領養申請、志工活動與後台管理的 PHP / MySQL 系統。", tech: "PHP / MySQL / XAMPP / CRUD / Session", reflection: "從資料表關聯、PHP CRUD 到登入與後台管理，完整練習資料庫設計與系統整合，也更熟悉以 MySQL 支援實際管理流程。", image: "/images/project-dog.png", link: "https://github.com/for995-ai/dog-adoption-volunteer-system" },
+  { id: "dog-adoption", cat: "後端開發 / 資料庫", title: "狗狗領養 & 志工管理系統", desc: "整合狗狗資料、領養申請、志工活動與使用者後台管理的 PHP / MySQL 系統。", tech: "PHP / MySQL / XAMPP / CRUD / Session", reflection: "從資料表關聯、PHP CRUD 到登入與後台管理，完整練習資料庫設計與系統整合，也更熟悉以 MySQL 支援實際管理流程。", image: "/images/project-dog.png", link: "https://github.com/for995-ai/dog-adoption-volunteer-system" },
 ];
 
 /**
@@ -142,7 +142,7 @@ export const PROJECT_CASE_STUDIES: Record<ProjectId, ProjectCaseStudy> = {
   "soulscent-lab": { problem: "把抽象的香氛偏好轉成使用者能理解的推薦流程。", role: "前端互動、AI API 串接、等待狀態設計", impact: "讓 AI 推薦從功能展示變成更完整的產品體驗。", focus: "AI 推薦體驗" },
   "hotpot-ordering": { problem: "點餐選項過多，使用者容易在決策過程中失去方向。", role: "需求分析、wireframe、點餐流程與介面層級設計", impact: "讓推薦、分類與下單動線更清楚，降低操作成本。", focus: "點餐流程設計" },
   "workstay-platform": { problem: "換宿資訊分散且信任感不足，媒合流程需要更透明。", role: "專案統籌、使用者研究、資訊架構與視覺介面", impact: "把角色、風險與需求整理成可開發的平台架構。", focus: "平台體驗設計" },
-  "dog-adoption": { problem: "領養名冊、志工排班與管理資料需要集中追蹤。", role: "資料庫設計、後端邏輯、管理流程規劃", impact: "以資料結構支援公益場域的日常行政與紀錄管理。", focus: "資料庫系統" },
+  "dog-adoption": { problem: "狗狗資料、領養申請與志工活動報名分散，需要集中管理與追蹤。", role: "資料庫設計、PHP 後端邏輯、Session 登入與後台管理流程", impact: "以關聯式資料庫與後台管理支援公益場域的日常行政與紀錄管理。", focus: "資料庫系統" },
 };
 
 export const EXPERIENCE_SUMMARY = [

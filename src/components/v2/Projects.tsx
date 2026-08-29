@@ -73,8 +73,11 @@ const BLURB: Partial<Record<string, Blurb>> = {
     highlights: ['獨立完成平台企劃與需求分析', '網路行銷規劃'],
   },
   A6: {
-    summary: '以 PHP + MySQL 建置的狗狗領養與志工管理系統，涵蓋使用者、狗狗、領養申請、志工活動與後台管理。',
-    highlights: ['以關聯式資料庫整合領養與志工流程', '實作 PHP CRUD、Session 與後台管理功能'],
+    summary: '以 PHP + MySQL 建置的狗狗領養與志工管理系統，整合狗狗資料、領養申請、志工活動、使用者與後台管理流程。',
+    highlights: [
+      '以關聯式資料庫整合狗狗、使用者、領養申請與志工活動資料',
+      '實作 PHP CRUD、Session 登入驗證與後台管理功能',
+    ],
   },
   A7: {
     summary: '相簿滑滑整理 APP，以手勢互動加速重複相片的篩選流程。',
@@ -107,6 +110,9 @@ interface ProjectLink { label: string; url: string; type: LinkType }
  *
  * A1 跟著龍走      — repository is team-owned; ownership unresolved
  * A8 彈珠汽水      — project not ready for publication
+ *
+ * A6 狗狗領養 carries a GitHub link only: it is a PHP/MySQL application that
+ * runs on XAMPP, so there is no public deployment to point 查看作品 at.
  */
 const EXTRA_LINKS: Partial<Record<string, ProjectLink[]>> = {
   A2: [

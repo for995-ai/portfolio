@@ -161,7 +161,7 @@ export const PROJECTS: readonly Project[] = [
     date: '2025.06',
     title: '狗狗領養＆志工系統',
     role: '專案作者',
-    skills: ['PHP', 'MySQL', '資料庫設計', 'CRUD / Session', '系統整合'],
+    skills: ['PHP', 'MySQL', '資料庫設計', 'CRUD', 'Session', '系統整合'],
     github: 'https://github.com/for995-ai/dog-adoption-volunteer-system',
     displayLevel: 'archive',
   },
