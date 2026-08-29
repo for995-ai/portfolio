@@ -17,7 +17,6 @@ const SOURCE_MAP: Record<string, SourceType> = {
   A5: '課程',
   A6: '課程',
   A7: '自行開發',
-  A8: '自行開發',
 };
 
 const SOURCE_CSS: Record<SourceType, string> = {
@@ -83,10 +82,6 @@ const BLURB: Partial<Record<string, Blurb>> = {
     summary: '相簿滑滑整理 APP，以手勢互動加速重複相片的篩選流程。',
     highlights: ['獨立製作，負責 APP 流程與互動設計', '以產品思維定義核心操作'],
   },
-  A8: {
-    summary: '彈珠工廠網頁互動體驗，以物理引擎打造趣味工廠場景。',
-    highlights: ['獨立完成網頁設計與前端實作', '互動體驗設計'],
-  },
   A0: {
     summary: '本作品集網站，採 React + Vite + TypeScript 架構開發。',
     highlights: ['自行規劃資訊架構與 UI/UX', '前端實作與效能優化'],
@@ -109,7 +104,6 @@ interface ProjectLink { label: string; url: string; type: LinkType }
  * never a placeholder, never a "coming soon".
  *
  * A1 跟著龍走      — repository is team-owned; ownership unresolved
- * A8 彈珠汽水      — project not ready for publication
  *
  * A6 狗狗領養 carries a GitHub link only: it is a PHP/MySQL application that
  * runs on XAMPP, so there is no public deployment to point 查看作品 at.

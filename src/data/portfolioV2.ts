@@ -103,7 +103,7 @@ export const EDUCATION: readonly Education[] = [
   },
 ];
 
-// ─── Projects (A0–A8) ─────────────────────────────────────────────────────────
+// ─── Projects (A0–A7) ─────────────────────────────────────────────────────────
 
 export const PROJECTS: readonly Project[] = [
   {
@@ -171,14 +171,6 @@ export const PROJECTS: readonly Project[] = [
     title: '相簿滑滑整理 APP',
     role: '獨立製作',
     skills: ['APP 流程', '互動設計', '產品思維'],
-    displayLevel: 'standard',
-  },
-  {
-    id: 'A8',
-    date: '2026.08',
-    title: '彈珠工廠網頁設計',
-    role: '獨立製作',
-    skills: ['網頁設計', '互動體驗', '前端實作'],
     displayLevel: 'standard',
   },
 ];
@@ -440,7 +432,7 @@ export const CERTIFICATIONS: readonly Certification[] = [
 
 // ─── Derived Counts ───────────────────────────────────────────────────────────
 
-export const projectCount = PROJECTS.length;          // 9
+export const projectCount = PROJECTS.length;          // 8
 export const competitionCount = COMPETITIONS.length;  // 7
 export const researchCount = RESEARCH.length;         // 1
 
