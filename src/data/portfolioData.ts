@@ -67,7 +67,7 @@ export const PROJECTS: Project[] = [
   { id: "soulscent-lab", cat: "全端開發 / AI 創新", title: "SoulScent Lab 智能精油系統", desc: "整合 AI 推薦演算法的客製化精油調配系統。", tech: "React / Node.js / AI API 介接", reflection: "體會到 AI 介接與前端狀態管理的整合挑戰，學會處理非同步資料流與優化等待體驗。", image: "/images/project-soulscent.png", link: "https://gleaming-melba-0c0cbc.netlify.app" },
   { id: "hotpot-ordering", cat: "UI/UX / 系統分析", title: "食癒所 - AI 火鍋點餐", desc: "從使用者體驗出發，重新設計的現代化餐飲點餐介面。", tech: "Figma / 系統需求分析 / 流程塑模", reflection: "實際走過完整的系統分析流程，了解如何收斂需求並轉化為直覺的 UI 介面。", image: "/images/project-hotpot.png", link: "https://tranquil-kashata-043095.netlify.app" },
   { id: "workstay-platform", cat: "介面設計 / 專案統籌", title: "作保庇宿安心 - 換宿平台", desc: "針對打工換宿需求開發的媒合平台，解決資訊不對稱痛點。", tech: "專案管理 / 使用者研究 / UI 設計", reflection: "跨部門溝通是最大挑戰，學會利用工具收斂各方意見達成開發共識，確保如期推進。", image: "/images/project-accommodation.png", link: "https://gleeful-macaron-e3a192.netlify.app" },
-  { id: "dog-adoption", cat: "後端開發 / 資料庫", title: "狗狗領養 & 志工管理系統", desc: "為動物收容所打造的管理系統，包含領養名冊與志工排班。", tech: "Python / PyMySQL / 後端架構設計", reflection: "從零建構後端資料庫與 API，讓我對 MVC 架構、關聯式資料庫設計與 SQL 語法有更紮實的掌握。", image: "/images/project-dog.png", link: "http://dog-adopt.xo.je/list_dogs.php" },
+  { id: "dog-adoption", cat: "後端開發 / 資料庫", title: "狗狗領養 & 志工管理系統", desc: "整合狗狗資料、領養申請、志工活動與後台管理的 PHP / MySQL 系統。", tech: "PHP / MySQL / XAMPP / CRUD / Session", reflection: "從資料表關聯、PHP CRUD 到登入與後台管理，完整練習資料庫設計與系統整合，也更熟悉以 MySQL 支援實際管理流程。", image: "/images/project-dog.png", link: "https://github.com/for995-ai/dog-adoption-volunteer-system" },
 ];
 
 /**
