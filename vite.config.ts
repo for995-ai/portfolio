@@ -43,10 +43,10 @@ function figmaAssetResolver() {
 }
 
 export default defineConfig(({ command }) => ({
-  // Served from /portfolio/ on GitHub Pages, from the root in local dev —
-  // so `pnpm dev` is unaffected. Consumed via import.meta.env.BASE_URL in
-  // src/lib/publicUrl.ts rather than hardcoded anywhere.
-  base: command === 'build' ? '/portfolio/' : '/',
+  // GitHub Pages publishes this repository below /portfolio/, while Vercel
+  // serves the same build from the domain root and exposes VERCEL=1 at build
+  // time. Consumed via import.meta.env.BASE_URL in src/lib/publicUrl.ts.
+  base: command === 'build' && process.env.VERCEL !== '1' ? '/portfolio/' : '/',
   plugins: [
     caseStudyDirectoryIndex(),
     figmaAssetResolver(),
