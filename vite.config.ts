@@ -3,6 +3,32 @@ import path from 'path'
 import tailwindcss from '@tailwindcss/vite'
 import react from '@vitejs/plugin-react'
 
+const DOG_CASE_STUDY_PATH = '/case-studies/dog-adoption-volunteer-system'
+
+/**
+ * Vite's SPA fallback handles extensionless directory requests before looking
+ * for index.html inside public/. Keep the clean production URL while making
+ * the same route usable during `vite` QA.
+ */
+function caseStudyDirectoryIndex() {
+  const rewrite = (req, _res, next) => {
+    const [pathname, query] = (req.url ?? '').split('?')
+
+    if (pathname === DOG_CASE_STUDY_PATH || pathname === `${DOG_CASE_STUDY_PATH}/`) {
+      req.url = `${DOG_CASE_STUDY_PATH}/index.html${query ? `?${query}` : ''}`
+    }
+
+    next()
+  }
+
+  return {
+    name: 'case-study-directory-index',
+    configureServer(server) {
+      server.middlewares.use(rewrite)
+    },
+  }
+}
+
 
 function figmaAssetResolver() {
   return {
@@ -22,6 +48,7 @@ export default defineConfig(({ command }) => ({
   // src/lib/publicUrl.ts rather than hardcoded anywhere.
   base: command === 'build' ? '/portfolio/' : '/',
   plugins: [
+    caseStudyDirectoryIndex(),
     figmaAssetResolver(),
     // The React and Tailwind plugins are both required for Make, even if
     // Tailwind is not being actively used – do not remove them
