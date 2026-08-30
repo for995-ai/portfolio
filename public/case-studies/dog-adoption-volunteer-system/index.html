@@ -1,0 +1,884 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>狗狗領養＆志工系統｜Case Study — 蘇洺崴 MING WEI SU</title>
+<meta name="description" content="以 PHP + MySQL 從零建置的狗狗領養與志工管理系統：資料表關聯設計、領養審核的跨表狀態同步、Session 角色權限，以及完成後的資安檢視與改善方向。" />
+<meta name="theme-color" content="#F7F8FC" />
+
+<!-- 靜態專案說明頁（Case Study）。內容取自 repository 的 README 與
+     database/schema.sql，不含任何未實作的功能、虛構數據或示意截圖。
+     所有連結與資源皆為相對路徑，因此在 /portfolio/ 子路徑（GitHub Pages）
+     與網站根目錄（Vercel）下都能正確解析。 -->
+
+<script>
+/* 相對路徑基準修正。本頁的圖片與「返回作品集」都是相對路徑，因此在
+   /portfolio/ 子路徑（GitHub Pages）與網站根目錄（Vercel）下都成立；
+   但若網址少了結尾斜線（部分靜態主機不會自動補上），../../ 會多退一層。
+   這裡只補 <base>、不做轉址，避免與主機自身的斜線規則互相衝突。 */
+(function () {
+  var p = location.pathname;
+  if (p.charAt(p.length - 1) !== '/' && !/\.html?$/i.test(p)) {
+    document.write('<base href="' + p + '/">');
+  }
+})();
+</script>
+
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Noto+Sans+TC:wght@400;500;700;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+<style>
+/* ── Tokens（與作品集 v2 設計系統同步） ─────────────────────────────── */
+:root{
+  --bg:#F7F8FC; --surface:#FFFFFF; --lavender:#F3F0FF;
+  --border:#E6E2ED; --border-lt:rgba(230,226,237,.6);
+  --purple:#7457E8; --purple-lt:#8B6EF0; --purple-dim:rgba(116,87,232,.10);
+  --purple-glow:rgba(116,87,232,.22);
+  --cyan:#54C7D9; --cyan-dim:rgba(84,199,217,.12); --cyan-deep:#0C7A8C;
+  --warm:#F47DA8; --amber-dim:rgba(216,157,59,.12);
+  --text:#171525; --sec:#666273; --muted:#9590A8; --faint:#C4BFDA;
+  --radius-card:22px; --radius:10px; --radius-sm:6px; --pill:999px;
+  --shadow-xs:0 1px 3px rgba(23,21,37,.06);
+  --shadow-card:0 2px 12px rgba(23,21,37,.07),0 1px 3px rgba(23,21,37,.05);
+  --sans:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif;
+  --display:"Space Grotesk","Noto Sans TC","PingFang TC",system-ui,sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Consolas,"Noto Sans TC",monospace;
+  --nav-h:58px;
+}
+@media (max-width:640px){ :root{ --radius-card:18px; --nav-h:54px; } }
+
+*,*::before,*::after{ box-sizing:border-box; }
+html{ scroll-behavior:smooth; -webkit-text-size-adjust:100%; }
+@media (prefers-reduced-motion:reduce){ html{ scroll-behavior:auto; } }
+body{
+  margin:0; background:var(--bg); color:var(--text);
+  font-family:var(--sans); font-size:15px; line-height:1.75;
+  -webkit-font-smoothing:antialiased;
+}
+img{ max-width:100%; display:block; }
+a{ color:var(--purple); text-decoration:none; }
+a:hover{ color:var(--purple-lt); }
+code{ font-family:var(--mono); font-size:.8125em; }
+
+.wrap{ width:100%; max-width:1000px; margin-inline:auto; padding-inline:20px; }
+@media (max-width:640px){ .wrap{ padding-inline:16px; } }
+
+/* ── Top bar ──────────────────────────────────────────────────────── */
+.topbar{
+  position:sticky; top:0; z-index:50; height:var(--nav-h);
+  background:rgba(247,248,252,.88); backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--border-lt);
+}
+.topbar-inner{ height:var(--nav-h); display:flex; align-items:center; justify-content:space-between; gap:12px; }
+.back{
+  display:inline-flex; align-items:center; gap:7px;
+  font-family:var(--display); font-size:.875rem; font-weight:600; color:var(--text);
+}
+.back:hover{ color:var(--purple); }
+.back i{ font-style:normal; color:var(--purple); }
+.topbar-tag{
+  font-family:var(--mono); font-size:.6875rem; letter-spacing:.08em;
+  text-transform:uppercase; color:var(--muted); white-space:nowrap;
+}
+@media (max-width:560px){ .topbar-tag{ display:none; } }
+
+/* ── Buttons ──────────────────────────────────────────────────────── */
+.btn{
+  display:inline-flex; align-items:center; justify-content:center; gap:7px;
+  height:44px; padding:0 20px; border-radius:var(--pill);
+  border:1.5px solid transparent; font-family:var(--display);
+  font-size:.875rem; font-weight:600; line-height:1; white-space:nowrap;
+  transition:transform .2s ease-out,box-shadow .2s ease-out,background-color .18s,border-color .18s,color .18s;
+}
+.btn:hover{ transform:translateY(-2px); }
+.btn:focus-visible{ outline:2px solid var(--cyan); outline-offset:3px; }
+.btn--primary{ background:var(--purple); color:#fff; border-color:var(--purple); box-shadow:0 2px 12px var(--purple-glow); }
+.btn--primary:hover{ background:var(--purple-lt); border-color:var(--purple-lt); color:#fff; box-shadow:0 4px 20px var(--purple-glow); }
+.btn--secondary{ background:var(--surface); color:var(--text); border-color:var(--border); box-shadow:var(--shadow-xs); }
+.btn--secondary:hover{ color:var(--text); border-color:rgba(116,87,232,.3); box-shadow:var(--shadow-card); }
+.btn--sm{ height:38px; padding:0 16px; font-size:.8125rem; }
+@media (max-width:640px){ .btn{ height:40px; padding:0 17px; font-size:.8125rem; } }
+@media (prefers-reduced-motion:reduce){ .btn:hover{ transform:none; } }
+
+/* ── Hero ─────────────────────────────────────────────────────────── */
+.hero{ padding:50px 0 36px; }
+@media (max-width:640px){ .hero{ padding:32px 0 26px; } }
+.chips{ display:flex; flex-wrap:wrap; align-items:center; gap:10px; margin-bottom:16px; }
+.chip{ display:inline-flex; align-items:center; padding:3px 11px; border-radius:var(--pill); font-size:.7rem; font-weight:600; letter-spacing:.03em; line-height:1.7; }
+.chip--course{ background:var(--cyan-dim); color:var(--cyan-deep); }
+.chip--self{ background:var(--purple-dim); color:var(--purple); }
+.date{ font-family:var(--mono); font-size:.75rem; color:var(--muted); }
+.title{ margin:0 0 6px; font-family:var(--display); font-weight:700; font-size:clamp(1.85rem,4.2vw,2.75rem); line-height:1.25; letter-spacing:-.01em; }
+.title-en{ margin:0 0 18px; font-family:var(--mono); font-size:.8125rem; letter-spacing:.06em; color:var(--muted); }
+.lede{ margin:0; max-width:74ch; font-size:1rem; color:var(--sec); }
+.lede strong{ color:var(--text); font-weight:700; }
+.actions{ display:flex; flex-wrap:wrap; gap:10px; margin-top:24px; }
+
+/* ── Anchor nav ───────────────────────────────────────────────────── */
+.anchors{ display:flex; flex-wrap:wrap; gap:8px; padding:16px 0 4px; border-top:1px solid var(--border-lt); margin-top:30px; }
+.anchors a{
+  flex:0 0 auto; padding:6px 13px; border-radius:var(--pill);
+  background:var(--surface); border:1px solid var(--border);
+  font-family:var(--display); font-size:.75rem; font-weight:600; color:var(--sec);
+}
+.anchors a:hover{ color:var(--purple); border-color:rgba(116,87,232,.3); }
+
+/* ── Sections ─────────────────────────────────────────────────────── */
+.section{ padding:36px 0; scroll-margin-top:calc(var(--nav-h) + 14px); }
+.section + .section{ border-top:1px solid var(--border-lt); }
+.h2{ display:flex; align-items:baseline; gap:12px; margin:0 0 4px; font-family:var(--display); font-size:clamp(1.25rem,2.2vw,1.5rem); font-weight:700; line-height:1.4; }
+.h2 .num{ font-family:var(--mono); font-size:.75rem; font-weight:500; color:var(--faint); letter-spacing:.08em; }
+.h2-en{ margin:0 0 20px; font-family:var(--mono); font-size:.75rem; letter-spacing:.06em; color:var(--muted); }
+.sub{ margin:24px 0 10px; font-family:var(--display); font-size:.9375rem; font-weight:700; }
+.p{ margin:0 0 14px; color:var(--sec); max-width:78ch; }
+.p:last-child{ margin-bottom:0; }
+
+/* ── Cards & grids ────────────────────────────────────────────────── */
+.card{ background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-card); padding:22px 24px; }
+@media (max-width:640px){ .card{ padding:18px 16px; } }
+.grid{ display:grid; gap:12px; }
+.grid-2{ grid-template-columns:repeat(2,minmax(0,1fr)); }
+@media (max-width:640px){ .grid-2{ grid-template-columns:1fr; } }
+
+.spec{ display:grid; grid-template-columns:150px 1fr; gap:0; margin:0; }
+.spec > dt,.spec > dd{ padding:11px 0; border-bottom:1px solid var(--border-lt); }
+.spec > dt{ font-family:var(--display); font-size:.8125rem; font-weight:600; color:var(--muted); }
+.spec > dd{ margin:0; font-size:.9375rem; }
+.spec > dt:last-of-type,.spec > dd:last-of-type{ border-bottom:0; }
+@media (max-width:640px){
+  .spec{ grid-template-columns:1fr; }
+  .spec > dt{ padding:12px 0 2px; border-bottom:0; }
+  .spec > dd{ padding:0 0 12px; }
+}
+
+.bullets{ margin:0; padding:0; list-style:none; }
+.bullets li{ position:relative; padding-left:20px; margin-bottom:10px; color:var(--sec); }
+.bullets li:last-child{ margin-bottom:0; }
+.bullets li::before{ content:"▸"; position:absolute; left:0; top:0; color:var(--purple); font-size:.8125rem; }
+.bullets strong{ color:var(--text); font-weight:700; }
+
+.steps{ margin:0; padding:0; list-style:none; counter-reset:step; }
+.steps li{ position:relative; padding-left:36px; margin-bottom:14px; color:var(--sec); counter-increment:step; }
+.steps li:last-child{ margin-bottom:0; }
+.steps li::before{
+  content:counter(step,decimal-leading-zero); position:absolute; left:0; top:3px;
+  font-family:var(--mono); font-size:.7rem; font-weight:700; color:var(--purple);
+  background:var(--purple-dim); border-radius:var(--radius-sm); padding:2px 6px; line-height:1.2;
+}
+.steps strong{ color:var(--text); font-weight:700; }
+
+.file{ display:inline-block; font-family:var(--mono); font-size:.72rem; background:var(--lavender); color:var(--purple); border-radius:var(--radius-sm); padding:1px 7px; white-space:nowrap; }
+.file--plain{ background:#F1F0F5; color:var(--sec); }
+
+.feat{ display:grid; gap:14px; }
+.feat-item{ display:grid; grid-template-columns:190px 1fr; gap:14px; align-items:start; }
+.feat-name{ font-weight:700; font-size:.9375rem; }
+.feat-files{ margin-top:5px; display:flex; flex-wrap:wrap; gap:5px; }
+.feat-desc{ color:var(--sec); font-size:.9375rem; }
+@media (max-width:720px){ .feat-item{ grid-template-columns:1fr; gap:6px; } }
+
+.note{ padding:14px 18px; border-radius:var(--radius); background:var(--lavender); border-left:3px solid var(--purple); font-size:.875rem; color:var(--sec); }
+.note strong{ color:var(--text); }
+.note--warn{ background:var(--amber-dim); border-left-color:#D89D3B; }
+.note--cyan{ background:var(--cyan-dim); border-left-color:var(--cyan); }
+.note + .note{ margin-top:10px; }
+
+/* ── Flow diagram ─────────────────────────────────────────────────── */
+.flow{ display:grid; gap:12px; }
+.flow-label{ display:block; margin-bottom:9px; font-family:var(--mono); font-size:.6875rem; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); }
+.flow-row{ display:flex; flex-wrap:wrap; align-items:stretch; gap:8px; }
+.node{ flex:1 1 150px; min-width:0; background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:11px 14px; box-shadow:var(--shadow-xs); }
+.node b{ display:block; font-family:var(--display); font-size:.8125rem; font-weight:700; }
+.node small{ display:block; margin-top:3px; font-size:.72rem; color:var(--muted); line-height:1.6; }
+.node code{ color:var(--purple); }
+.node--session{ background:var(--lavender); border-color:rgba(116,87,232,.22); }
+.node--sync{ background:var(--cyan-dim); border-color:rgba(84,199,217,.35); }
+.arrow{ align-self:center; color:var(--faint); font-size:.9375rem; flex:0 0 auto; }
+.arrow::before{ content:"→"; }
+@media (max-width:720px){
+  .flow-row{ flex-direction:column; }
+  /* 直向排列時不要沿主軸拉長，節點才會貼齊內容高度 */
+  .flow-row .node{ flex:0 0 auto; }
+  .arrow{ align-self:flex-start; padding-left:8px; }
+  .arrow::before{ content:"↓"; }
+}
+.lanes{ display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; }
+@media (max-width:720px){ .lanes{ grid-template-columns:1fr; } }
+.lane{ background:var(--bg); border:1px dashed var(--border); border-radius:16px; padding:14px; }
+.lane-title{ font-family:var(--display); font-size:.8125rem; font-weight:700; margin-bottom:10px; display:flex; align-items:center; gap:7px; }
+.lane-title .dot{ width:7px; height:7px; border-radius:50%; background:var(--purple); }
+.lane--admin .lane-title .dot{ background:var(--warm); }
+.lane .flow{ gap:8px; }
+/* 分流通道較窄，橫排會折行斷掉箭頭語意，因此一律改為直向鏈結 */
+.lane .flow-row{ flex-direction:column; }
+.lane .flow-row .node{ flex:0 0 auto; }
+.lane .arrow{ align-self:flex-start; padding-left:10px; }
+.lane .arrow::before{ content:"↓"; }
+
+/* ── ERD ──────────────────────────────────────────────────────────── */
+.rel{ display:grid; gap:8px; margin-bottom:18px; }
+.rel-row{ display:flex; flex-wrap:wrap; align-items:center; gap:8px; background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:9px 14px; font-size:.875rem; }
+.rel-name{ font-family:var(--mono); font-size:.78rem; font-weight:700; color:var(--text); }
+.rel-mid{ font-family:var(--mono); font-size:.7rem; color:var(--purple); background:var(--purple-dim); border-radius:var(--pill); padding:1px 9px; }
+.rel-key{ font-family:var(--mono); font-size:.7rem; color:var(--muted); margin-left:auto; }
+@media (max-width:640px){ .rel-key{ margin-left:0; width:100%; } }
+
+.erd{ display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; align-items:start; }
+@media (max-width:900px){ .erd{ grid-template-columns:repeat(2,minmax(0,1fr)); } }
+@media (max-width:600px){ .erd{ grid-template-columns:1fr; } }
+.ent{ background:var(--surface); border:1px solid var(--border); border-radius:16px; overflow:hidden; }
+.ent-head{ padding:10px 14px; background:var(--lavender); border-bottom:1px solid var(--border-lt); display:flex; align-items:center; justify-content:space-between; gap:8px; }
+.ent-head b{ font-family:var(--mono); font-size:.8125rem; }
+.ent-head span{ font-size:.7rem; color:var(--muted); }
+.ent-cols{ margin:0; padding:7px 0; list-style:none; }
+.ent-cols li{ display:flex; align-items:center; gap:7px; padding:4px 14px; font-family:var(--mono); font-size:.72rem; color:var(--sec); }
+.ent-cols li .t{ margin-left:auto; color:var(--faint); font-size:.68rem; }
+.key{ font-size:.6rem; font-weight:700; padding:0 5px; border-radius:3px; letter-spacing:.04em; }
+.key--pk{ background:var(--purple-dim); color:var(--purple); }
+.key--rel{ background:var(--cyan-dim); color:var(--cyan-deep); }
+
+/* ── Architecture ─────────────────────────────────────────────────── */
+.arch{ display:grid; gap:10px; }
+.arch-tier{ background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:14px 16px; }
+.arch-tier--server{ background:var(--lavender); border-color:rgba(116,87,232,.2); }
+.arch-tier--db{ background:var(--cyan-dim); border-color:rgba(84,199,217,.3); }
+.arch-tier-label{ font-family:var(--mono); font-size:.6875rem; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); margin-bottom:10px; }
+.arch-row{ display:flex; flex-wrap:wrap; gap:8px; }
+.arch-box{ flex:1 1 170px; background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:10px 13px; }
+.arch-box b{ display:block; font-family:var(--display); font-size:.8125rem; font-weight:700; }
+.arch-box small{ display:block; margin-top:2px; font-size:.72rem; color:var(--muted); line-height:1.6; }
+.arch-link{ text-align:center; color:var(--faint); font-size:.875rem; line-height:1; }
+
+/* ── Screenshots ──────────────────────────────────────────────────── */
+.shot{ background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-card); overflow:hidden; max-width:560px; }
+.shot img{ width:100%; height:auto; background:var(--bg); }
+.shot-cap{ padding:12px 18px; border-top:1px solid var(--border-lt); font-size:.8125rem; color:var(--sec); display:flex; flex-wrap:wrap; align-items:center; gap:8px; }
+.pending{ display:flex; flex-wrap:wrap; gap:7px; margin-top:12px; }
+.pending span{ font-family:var(--mono); font-size:.72rem; color:var(--muted); border:1px dashed var(--border); border-radius:var(--pill); padding:3px 11px; }
+
+/* ── Improvements ─────────────────────────────────────────────────── */
+.imp{ display:grid; }
+.imp-item{ display:grid; grid-template-columns:240px 1fr; gap:14px; padding:12px 0; border-bottom:1px solid var(--border-lt); }
+.imp-item:last-child{ border-bottom:0; }
+.imp-name{ font-weight:700; font-size:.9375rem; }
+.imp-now{ color:var(--sec); font-size:.9375rem; }
+@media (max-width:720px){ .imp-item{ grid-template-columns:1fr; gap:4px; } }
+
+/* ── Repo block ───────────────────────────────────────────────────── */
+.repo{ display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:16px; }
+.repo-url{ font-family:var(--mono); font-size:.8125rem; color:var(--sec); word-break:break-all; }
+.repo-meta{ margin-top:6px; font-size:.8125rem; color:var(--muted); }
+
+/* ── Footer ───────────────────────────────────────────────────────── */
+.footer{ border-top:1px solid var(--border-lt); margin-top:16px; padding:32px 0 48px; }
+.footer-inner{ display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:16px; }
+.footer-note{ font-size:.8125rem; color:var(--muted); }
+</style>
+</head>
+
+<body>
+
+<!-- ── Top bar ─────────────────────────────────────────────────────── -->
+<header class="topbar">
+  <div class="wrap topbar-inner">
+    <a class="back" href="../../#projects"><i>←</i> 返回作品集</a>
+    <span class="topbar-tag">Case Study · A6</span>
+    <a class="btn btn--secondary btn--sm" href="https://github.com/for995-ai/dog-adoption-volunteer-system" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
+  </div>
+</header>
+
+<main>
+
+  <!-- ── Hero ──────────────────────────────────────────────────────── -->
+  <section class="wrap hero">
+    <div class="chips">
+      <span class="chip chip--course">課程專案</span>
+      <span class="chip chip--self">個人獨立完成</span>
+      <span class="date">2025.06</span>
+    </div>
+
+    <h1 class="title">狗狗領養＆志工系統</h1>
+    <p class="title-en">Dog Adoption &amp; Volunteer Management System</p>
+
+    <p class="lede">
+      以 <strong>PHP + MySQL</strong> 從零建置的動物之家管理系統，把<strong>狗狗資料管理</strong>、
+      <strong>領養申請審核</strong>、<strong>志工活動報名</strong>三條原本分散的流程，
+      整合在同一套關聯式資料庫與同一個後台之中。專案重點不在前端視覺，
+      而在資料表關聯設計、跨資料表的狀態同步，以及以 Session 控管的角色權限流程。
+    </p>
+
+    <div class="actions">
+      <a class="btn btn--primary" href="https://github.com/for995-ai/dog-adoption-volunteer-system" target="_blank" rel="noopener noreferrer">GitHub Repository ↗</a>
+      <a class="btn btn--secondary" href="../../#projects">← 返回作品集</a>
+    </div>
+
+    <div class="note" style="margin-top:24px;">
+      <strong>關於這一頁：</strong>本系統為 PHP + MySQL 的伺服器端應用，於 XAMPP 本機環境
+      （<code>http://localhost/</code>）運行，目前沒有公開的線上部署版本，因此以這份靜態
+      Case Study 呈現完整的設計與實作內容。頁面上的功能、資料表欄位與改善方向，
+      皆對應 repository 中實際存在的程式碼與 <code>database/schema.sql</code>。
+    </div>
+
+    <nav class="anchors" aria-label="章節導覽">
+      <a href="#overview">Overview</a>
+      <a href="#role">My Role</a>
+      <a href="#features">Core Features</a>
+      <a href="#flow">System Flow</a>
+      <a href="#erd">Database / ERD</a>
+      <a href="#architecture">Architecture</a>
+      <a href="#screenshots">Screenshots</a>
+      <a href="#learning">Learning / Review</a>
+      <a href="#future">Future Improvements</a>
+      <a href="#repo">GitHub</a>
+    </nav>
+  </section>
+
+  <!-- ── 01 Project Overview ───────────────────────────────────────── -->
+  <section class="wrap section" id="overview">
+    <h2 class="h2"><span class="num">01</span>專案概觀</h2>
+    <p class="h2-en">PROJECT OVERVIEW</p>
+
+    <div class="card">
+      <dl class="spec">
+        <dt>專案性質</dt><dd>2025 年「資料庫程式設計」課程專案（個人獨立完成）</dd>
+        <dt>系統類型</dt><dd>伺服器端渲染（SSR）的多頁式 Web 應用</dd>
+        <dt>技術組合</dt><dd>PHP、MySQL / MariaDB、HTML / CSS、Apache（XAMPP）</dd>
+        <dt>資料表數量</dt><dd>5 張 — <code>users</code>、<code>dogs</code>、<code>adoption_requests</code>、<code>volunteer_events</code>、<code>volunteer_signups</code></dd>
+        <dt>程式規模</dt><dd>22 個功能頁面 PHP 檔案，約 1,600 行程式碼</dd>
+        <dt>角色設計</dt><dd>一般使用者（<code>user</code>）與管理員（<code>admin</code>），以 Session 中的 <code>role</code> 欄位控管</dd>
+        <dt>執行環境</dt><dd>XAMPP 本機環境（Apache + MariaDB + PHP）</dd>
+      </dl>
+    </div>
+
+    <h3 class="sub">問題與動機</h3>
+    <p class="p">小型動物之家在管理送養與志工事務時，常見的痛點是：</p>
+    <div class="grid grid-2">
+      <div class="card">
+        <ul class="bullets">
+          <li><strong>資料分散</strong>：狗狗基本資料、領養申請單、志工名單分別存放在紙本或多份試算表。</li>
+          <li><strong>狀態不同步</strong>：狗狗已被領養，但公開送養名單沒同步更新，造成重複申請。</li>
+          <li><strong>名額難以掌握</strong>：志工活動人工統計報名，容易超收，也難以避免重複報名。</li>
+          <li><strong>審核不透明</strong>：申請人送出表單後，無法查詢自己的審核進度。</li>
+        </ul>
+      </div>
+      <div class="card">
+        <ul class="bullets">
+          <li>三種資料統一存放於<strong>同一個關聯式資料庫</strong>，透過 ID 欄位互相關聯。</li>
+          <li>審核通過時<strong>同步</strong>將狗狗標記為已領養（<code>dogs.is_adopted = 1</code>），前台清單即時反映。</li>
+          <li>報名時以 <code>COUNT(*)</code> 比對活動上限 <code>max_people</code>，額滿即擋下，並防止重複報名。</li>
+          <li>使用者可於「我的領養紀錄」查詢每一筆申請的狀態（待審核／已通過／已拒絕）。</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 02 My Role ────────────────────────────────────────────────── -->
+  <section class="wrap section" id="role">
+    <h2 class="h2"><span class="num">02</span>我的角色</h2>
+    <p class="h2-en">MY ROLE</p>
+
+    <p class="p">個人專案，從需求發想到整合測試皆由本人獨立完成。</p>
+
+    <div class="card">
+      <ul class="bullets">
+        <li><strong>資料庫設計</strong>：規劃 5 張資料表的欄位、型別與關聯邏輯（<code>database/schema.sql</code>）。</li>
+        <li><strong>後端開發</strong>：以 PHP 撰寫 22 個功能頁面，含 CRUD、JOIN 查詢、動態條件搜尋與檔案上傳。</li>
+        <li><strong>身分驗證與權限</strong>：以 PHP Session 保存登入狀態，並依 <code>role</code> 區分一般使用者與管理員可存取的頁面。</li>
+        <li><strong>前端頁面</strong>：以 HTML / CSS 撰寫所有表單、清單、卡片與後台表格版面。</li>
+        <li><strong>測試與整合</strong>：於 XAMPP（Apache + MariaDB）環境進行整合測試。</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ── 03 Core Features ──────────────────────────────────────────── -->
+  <section class="wrap section" id="features">
+    <h2 class="h2"><span class="num">03</span>核心功能</h2>
+    <p class="h2-en">CORE FEATURES</p>
+
+    <p class="p">以下功能皆對應 repository 中實際存在的程式碼檔案。</p>
+
+    <h3 class="sub">使用者帳號</h3>
+    <div class="card">
+      <div class="feat">
+        <div class="feat-item">
+          <div><div class="feat-name">註冊</div><div class="feat-files"><span class="file">register.php</span><span class="file">register_process.php</span></div></div>
+          <div class="feat-desc">檢查帳號是否重複後寫入 <code>users</code>，角色預設為 <code>user</code>。</div>
+        </div>
+        <div class="feat-item">
+          <div><div class="feat-name">登入</div><div class="feat-files"><span class="file">login.php</span><span class="file">login_process.php</span></div></div>
+          <div class="feat-desc">以 Prepared Statement 查詢帳號，成功後於 Session 存入 <code>user_id</code>、<code>username</code>、<code>role</code>。</div>
+        </div>
+        <div class="feat-item">
+          <div><div class="feat-name">登出</div><div class="feat-files"><span class="file">logout.php</span></div></div>
+          <div class="feat-desc"><code>session_destroy()</code> 後導回登入頁。</div>
+        </div>
+        <div class="feat-item">
+          <div><div class="feat-name">忘記密碼</div><div class="feat-files"><span class="file">forgot_password.php</span></div></div>
+          <div class="feat-desc">以「帳號 + 註冊 Email」比對後回傳密碼（課程簡化版本，限制詳見改善方向）。</div>
+        </div>
+      </div>
+    </div>
+
+    <h3 class="sub">狗狗資料</h3>
+    <div class="card">
+      <div class="feat">
+        <div class="feat-item">
+          <div><div class="feat-name">狗狗清單</div><div class="feat-files"><span class="file">list_dogs.php</span></div></div>
+          <div class="feat-desc">卡片式列表，支援<strong>狀態／體型／年齡上限／性別</strong>四種條件組合搜尋；非管理員預設只顯示待領養。</div>
+        </div>
+        <div class="feat-item">
+          <div><div class="feat-name">狗狗詳細資料</div><div class="feat-files"><span class="file">dog_profile.php</span></div></div>
+          <div class="feat-desc">以 <code>dog_id</code> 查詢單筆資料；目前由後台領養申請表格中的狗狗名稱連結進入。</div>
+        </div>
+        <div class="feat-item">
+          <div><div class="feat-name">新增狗狗</div><div class="feat-files"><span class="file">add_dog.php</span></div></div>
+          <div class="feat-desc">管理員限定，含照片上傳（存入 <code>uploads/</code>，未上傳則套用預設圖）。</div>
+        </div>
+        <div class="feat-item">
+          <div><div class="feat-name">編輯狗狗</div><div class="feat-files"><span class="file">edit_dog.php</span></div></div>
+          <div class="feat-desc">管理員限定，可選擇性更換照片，未上傳則沿用原圖片路徑。</div>
+        </div>
+        <div class="feat-item">
+          <div><div class="feat-name">刪除狗狗</div><div class="feat-files"><span class="file">delete_dog.php</span></div></div>
+          <div class="feat-desc">管理員限定，刪除資料列的同時一併刪除伺服器上的圖片檔。</div>
+        </div>
+      </div>
+    </div>
+
+    <h3 class="sub">領養流程</h3>
+    <div class="card">
+      <div class="feat">
+        <div class="feat-item">
+          <div><div class="feat-name">領養申請表</div><div class="feat-files"><span class="file">adopt_form.php</span></div></div>
+          <div class="feat-desc">需登入才可進入；含申請人姓名、電話、說明，以及 4 項領養資格切結。</div>
+        </div>
+        <div class="feat-item">
+          <div><div class="feat-name">送出申請</div><div class="feat-files"><span class="file">submit_adoption.php</span></div></div>
+          <div class="feat-desc">寫入 <code>adoption_requests</code>，狀態由資料庫預設為「待審核」。</div>
+        </div>
+        <div class="feat-item">
+          <div><div class="feat-name">我的領養紀錄</div><div class="feat-files"><span class="file">user_adoptions.php</span></div></div>
+          <div class="feat-desc"><code>adoption_requests JOIN dogs</code>，只顯示目前登入者本人的申請。</div>
+        </div>
+        <div class="feat-item">
+          <div><div class="feat-name">領養申請審核</div><div class="feat-files"><span class="file">admin_adoptions.php</span></div></div>
+          <div class="feat-desc">管理員限定；<code>adoption_requests JOIN users JOIN dogs</code>，可通過／拒絕／刪除申請。</div>
+        </div>
+      </div>
+      <div class="note note--cyan" style="margin-top:18px;">
+        <strong>跨資料表狀態同步：</strong><code>admin_adoptions.php</code> 在審核「通過」時，
+        除了把申請狀態改為「已通過」，同時執行 <code>UPDATE dogs SET is_adopted = 1</code>，
+        讓前台清單自動將該狗狗歸類為「已領養」。
+      </div>
+    </div>
+
+    <h3 class="sub">志工活動</h3>
+    <div class="card">
+      <div class="feat">
+        <div class="feat-item">
+          <div><div class="feat-name">志工活動列表</div><div class="feat-files"><span class="file">volunteer.php</span></div></div>
+          <div class="feat-desc">需登入；依活動時間排序，即時計算「已報名人數 / 名額上限」，額滿或已報名者按鈕自動停用。</div>
+        </div>
+        <div class="feat-item">
+          <div><div class="feat-name">志工報名</div><div class="feat-files"><span class="file">volunteer_signup.php</span><span class="file">submit_volunteer.php</span></div></div>
+          <div class="feat-desc">送出前再次檢查是否重複報名，通過後寫入 <code>volunteer_signups</code>。</div>
+        </div>
+        <div class="feat-item">
+          <div><div class="feat-name">志工報名管理</div><div class="feat-files"><span class="file">admin_volunteers.php</span></div></div>
+          <div class="feat-desc">管理員限定；<code>volunteer_signups JOIN volunteer_events JOIN users</code>，可刪除報名紀錄。</div>
+        </div>
+      </div>
+    </div>
+
+    <h3 class="sub">管理員後台</h3>
+    <div class="card">
+      <div class="feat">
+        <div class="feat-item">
+          <div><div class="feat-name">狗狗管理</div><div class="feat-files"><span class="file">add_dog.php</span><span class="file">edit_dog.php</span><span class="file">delete_dog.php</span></div></div>
+          <div class="feat-desc">管理員登入後，<code>list_dogs.php</code> 會額外顯示四個後台入口，其中之一為狗狗的新增／編輯／刪除。</div>
+        </div>
+        <div class="feat-item">
+          <div><div class="feat-name">使用者管理</div><div class="feat-files"><span class="file">admin_users.php</span><span class="file">delete_user.php</span></div></div>
+          <div class="feat-desc">檢視使用者清單並可刪除帳號。</div>
+        </div>
+        <div class="feat-item">
+          <div><div class="feat-name">領養申請管理</div><div class="feat-files"><span class="file">admin_adoptions.php</span></div></div>
+          <div class="feat-desc">審核所有領養申請，並在通過時同步更新狗狗的領養狀態。</div>
+        </div>
+        <div class="feat-item">
+          <div><div class="feat-name">志工報名管理</div><div class="feat-files"><span class="file">admin_volunteers.php</span></div></div>
+          <div class="feat-desc">檢視與刪除志工活動的報名紀錄。</div>
+        </div>
+      </div>
+      <div class="note note--warn" style="margin-top:18px;">
+        <strong>現況說明：</strong><code>volunteer_events</code>（志工活動本身）目前<strong>沒有</strong>後台新增介面，
+        活動資料需直接於資料庫建立；後台僅管理報名紀錄。
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 04 System Flow ────────────────────────────────────────────── -->
+  <section class="wrap section" id="flow">
+    <h2 class="h2"><span class="num">04</span>系統流程</h2>
+    <p class="h2-en">SYSTEM FLOW</p>
+
+    <p class="p">
+      系統以 <code>login.php</code> 為入口，登入後由 Session 中的 <code>role</code> 決定看到的是
+      一般使用者流程或管理員後台。
+    </p>
+
+    <div class="card">
+      <div class="flow">
+        <div>
+          <span class="flow-label">Stage 01 · 進入系統</span>
+          <div class="flow-row">
+            <div class="node"><b>訪客</b><small>未登入狀態</small></div>
+            <span class="arrow" aria-hidden="true"></span>
+            <div class="node"><b>註冊</b><small><code>register.php</code> → <code>register_process.php</code><br />寫入 <code>users</code>，role = user</small></div>
+            <span class="arrow" aria-hidden="true"></span>
+            <div class="node"><b>登入</b><small><code>login.php</code> → <code>login_process.php</code><br />比對帳號密碼</small></div>
+            <span class="arrow" aria-hidden="true"></span>
+            <div class="node node--session"><b>PHP Session</b><small>user_id / username / role</small></div>
+          </div>
+        </div>
+
+        <div>
+          <span class="flow-label">Stage 02 · 系統首頁</span>
+          <div class="flow-row">
+            <div class="node"><b>狗狗清單</b><small><code>list_dogs.php</code>：卡片列表 + 狀態／體型／年齡／性別條件搜尋，並依 role 顯示不同導覽</small></div>
+          </div>
+        </div>
+
+        <div>
+          <span class="flow-label">Stage 03 · 依角色分流</span>
+          <div class="lanes">
+            <div class="lane">
+              <div class="lane-title"><span class="dot"></span>一般使用者（role = user）</div>
+              <div class="flow">
+                <div class="flow-row">
+                  <div class="node"><b>領養申請表</b><small><code>adopt_form.php</code><br />申請資料 + 4 項資格切結</small></div>
+                  <span class="arrow" aria-hidden="true"></span>
+                  <div class="node"><b>送出申請</b><small><code>submit_adoption.php</code><br />status = 待審核</small></div>
+                  <span class="arrow" aria-hidden="true"></span>
+                  <div class="node"><b>我的領養紀錄</b><small><code>user_adoptions.php</code></small></div>
+                </div>
+                <div class="flow-row">
+                  <div class="node"><b>志工活動列表</b><small><code>volunteer.php</code><br />即時計算名額</small></div>
+                  <span class="arrow" aria-hidden="true"></span>
+                  <div class="node"><b>報名表單</b><small><code>volunteer_signup.php</code></small></div>
+                  <span class="arrow" aria-hidden="true"></span>
+                  <div class="node"><b>寫入報名</b><small><code>submit_volunteer.php</code><br />防重複後寫入</small></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="lane lane--admin">
+              <div class="lane-title"><span class="dot"></span>管理員（role = admin）</div>
+              <div class="flow">
+                <div class="flow-row">
+                  <div class="node"><b>狗狗管理</b><small><code>add_dog.php</code> / <code>edit_dog.php</code> / <code>delete_dog.php</code></small></div>
+                </div>
+                <div class="flow-row">
+                  <div class="node"><b>使用者管理</b><small><code>admin_users.php</code> / <code>delete_user.php</code></small></div>
+                </div>
+                <div class="flow-row">
+                  <div class="node"><b>領養申請管理</b><small><code>admin_adoptions.php</code>：通過／拒絕／刪除</small></div>
+                </div>
+                <div class="flow-row">
+                  <div class="node"><b>志工報名管理</b><small><code>admin_volunteers.php</code></small></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <span class="flow-label">Stage 04 · 狀態回寫</span>
+          <div class="flow-row">
+            <div class="node"><b>審核通過</b><small><code>admin_adoptions.php</code></small></div>
+            <span class="arrow" aria-hidden="true"></span>
+            <div class="node node--sync"><b>UPDATE dogs</b><small>SET is_adopted = 1</small></div>
+            <span class="arrow" aria-hidden="true"></span>
+            <div class="node"><b>前台清單同步</b><small><code>list_dogs.php</code> 將該狗狗歸類為「已領養」</small></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="note" style="margin-top:16px;">
+      <strong>流程補充：</strong>狗狗清單頁的「申請領養」按鈕會直接導向領養申請表；
+      而狗狗詳細資料頁（<code>dog_profile.php</code>）在現行程式碼中，
+      是由管理員後台的領養申請列表點擊狗狗名稱進入。
+    </div>
+  </section>
+
+  <!-- ── 05 Database / ERD ─────────────────────────────────────────── -->
+  <section class="wrap section" id="erd">
+    <h2 class="h2"><span class="num">05</span>資料庫設計 / ERD</h2>
+    <p class="h2-en">DATABASE / ERD</p>
+
+    <p class="p">
+      5 張資料表分為<strong>主體資料</strong>（<code>users</code>、<code>dogs</code>、<code>volunteer_events</code>）
+      與<strong>關聯／交易資料</strong>（<code>adoption_requests</code>、<code>volunteer_signups</code>）。
+      以下欄位定義完全取自 <code>database/schema.sql</code>，所有資料表皆為 InnoDB / utf8mb4。
+    </p>
+
+    <h3 class="sub">資料表關聯</h3>
+    <div class="rel">
+      <div class="rel-row"><span class="rel-name">users</span><span class="rel-mid">1 : N</span><span class="rel-name">adoption_requests</span><span class="rel-key">關聯欄位 user_id</span></div>
+      <div class="rel-row"><span class="rel-name">dogs</span><span class="rel-mid">1 : N</span><span class="rel-name">adoption_requests</span><span class="rel-key">關聯欄位 dog_id</span></div>
+      <div class="rel-row"><span class="rel-name">users</span><span class="rel-mid">1 : N</span><span class="rel-name">volunteer_signups</span><span class="rel-key">關聯欄位 user_id</span></div>
+      <div class="rel-row"><span class="rel-name">volunteer_events</span><span class="rel-mid">1 : N</span><span class="rel-name">volunteer_signups</span><span class="rel-key">關聯欄位 event_id</span></div>
+    </div>
+
+    <h3 class="sub">資料表結構</h3>
+    <div class="erd">
+      <div class="ent">
+        <div class="ent-head"><b>users</b><span>使用者</span></div>
+        <ul class="ent-cols">
+          <li><span class="key key--pk">PK</span>user_id<span class="t">int</span></li>
+          <li>username<span class="t">varchar(50)</span></li>
+          <li>password<span class="t">varchar(255)</span></li>
+          <li>email<span class="t">varchar(100)</span></li>
+          <li>role<span class="t">varchar(20)</span></li>
+          <li>name<span class="t">varchar(50)</span></li>
+        </ul>
+      </div>
+
+      <div class="ent">
+        <div class="ent-head"><b>dogs</b><span>狗狗</span></div>
+        <ul class="ent-cols">
+          <li><span class="key key--pk">PK</span>dog_id<span class="t">int</span></li>
+          <li>name<span class="t">varchar(50)</span></li>
+          <li>breed<span class="t">varchar(50)</span></li>
+          <li>size<span class="t">varchar(10)</span></li>
+          <li>gender<span class="t">varchar(5)</span></li>
+          <li>health_status<span class="t">text</span></li>
+          <li>description<span class="t">text</span></li>
+          <li>image_url<span class="t">varchar(255)</span></li>
+          <li>is_adopted<span class="t">tinyint(1)</span></li>
+          <li>age_year<span class="t">int</span></li>
+          <li>age_month<span class="t">int</span></li>
+        </ul>
+      </div>
+
+      <div class="ent">
+        <div class="ent-head"><b>adoption_requests</b><span>領養申請</span></div>
+        <ul class="ent-cols">
+          <li><span class="key key--pk">PK</span>request_id<span class="t">int</span></li>
+          <li><span class="key key--rel">REL</span>user_id<span class="t">int</span></li>
+          <li><span class="key key--rel">REL</span>dog_id<span class="t">int</span></li>
+          <li>applicant_name<span class="t">varchar(50)</span></li>
+          <li>phone<span class="t">varchar(20)</span></li>
+          <li>message<span class="t">text</span></li>
+          <li>request_time<span class="t">timestamp</span></li>
+          <li>status<span class="t">varchar(20)</span></li>
+          <li>confirm_20<span class="t">tinyint</span></li>
+          <li>no_abandon<span class="t">tinyint</span></li>
+          <li>accept_chip<span class="t">tinyint</span></li>
+          <li>accept_neuter<span class="t">tinyint</span></li>
+        </ul>
+      </div>
+
+      <div class="ent">
+        <div class="ent-head"><b>volunteer_events</b><span>志工活動</span></div>
+        <ul class="ent-cols">
+          <li><span class="key key--pk">PK</span>event_id<span class="t">int</span></li>
+          <li>event_name<span class="t">varchar(100)</span></li>
+          <li>event_time<span class="t">datetime</span></li>
+          <li>max_people<span class="t">int</span></li>
+        </ul>
+      </div>
+
+      <div class="ent">
+        <div class="ent-head"><b>volunteer_signups</b><span>志工報名</span></div>
+        <ul class="ent-cols">
+          <li><span class="key key--pk">PK</span>signup_id<span class="t">int</span></li>
+          <li><span class="key key--rel">REL</span>event_id<span class="t">int</span></li>
+          <li><span class="key key--rel">REL</span>user_id<span class="t">int</span></li>
+          <li>signup_time<span class="t">timestamp</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="note note--warn" style="margin-top:18px;">
+      <strong>關於 Foreign Key：</strong>上方 ERD 表示目前系統的「邏輯」資料關聯。
+      課程版本是透過 ID 欄位（<code>user_id</code>、<code>dog_id</code>、<code>event_id</code>）
+      在應用層以 SQL <code>JOIN</code> 建立關聯，<strong>尚未於 <code>schema.sql</code> 宣告 FOREIGN KEY Constraint</strong>；
+      因此資料完整性（例如刪除使用者後其申請紀錄成為孤兒資料）目前由應用程式邏輯負責，
+      而非由資料庫層強制。補上 FK 與 <code>ON DELETE</code> 行為列於改善方向。
+    </div>
+  </section>
+
+  <!-- ── 06 Technical Architecture ─────────────────────────────────── -->
+  <section class="wrap section" id="architecture">
+    <h2 class="h2"><span class="num">06</span>技術架構</h2>
+    <p class="h2-en">TECHNICAL ARCHITECTURE</p>
+
+    <div class="arch">
+      <div class="arch-tier">
+        <div class="arch-tier-label">Client · 使用者端</div>
+        <div class="arch-row">
+          <div class="arch-box"><b>Browser 瀏覽器</b><small>送出表單與查詢條件，接收伺服器渲染後的 HTML</small></div>
+        </div>
+      </div>
+
+      <div class="arch-link" aria-hidden="true">↕</div>
+
+      <div class="arch-tier arch-tier--server">
+        <div class="arch-tier-label">Server · XAMPP / Apache（localhost）</div>
+        <div class="arch-row">
+          <div class="arch-box"><b>HTML / CSS</b><small>各頁面內嵌樣式、表單與清單</small></div>
+          <div class="arch-box"><b>PHP</b><small>頁面即控制器：權限檢查 → 查詢 → 輸出</small></div>
+          <div class="arch-box"><b>PHP Session</b><small>user_id / username / role</small></div>
+          <div class="arch-box"><b>uploads/</b><small>狗狗照片實體檔案</small></div>
+          <div class="arch-box"><b>db.php</b><small>mysqli 連線設定，不進版控</small></div>
+        </div>
+      </div>
+
+      <div class="arch-link" aria-hidden="true">↕</div>
+
+      <div class="arch-tier arch-tier--db">
+        <div class="arch-tier-label">Database · 資料庫層</div>
+        <div class="arch-row">
+          <div class="arch-box"><b>MySQL / MariaDB</b><small>資料庫 dog_adoption：5 張 InnoDB 資料表</small></div>
+        </div>
+      </div>
+    </div>
+
+    <h3 class="sub">架構特點</h3>
+    <div class="card">
+      <ul class="bullets">
+        <li><strong>無框架的多頁式架構</strong>：每個 <code>.php</code> 檔案同時扮演控制器與視圖，頁面開頭先做 Session 與角色檢查，再進行資料查詢，最後輸出 HTML。</li>
+        <li><strong>伺服器端權限守門</strong>：管理員頁面於檔案最上方檢查 Session 中的 <code>role</code> 是否為 <code>admin</code>，未通過即中止執行。</li>
+        <li><strong>資料庫存取</strong>：主要查詢使用 mysqli Prepared Statement 搭配 <code>bind_param()</code>；動態搜尋條件則以陣列累積參數與型別字串後展開綁定（<code>list_dogs.php</code>）。</li>
+        <li><strong>檔案儲存分離</strong>：狗狗照片以 <code>uniqid()</code> 前綴命名後存放於 <code>uploads/</code>，資料庫僅保存相對路徑（<code>dogs.image_url</code>）；刪除狗狗時一併移除實體檔案。</li>
+        <li><strong>連線設定與程式碼分離</strong>：資料庫帳密置於 <code>db.php</code>，不納入版本控制，repository 僅提供 <code>db.example.php</code> 範本。</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ── 07 Screenshots ────────────────────────────────────────────── -->
+  <section class="wrap section" id="screenshots">
+    <h2 class="h2"><span class="num">07</span>系統畫面</h2>
+    <p class="h2-en">SCREENSHOTS</p>
+
+    <p class="p">
+      本頁只放實際操作系統時擷取的畫面，<strong>不使用任何示意圖、AI 生成圖或網路圖片</strong>。
+      目前已擷取的是登入頁，其餘畫面尚未補齊。
+    </p>
+
+    <figure class="shot" style="margin:0;">
+      <img src="../../images/project-dog.png" alt="狗狗領養與志工系統的登入頁：標題、帳號與密碼欄位、登入按鈕，以及註冊與忘記密碼連結" width="697" height="604" loading="lazy" decoding="async" />
+      <figcaption class="shot-cap"><span class="file file--plain">login.php</span> 登入頁 — 系統實際入口，提供註冊與忘記密碼導引。</figcaption>
+    </figure>
+
+    <h3 class="sub">待補畫面</h3>
+    <p class="p">以下畫面已列入 repository 的 <code>docs/screenshots/</code> 補齊清單，尚未擷取：</p>
+    <div class="pending">
+      <span>list_dogs.php — 狗狗清單與條件搜尋</span>
+      <span>dog_profile.php — 狗狗詳細資料</span>
+      <span>adopt_form.php — 領養申請表與資格切結</span>
+      <span>volunteer.php — 志工活動報名專區</span>
+      <span>admin_adoptions.php — 管理員後台審核</span>
+    </div>
+    <div class="note" style="margin-top:16px;">
+      補齊前會先以測試帳號與虛構資料操作，避免畫面出現任何真實個人資料。
+    </div>
+  </section>
+
+  <!-- ── 08 Learning / Review ──────────────────────────────────────── -->
+  <section class="wrap section" id="learning">
+    <h2 class="h2"><span class="num">08</span>學習與回顧</h2>
+    <p class="h2-en">LEARNING / REVIEW</p>
+
+    <div class="card">
+      <ol class="steps">
+        <li><strong>關聯式資料庫設計</strong>：從真實情境（送養 + 志工）拆解出 5 張資料表，區分主體資料與關聯／交易資料，理解多對多關係需要中介資料表來承載。</li>
+        <li><strong>JOIN 查詢的實務應用</strong>：後台的申請與報名列表需同時顯示帳號、狗狗名稱與活動名稱，實作了兩層與三層的 <code>INNER JOIN</code> 查詢。</li>
+        <li><strong>動態條件查詢</strong>：<code>list_dogs.php</code> 依使用者選擇的條件動態組合 <code>WHERE</code> 子句與 <code>bind_param()</code> 的型別字串，理解到「動態 SQL」與「參數化查詢」可以並存。</li>
+        <li><strong>跨資料表的狀態一致性</strong>：審核通過時需同時更新 <code>adoption_requests.status</code> 與 <code>dogs.is_adopted</code>，實際體會到缺乏交易（Transaction）保護時，兩段 SQL 之間存在不一致的風險。</li>
+        <li><strong>Session 與角色權限控管</strong>：以 Session 保存登入狀態，並在每個受保護頁面最上方進行角色檢查，理解「權限必須在伺服器端驗證」，而不是只把前端按鈕藏起來。</li>
+        <li><strong>檔案上傳與資料庫的分工</strong>：圖片存於檔案系統、路徑存於資料庫，並在刪除資料時一併處理實體檔案。</li>
+        <li><strong>資安意識的建立</strong>：完成後回頭檢視程式碼，辨識出明碼密碼、缺少 CSRF 防護、以 GET 執行寫入操作等問題，是本專案最重要的收穫之一。</li>
+        <li><strong>個資保護與版本控制</strong>：將設定檔與真實資料排除於 repository 之外，改以 <code>.example</code> 範本與純結構 schema 對外發布。</li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- ── 09 Future Improvements ────────────────────────────────────── -->
+  <section class="wrap section" id="future">
+    <h2 class="h2"><span class="num">09</span>改善方向</h2>
+    <p class="h2-en">FUTURE IMPROVEMENTS</p>
+
+    <p class="p">以下為檢視現有程式碼後整理出的優化方向，<strong>目前皆尚未實作</strong>。</p>
+
+    <h3 class="sub">資料庫層</h3>
+    <div class="card">
+      <div class="imp">
+        <div class="imp-item"><div class="imp-name">加入 Foreign Key Constraints</div><div class="imp-now"><code>schema.sql</code> 未宣告任何 FK，關聯僅靠 ID 欄位與應用層 <code>JOIN</code> 維持；應補上 FK 與適當的 <code>ON DELETE</code> 行為，避免刪除使用者或狗狗後留下孤兒資料。</div></div>
+        <div class="imp-item"><div class="imp-name">為關聯欄位建立索引</div><div class="imp-now"><code>adoption_requests.user_id</code> / <code>dog_id</code>、<code>volunteer_signups.event_id</code> / <code>user_id</code> 皆為查詢與 JOIN 的常用條件，目前無索引。</div></div>
+        <div class="imp-item"><div class="imp-name">volunteer_signups 加上唯一鍵</div><div class="imp-now">目前以 PHP 查詢檢查重複報名，若改為 <code>UNIQUE (event_id, user_id)</code> 可由資料庫層直接保證。</div></div>
+        <div class="imp-item"><div class="imp-name">以 Transaction 包裹審核流程</div><div class="imp-now">「更新申請狀態」與「更新 <code>dogs.is_adopted</code>」為兩段獨立 SQL，中途失敗會造成狀態不一致。</div></div>
+        <div class="imp-item"><div class="imp-name">狀態欄位型別優化</div><div class="imp-now"><code>adoption_requests.status</code> 目前為中文字串，可改為 <code>ENUM</code> 或狀態碼，避免拼寫不一致。</div></div>
+      </div>
+    </div>
+
+    <h3 class="sub">安全性與驗證</h3>
+    <div class="card">
+      <div class="imp">
+        <div class="imp-item"><div class="imp-name">密碼雜湊</div><div class="imp-now">目前為明碼儲存與比對，應改用 <code>password_hash()</code> / <code>password_verify()</code>。</div></div>
+        <div class="imp-item"><div class="imp-name">重設密碼流程</div><div class="imp-now"><code>forgot_password.php</code> 目前直接顯示密碼，應改為寄送一次性重設連結（Token + 有效期限）。</div></div>
+        <div class="imp-item"><div class="imp-name">統一使用 Prepared Statement</div><div class="imp-now">多數查詢已參數化，但 <code>delete_user.php</code> 與 <code>admin_adoptions.php</code> 部分刪除／更新語句仍以字串串接組成 SQL。</div></div>
+        <div class="imp-item"><div class="imp-name">寫入操作改用 POST + CSRF Token</div><div class="imp-now">審核通過、拒絕、刪除等操作目前皆透過 GET 連結觸發，應改為 POST 並加上 CSRF 驗證。</div></div>
+        <div class="imp-item"><div class="imp-name">補齊寫入端的登入檢查</div><div class="imp-now"><code>submit_adoption.php</code>、<code>submit_volunteer.php</code> 直接讀取 Session 中的 user_id，未先驗證是否已登入。</div></div>
+        <div class="imp-item"><div class="imp-name">上傳檔案驗證</div><div class="imp-now"><code>add_dog.php</code>、<code>edit_dog.php</code> 未檢查副檔名、MIME type 與檔案大小。</div></div>
+        <div class="imp-item"><div class="imp-name">輸出一律跳脫</div><div class="imp-now">多數頁面已使用 <code>htmlspecialchars()</code>，但 <code>admin_users.php</code> 直接輸出 username 與 role。</div></div>
+        <div class="imp-item"><div class="imp-name">表單欄位與資料表對齊</div><div class="imp-now"><code>volunteer_signup.php</code> 收集了姓名／電話／備註，但 <code>submit_volunteer.php</code> 僅寫入 event_id 與 user_id；<code>add_dog.php</code> 亦未寫入 health_status 與 description。</div></div>
+      </div>
+    </div>
+
+    <h3 class="sub">前端與工程實務</h3>
+    <div class="card">
+      <div class="imp">
+        <div class="imp-item"><div class="imp-name">Responsive UI</div><div class="imp-now">目前各頁使用固定寬度與內嵌 <code>&lt;style&gt;</code>，行動裝置瀏覽體驗不佳；應抽出共用 CSS 並加入 RWD。</div></div>
+        <div class="imp-item"><div class="imp-name">抽出共用版型</div><div class="imp-now">導覽列、頁尾與權限檢查在多個檔案中重複，可抽成 <code>header.php</code>、<code>auth.php</code> 等共用檔案。</div></div>
+        <div class="imp-item"><div class="imp-name">部署環境設定</div><div class="imp-now">目前僅支援 XAMPP 本機環境，可補上環境變數設定、<code>.htaccess</code> 與雲端部署說明。</div></div>
+        <div class="imp-item"><div class="imp-name">自動化測試</div><div class="imp-now">專案目前無測試，可為登入驗證、權限守門與領養審核流程加入 PHPUnit 測試。</div></div>
+        <div class="imp-item"><div class="imp-name">錯誤處理</div><div class="imp-now">目前多以 <code>echo</code> 搭配 <code>alert()</code> 回報結果，可改為統一的錯誤頁面與 Flash Message 機制。</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 10 GitHub Repository ──────────────────────────────────────── -->
+  <section class="wrap section" id="repo">
+    <h2 class="h2"><span class="num">10</span>GitHub Repository</h2>
+    <p class="h2-en">SOURCE CODE</p>
+
+    <div class="card repo">
+      <div>
+        <div class="repo-url">github.com/for995-ai/dog-adoption-volunteer-system</div>
+        <div class="repo-meta">
+          公開版本僅包含程式碼與 5 張資料表的 <code>CREATE TABLE</code> 結構，
+          不含任何真實帳號、密碼、聯絡方式或上傳照片；<code>db.php</code> 以 <code>db.example.php</code> 範本取代。
+        </div>
+      </div>
+      <a class="btn btn--primary" href="https://github.com/for995-ai/dog-adoption-volunteer-system" target="_blank" rel="noopener noreferrer">前往 Repository ↗</a>
+    </div>
+  </section>
+
+</main>
+
+<!-- ── Footer ──────────────────────────────────────────────────────── -->
+<footer class="footer">
+  <div class="wrap footer-inner">
+    <a class="btn btn--secondary" href="../../#projects">← 返回作品集</a>
+    <p class="footer-note">2025 資料庫程式設計課程專案 · 蘇洺崴 MING WEI SU</p>
+  </div>
+</footer>
+
+</body>
+</html>

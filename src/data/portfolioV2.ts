@@ -103,17 +103,9 @@ export const EDUCATION: readonly Education[] = [
   },
 ];
 
-// ─── Projects (A0–A7) ─────────────────────────────────────────────────────────
+// ─── Projects (A1–A7) ─────────────────────────────────────────────────────────
 
 export const PROJECTS: readonly Project[] = [
-  {
-    id: 'A0',
-    date: '2026.09',
-    title: '履歷／作品集網站',
-    role: '獨立製作',
-    skills: ['資訊架構', 'UI/UX', '前端實作'],
-    displayLevel: 'archive',
-  },
   {
     id: 'A1',
     date: '2025.07–',
@@ -161,7 +153,7 @@ export const PROJECTS: readonly Project[] = [
     date: '2025.06',
     title: '狗狗領養＆志工系統',
     role: '專案作者',
-    skills: ['PHP', 'MySQL', '資料庫設計', 'CRUD', 'Session', '系統整合'],
+    skills: ['PHP', 'MySQL', 'CRUD', 'Session'],
     github: 'https://github.com/for995-ai/dog-adoption-volunteer-system',
     displayLevel: 'archive',
   },
@@ -432,7 +424,7 @@ export const CERTIFICATIONS: readonly Certification[] = [
 
 // ─── Derived Counts ───────────────────────────────────────────────────────────
 
-export const projectCount = PROJECTS.length;          // 8
+export const projectCount = PROJECTS.length;          // 7
 export const competitionCount = COMPETITIONS.length;  // 7
 export const researchCount = RESEARCH.length;         // 1
 

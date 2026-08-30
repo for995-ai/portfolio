@@ -9,7 +9,6 @@ import { useInView } from '@/hooks/useInView';
 type SourceType = '專題' | '競賽' | '課程' | '自行開發';
 
 const SOURCE_MAP: Record<string, SourceType> = {
-  A0: '自行開發',
   A1: '專題',
   A2: '競賽',
   A3: '競賽',
@@ -82,10 +81,6 @@ const BLURB: Partial<Record<string, Blurb>> = {
     summary: '相簿滑滑整理 APP，以手勢互動加速重複相片的篩選流程。',
     highlights: ['獨立製作，負責 APP 流程與互動設計', '以產品思維定義核心操作'],
   },
-  A0: {
-    summary: '本作品集網站，採 React + Vite + TypeScript 架構開發。',
-    highlights: ['自行規劃資訊架構與 UI/UX', '前端實作與效能優化'],
-  },
 };
 
 // ── Project links ─────────────────────────────────────────────────────────────
@@ -105,8 +100,14 @@ interface ProjectLink { label: string; url: string; type: LinkType }
  *
  * A1 跟著龍走      — repository is team-owned; ownership unresolved
  *
- * A6 狗狗領養 carries a GitHub link only: it is a PHP/MySQL application that
- * runs on XAMPP, so there is no public deployment to point 查看作品 at.
+ * A6 狗狗領養 is a PHP/MySQL application that runs on XAMPP, so there is no
+ * public deployment to point 查看作品 at. It links to a static case study
+ * shipped with this site instead — written from the repository's own README
+ * and database/schema.sql, so nothing on that page is invented.
+ *
+ * Root-relative URLs are internal pages of this deployment and are resolved
+ * through publicUrl(), so they follow the /portfolio/ base on GitHub Pages
+ * and the site root everywhere else.
  */
 const EXTRA_LINKS: Partial<Record<string, ProjectLink[]>> = {
   A2: [
@@ -125,16 +126,15 @@ const EXTRA_LINKS: Partial<Record<string, ProjectLink[]>> = {
     { label: '查看作品', url: 'https://for995-ai.github.io/work-exchange-platform/', type: 'demo' },
     { label: 'GitHub',   url: 'https://github.com/for995-ai/work-exchange-platform',  type: 'github' },
   ],
+  A6: [
+    // Static case study served from public/. The repository link itself lives
+    // on the project record in portfolioV2.ts.
+    { label: '查看作品', url: '/case-studies/dog-adoption-volunteer-system/', type: 'case-study' },
+  ],
   A7: [
     // Native app — 查看作品 opens the deployed portfolio demo.
     { label: '查看作品', url: 'https://for995-ai.github.io/photo-swipe-cleaner/demo/', type: 'demo' },
     { label: 'GitHub',   url: 'https://github.com/for995-ai/photo-swipe-cleaner',      type: 'github' },
-  ],
-  A0: [
-    // This site itself — the demo link points back to the deployed portfolio,
-    // which is a different destination from the source repository.
-    { label: '查看作品', url: 'https://for995-ai.github.io/portfolio/', type: 'demo' },
-    { label: 'GitHub',   url: 'https://github.com/for995-ai/portfolio',  type: 'github' },
   ],
 };
 
@@ -149,7 +149,11 @@ function linksFor(project: Project): ProjectLink[] {
 
   for (const l of EXTRA_LINKS[project.id] ?? []) links.push(l);
 
-  return links.sort((a, b) => TYPE_RANK[a.type] - TYPE_RANK[b.type]);
+  return links
+    // Internal pages are stored root-relative, like the image paths, and are
+    // resolved against BASE_URL here. External URLs pass through untouched.
+    .map(l => (l.url.startsWith('/') ? { ...l, url: publicUrl(l.url) } : l))
+    .sort((a, b) => TYPE_RANK[a.type] - TYPE_RANK[b.type]);
 }
 
 // Display order: featured first, then standard, then archive
