@@ -4,11 +4,12 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>狗狗領養＆志工系統｜Case Study — 蘇洺崴 MING WEI SU</title>
-<meta name="description" content="以 PHP + MySQL 從零建置的狗狗領養與志工管理系統：資料表關聯設計、領養審核的跨表狀態同步、Session 角色權限，以及完成後的資安檢視與改善方向。" />
+<meta name="description" content="以 PHP + MySQL 從零建置的狗狗領養與志工管理系統：資料表關聯設計、領養審核的跨表狀態同步、Session 角色權限，以及安全化公開 Demo 的部署成果。附可實際操作的線上 Demo。" />
 <meta name="theme-color" content="#F7F8FC" />
 
 <!-- 靜態專案說明頁（Case Study）。內容取自 repository 的 README 與
      database/schema.sql，不含任何未實作的功能、虛構數據或示意截圖。
+     公開 Demo 的連線設定（主機、資料庫名稱、帳號密碼、FTP）一律不寫入本頁。
      所有連結與資源皆為相對路徑，因此在 /portfolio/ 子路徑（GitHub Pages）
      與網站根目錄（Vercel）下都能正確解析。 -->
 
@@ -267,6 +268,13 @@ code{ font-family:var(--mono); font-size:.8125em; }
 .imp-now{ color:var(--sec); font-size:.9375rem; }
 @media (max-width:720px){ .imp-item{ grid-template-columns:1fr; gap:4px; } }
 
+/* ── Demo credentials ─────────────────────────────────────────────── */
+.cred .spec{ grid-template-columns:64px 1fr; }
+@media (max-width:640px){
+  .cred .spec > dt,.cred .spec > dd{ padding:11px 0; border-bottom:1px solid var(--border-lt); }
+  .cred .spec > dt:last-of-type,.cred .spec > dd:last-of-type{ border-bottom:0; }
+}
+
 /* ── Repo block ───────────────────────────────────────────────────── */
 .repo{ display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:16px; }
 .repo-url{ font-family:var(--mono); font-size:.8125rem; color:var(--sec); word-break:break-all; }
@@ -311,15 +319,13 @@ code{ font-family:var(--mono); font-size:.8125em; }
     </p>
 
     <div class="actions">
-      <a class="btn btn--primary" href="https://github.com/for995-ai/dog-adoption-volunteer-system" target="_blank" rel="noopener noreferrer">GitHub Repository ↗</a>
+      <a class="btn btn--primary" href="https://dog-adopt.xo.je/demo/" target="_blank" rel="noopener noreferrer">查看線上 Demo ↗</a>
+      <a class="btn btn--secondary" href="https://github.com/for995-ai/dog-adoption-volunteer-system" target="_blank" rel="noopener noreferrer">GitHub Repository ↗</a>
       <a class="btn btn--secondary" href="../../#projects">← 返回作品集</a>
     </div>
 
     <div class="note" style="margin-top:24px;">
-      <strong>關於這一頁：</strong>本系統為 PHP + MySQL 的伺服器端應用，於 XAMPP 本機環境
-      （<code>http://localhost/</code>）運行，目前沒有公開的線上部署版本，因此以這份靜態
-      Case Study 呈現完整的設計與實作內容。頁面上的功能、資料表欄位與改善方向，
-      皆對應 repository 中實際存在的程式碼與 <code>database/schema.sql</code>。
+      <strong>關於這一頁：</strong>本頁整理系統設計、資料庫結構、流程與安全化 Demo 部署成果。除 Case Study 外，也提供可實際操作的<a href="https://dog-adopt.xo.je/demo/" target="_blank" rel="noopener noreferrer">公開 Demo</a>。公開 Demo 使用獨立的 Demo 資料庫，避免影響原始專案資料；頁面上的功能、資料表欄位與改善方向，皆對應 repository 中實際存在的程式碼與 <code>database/schema.sql</code>。
     </div>
 
     <nav class="anchors" aria-label="章節導覽">
@@ -329,6 +335,7 @@ code{ font-family:var(--mono); font-size:.8125em; }
       <a href="#flow">System Flow</a>
       <a href="#erd">Database / ERD</a>
       <a href="#architecture">Architecture</a>
+      <a href="#deploy">Demo / Deployment</a>
       <a href="#screenshots">Screenshots</a>
       <a href="#learning">Learning / Review</a>
       <a href="#future">Future Improvements</a>
@@ -345,11 +352,12 @@ code{ font-family:var(--mono); font-size:.8125em; }
       <dl class="spec">
         <dt>專案性質</dt><dd>2025 年「資料庫程式設計」課程專案（個人獨立完成）</dd>
         <dt>系統類型</dt><dd>伺服器端渲染（SSR）的多頁式 Web 應用</dd>
-        <dt>技術組合</dt><dd>PHP、MySQL / MariaDB、HTML / CSS、Apache（XAMPP）</dd>
+        <dt>技術組合</dt><dd>PHP、MySQL / MariaDB、HTML / CSS、Apache</dd>
         <dt>資料表數量</dt><dd>5 張 — <code>users</code>、<code>dogs</code>、<code>adoption_requests</code>、<code>volunteer_events</code>、<code>volunteer_signups</code></dd>
         <dt>程式規模</dt><dd>22 個功能頁面 PHP 檔案，約 1,600 行程式碼</dd>
         <dt>角色設計</dt><dd>一般使用者（<code>user</code>）與管理員（<code>admin</code>），以 Session 中的 <code>role</code> 欄位控管</dd>
-        <dt>執行環境</dt><dd>XAMPP 本機環境（Apache + MariaDB + PHP）</dd>
+        <dt>執行環境</dt><dd>開發：XAMPP（Apache + MariaDB + PHP）／公開 Demo：InfinityFree（PHP + MySQL）</dd>
+        <dt>公開 Demo</dt><dd><a href="https://dog-adopt.xo.je/demo/" target="_blank" rel="noopener noreferrer">dog-adopt.xo.je/demo/</a> — 安全化展示版本，使用獨立 Demo 資料庫</dd>
       </dl>
     </div>
 
@@ -389,6 +397,7 @@ code{ font-family:var(--mono); font-size:.8125em; }
         <li><strong>身分驗證與權限</strong>：以 PHP Session 保存登入狀態，並依 <code>role</code> 區分一般使用者與管理員可存取的頁面。</li>
         <li><strong>前端頁面</strong>：以 HTML / CSS 撰寫所有表單、清單、卡片與後台表格版面。</li>
         <li><strong>測試與整合</strong>：於 XAMPP（Apache + MariaDB）環境進行整合測試。</li>
+        <li><strong>Demo 部署</strong>：另行整理一份安全化的展示版本，建立獨立的 Demo 資料庫與示範資料後部署上線，讓這套系統不必架設環境就能實際操作。</li>
       </ul>
     </div>
   </section>
@@ -729,7 +738,7 @@ code{ font-family:var(--mono); font-size:.8125em; }
       <div class="arch-link" aria-hidden="true">↕</div>
 
       <div class="arch-tier arch-tier--server">
-        <div class="arch-tier-label">Server · XAMPP / Apache（localhost）</div>
+        <div class="arch-tier-label">Server · Apache + PHP（開發：XAMPP／公開 Demo：InfinityFree）</div>
         <div class="arch-row">
           <div class="arch-box"><b>HTML / CSS</b><small>各頁面內嵌樣式、表單與清單</small></div>
           <div class="arch-box"><b>PHP</b><small>頁面即控制器：權限檢查 → 查詢 → 輸出</small></div>
@@ -761,14 +770,69 @@ code{ font-family:var(--mono); font-size:.8125em; }
     </div>
   </section>
 
-  <!-- ── 07 Screenshots ────────────────────────────────────────────── -->
+  <!-- ── 07 Demo / Deployment ──────────────────────────────────────── -->
+  <section class="wrap section" id="deploy">
+    <h2 class="h2"><span class="num">07</span>公開 Demo 與部署</h2>
+    <p class="h2-en">DEMO / DEPLOYMENT</p>
+
+    <p class="p">
+      課程結束後，我把這套系統整理成一份可以實際操作的公開 Demo，讓閱讀這份 Case Study 的人不必自行架設環境，也能走完登入、領養申請、志工報名與後台審核的完整流程。
+    </p>
+
+    <div class="card repo">
+      <div>
+        <div class="repo-url">dog-adopt.xo.je/demo/</div>
+        <div class="repo-meta">部署於 InfinityFree 虛擬主機，執行環境為 PHP + MySQL。</div>
+      </div>
+      <a class="btn btn--primary" href="https://dog-adopt.xo.je/demo/" target="_blank" rel="noopener noreferrer">開啟線上 Demo ↗</a>
+    </div>
+
+    <h3 class="sub">展示策略</h3>
+    <p class="p">
+      公開 Demo 的目的是完整呈現系統流程，而不是開放一套可任意寫入的正式系統，因此上線前做了以下安全化調整：
+    </p>
+    <div class="card">
+      <ul class="bullets">
+        <li><strong>資料來源分離</strong>：公開 Demo 使用獨立的 Demo 資料庫，與原始專案的資料完全分開，操作 Demo 不會影響任何舊有資料。</li>
+        <li><strong>帳號皆為展示帳號</strong>：Demo 提供一般使用者與管理員兩組展示帳號，不含任何真實使用者資料。</li>
+        <li><strong>申請與志工資料為虛構</strong>：領養申請與志工報名紀錄，皆是為了呈現流程而建立的虛構展示資料。</li>
+        <li><strong>狗狗資料沿用專案素材</strong>：狗狗照片與基本資料沿用原專案既有的展示素材，維持與課程版本一致的畫面。</li>
+        <li><strong>停用破壞性操作</strong>：刪除狗狗、使用者、領養申請與志工報名等刪除類操作，在 Demo 版本中已停用，避免展示資料被清空。</li>
+        <li><strong>停用高風險上傳</strong>：照片上傳等檔案寫入功能在 Demo 版本中一併停用。</li>
+      </ul>
+    </div>
+
+    <h3 class="sub">Demo 帳號</h3>
+    <p class="p">兩組帳號分別對應系統的兩種角色，可直接登入體驗前台流程與管理員後台。</p>
+    <div class="grid grid-2">
+      <div class="card cred">
+        <div class="sub" style="margin-top:0;">一般使用者</div>
+        <dl class="spec">
+          <dt>帳號</dt><dd><code>demo_user</code></dd>
+          <dt>密碼</dt><dd><code>Demo1234!</code></dd>
+        </dl>
+      </div>
+      <div class="card cred">
+        <div class="sub" style="margin-top:0;">管理員</div>
+        <dl class="spec">
+          <dt>帳號</dt><dd><code>demo_admin</code></dd>
+          <dt>密碼</dt><dd><code>AdminDemo1234!</code></dd>
+        </dl>
+      </div>
+    </div>
+    <div class="note note--cyan" style="margin-top:16px;">
+      <strong>僅供作品展示使用：</strong>上列帳號是專為公開 Demo 建立的展示帳號，不對應任何真實使用者，也與原始專案的正式資料無關。
+    </div>
+  </section>
+
+  <!-- ── 08 Screenshots ────────────────────────────────────────────── -->
   <section class="wrap section" id="screenshots">
-    <h2 class="h2"><span class="num">07</span>系統畫面</h2>
+    <h2 class="h2"><span class="num">08</span>系統畫面</h2>
     <p class="h2-en">SCREENSHOTS</p>
 
     <p class="p">
       本頁只放實際操作系統時擷取的畫面，<strong>不使用任何示意圖、AI 生成圖或網路圖片</strong>。
-      目前已擷取的是登入頁，其餘畫面尚未補齊。
+      目前已擷取的是登入頁，其餘畫面尚未補齊；在補齊之前，也可以直接在<a href="https://dog-adopt.xo.je/demo/" target="_blank" rel="noopener noreferrer">公開 Demo</a> 上實際操作各個頁面。
     </p>
 
     <figure class="shot" style="margin:0;">
@@ -790,9 +854,9 @@ code{ font-family:var(--mono); font-size:.8125em; }
     </div>
   </section>
 
-  <!-- ── 08 Learning / Review ──────────────────────────────────────── -->
+  <!-- ── 09 Learning / Review ──────────────────────────────────────── -->
   <section class="wrap section" id="learning">
-    <h2 class="h2"><span class="num">08</span>學習與回顧</h2>
+    <h2 class="h2"><span class="num">09</span>學習與回顧</h2>
     <p class="h2-en">LEARNING / REVIEW</p>
 
     <div class="card">
@@ -809,9 +873,9 @@ code{ font-family:var(--mono); font-size:.8125em; }
     </div>
   </section>
 
-  <!-- ── 09 Future Improvements ────────────────────────────────────── -->
+  <!-- ── 10 Future Improvements ────────────────────────────────────── -->
   <section class="wrap section" id="future">
-    <h2 class="h2"><span class="num">09</span>改善方向</h2>
+    <h2 class="h2"><span class="num">10</span>改善方向</h2>
     <p class="h2-en">FUTURE IMPROVEMENTS</p>
 
     <p class="p">以下為檢視現有程式碼後整理出的優化方向，<strong>目前皆尚未實作</strong>。</p>
@@ -846,16 +910,16 @@ code{ font-family:var(--mono); font-size:.8125em; }
       <div class="imp">
         <div class="imp-item"><div class="imp-name">Responsive UI</div><div class="imp-now">目前各頁使用固定寬度與內嵌 <code>&lt;style&gt;</code>，行動裝置瀏覽體驗不佳；應抽出共用 CSS 並加入 RWD。</div></div>
         <div class="imp-item"><div class="imp-name">抽出共用版型</div><div class="imp-now">導覽列、頁尾與權限檢查在多個檔案中重複，可抽成 <code>header.php</code>、<code>auth.php</code> 等共用檔案。</div></div>
-        <div class="imp-item"><div class="imp-name">部署環境設定</div><div class="imp-now">目前僅支援 XAMPP 本機環境，可補上環境變數設定、<code>.htaccess</code> 與雲端部署說明。</div></div>
+        <div class="imp-item"><div class="imp-name">部署設定自動化</div><div class="imp-now">公開 Demo 已完成部署，但環境差異目前仍以手動調整為主；可將連線設定改為環境變數、補上 <code>.htaccess</code> 與一份可重現的部署說明。</div></div>
         <div class="imp-item"><div class="imp-name">自動化測試</div><div class="imp-now">專案目前無測試，可為登入驗證、權限守門與領養審核流程加入 PHPUnit 測試。</div></div>
         <div class="imp-item"><div class="imp-name">錯誤處理</div><div class="imp-now">目前多以 <code>echo</code> 搭配 <code>alert()</code> 回報結果，可改為統一的錯誤頁面與 Flash Message 機制。</div></div>
       </div>
     </div>
   </section>
 
-  <!-- ── 10 GitHub Repository ──────────────────────────────────────── -->
+  <!-- ── 11 GitHub Repository ──────────────────────────────────────── -->
   <section class="wrap section" id="repo">
-    <h2 class="h2"><span class="num">10</span>GitHub Repository</h2>
+    <h2 class="h2"><span class="num">11</span>GitHub Repository</h2>
     <p class="h2-en">SOURCE CODE</p>
 
     <div class="card repo">

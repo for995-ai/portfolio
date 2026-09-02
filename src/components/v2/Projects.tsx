@@ -71,10 +71,11 @@ const BLURB: Partial<Record<string, Blurb>> = {
     highlights: ['獨立完成平台企劃與需求分析', '網路行銷規劃'],
   },
   A6: {
-    summary: '以 PHP + MySQL 建置的狗狗領養與志工管理系統，整合狗狗資料、領養申請、志工活動、使用者與後台管理流程。',
+    summary: '以 PHP + MySQL 建置的狗狗領養與志工管理系統，整合狗狗資料、領養申請、志工活動、使用者與後台管理流程，並完成公開安全化 Demo 部署。',
     highlights: [
       '以關聯式資料庫整合狗狗、使用者、領養申請與志工活動資料',
       '實作 PHP CRUD、Session 登入驗證與後台管理功能',
+      '建立獨立 Demo 資料庫與安全化公開展示環境',
     ],
   },
   A7: {
@@ -100,10 +101,10 @@ interface ProjectLink { label: string; url: string; type: LinkType }
  *
  * A1 跟著龍走      — repository is team-owned; ownership unresolved
  *
- * A6 狗狗領養 is a PHP/MySQL application that runs on XAMPP, so there is no
- * public deployment to point 查看作品 at. It links to a static case study
- * shipped with this site instead — written from the repository's own README
- * and database/schema.sql, so nothing on that page is invented.
+ * A6 狗狗領養 is a PHP/MySQL application. Its 查看作品 button points at the
+ * public, safety-hardened demo (recorded on the project itself in
+ * portfolioV2.ts); the static case study shipped with this site stays linked
+ * alongside it, so the write-up does not become unreachable.
  *
  * Root-relative URLs are internal pages of this deployment and are resolved
  * through publicUrl(), so they follow the /portfolio/ base on GitHub Pages
@@ -127,9 +128,9 @@ const EXTRA_LINKS: Partial<Record<string, ProjectLink[]>> = {
     { label: 'GitHub',   url: 'https://github.com/for995-ai/work-exchange-platform',  type: 'github' },
   ],
   A6: [
-    // Static case study served from public/. The repository link itself lives
-    // on the project record in portfolioV2.ts.
-    { label: '查看作品', url: '/case-studies/dog-adoption-volunteer-system/', type: 'case-study' },
+    // Static case study served from public/. 查看作品 (the live demo) and the
+    // repository link both live on the project record in portfolioV2.ts.
+    { label: 'Case Study', url: '/case-studies/dog-adoption-volunteer-system/', type: 'case-study' },
   ],
   A7: [
     // Native app — 查看作品 opens the deployed portfolio demo.
@@ -238,9 +239,10 @@ function ProjectCard({ project }: { project: Project }) {
                 href={l.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                /* 查看作品 always leads as primary; GitHub is always secondary,
-                   so a project with only a repo never gets a primary button. */
-                className={`v2-bubble-btn ${l.type === 'github' ? 'v2-bubble-btn--secondary' : 'v2-bubble-btn--primary'}`}
+                /* 查看作品 (the live demo) always leads as primary; case study
+                   and GitHub stay secondary, so a project with only a repo
+                   never gets a primary button. */
+                className={`v2-bubble-btn ${l.type === 'demo' ? 'v2-bubble-btn--primary' : 'v2-bubble-btn--secondary'}`}
               >
                 {l.label} ↗
               </a>

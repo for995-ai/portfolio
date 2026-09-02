@@ -153,7 +153,10 @@ export const PROJECTS: readonly Project[] = [
     date: '2025.06',
     title: '狗狗領養＆志工系統',
     role: '專案作者',
-    skills: ['PHP', 'MySQL', 'CRUD', 'Session'],
+    skills: ['PHP', 'MySQL', '資料庫設計', 'CRUD', 'Session', '系統整合'],
+    // Public, safety-hardened demo deployed on InfinityFree. It runs against a
+    // separate demo database, so the original project data is never exposed.
+    demo: 'https://dog-adopt.xo.je/demo/',
     github: 'https://github.com/for995-ai/dog-adoption-volunteer-system',
     displayLevel: 'archive',
   },
