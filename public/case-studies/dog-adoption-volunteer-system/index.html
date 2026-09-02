@@ -426,7 +426,7 @@ code{ font-family:var(--mono); font-size:.8125em; }
         </div>
         <div class="feat-item">
           <div><div class="feat-name">忘記密碼</div><div class="feat-files"><span class="file">forgot_password.php</span></div></div>
-          <div class="feat-desc">以「帳號 + 註冊 Email」比對後回傳密碼（課程簡化版本，限制詳見改善方向）。</div>
+          <div class="feat-desc">以「帳號 + 註冊 Email」比對後回傳密碼（原始課程版本的簡化做法；公開 Demo 已移除此行為，說明詳見改善方向）。</div>
         </div>
       </div>
     </div>
@@ -867,7 +867,7 @@ code{ font-family:var(--mono); font-size:.8125em; }
         <li><strong>跨資料表的狀態一致性</strong>：審核通過時需同時更新 <code>adoption_requests.status</code> 與 <code>dogs.is_adopted</code>，實際體會到缺乏交易（Transaction）保護時，兩段 SQL 之間存在不一致的風險。</li>
         <li><strong>Session 與角色權限控管</strong>：以 Session 保存登入狀態，並在每個受保護頁面最上方進行角色檢查，理解「權限必須在伺服器端驗證」，而不是只把前端按鈕藏起來。</li>
         <li><strong>檔案上傳與資料庫的分工</strong>：圖片存於檔案系統、路徑存於資料庫，並在刪除資料時一併處理實體檔案。</li>
-        <li><strong>資安意識的建立</strong>：完成後回頭檢視程式碼，辨識出明碼密碼、缺少 CSRF 防護、以 GET 執行寫入操作等問題，是本專案最重要的收穫之一。</li>
+        <li><strong>資安意識的建立</strong>：完成後回頭檢視程式碼，辨識出明碼密碼、缺少 CSRF 防護、以 GET 執行寫入操作等問題，是本專案最重要的收穫之一；這份檢視也直接決定了後續公開 Demo 的安全化做法。</li>
         <li><strong>個資保護與版本控制</strong>：將設定檔與真實資料排除於 repository 之外，改以 <code>.example</code> 範本與純結構 schema 對外發布。</li>
       </ol>
     </div>
@@ -878,7 +878,7 @@ code{ font-family:var(--mono); font-size:.8125em; }
     <h2 class="h2"><span class="num">10</span>改善方向</h2>
     <p class="h2-en">FUTURE IMPROVEMENTS</p>
 
-    <p class="p">以下為檢視現有程式碼後整理出的優化方向，<strong>目前皆尚未實作</strong>。</p>
+    <p class="p">以下內容主要是針對<strong>原始課程版本</strong>所做的程式碼檢視。其中與公開展示安全直接相關的項目，已在後續的 Demo 安全化版本中補強；其餘則列為未來的工程改善方向。</p>
 
     <h3 class="sub">資料庫層</h3>
     <div class="card">
@@ -892,16 +892,19 @@ code{ font-family:var(--mono); font-size:.8125em; }
     </div>
 
     <h3 class="sub">安全性與驗證</h3>
+    <div class="note" style="margin-bottom:14px;">
+      <strong>兩個版本的關係：</strong><strong>原始課程版本</strong>存在明碼儲存密碼、忘記密碼直接顯示、部分寫入操作以 GET 連結觸發，以及 CSRF 與登入驗證不足等問題。<strong>公開 Demo</strong> 是為了對外展示另行整理的版本，針對其中與公開展示直接相關的高風險項目做了補強：改用獨立的 Demo 資料庫與展示帳號，並停用刪除類破壞性操作與檔案上傳功能。以下逐項說明原始版本的狀況，以及要真正產品化仍需補齊的工程項目。
+    </div>
     <div class="card">
       <div class="imp">
-        <div class="imp-item"><div class="imp-name">密碼雜湊</div><div class="imp-now">目前為明碼儲存與比對，應改用 <code>password_hash()</code> / <code>password_verify()</code>。</div></div>
-        <div class="imp-item"><div class="imp-name">重設密碼流程</div><div class="imp-now"><code>forgot_password.php</code> 目前直接顯示密碼，應改為寄送一次性重設連結（Token + 有效期限）。</div></div>
-        <div class="imp-item"><div class="imp-name">統一使用 Prepared Statement</div><div class="imp-now">多數查詢已參數化，但 <code>delete_user.php</code> 與 <code>admin_adoptions.php</code> 部分刪除／更新語句仍以字串串接組成 SQL。</div></div>
-        <div class="imp-item"><div class="imp-name">寫入操作改用 POST + CSRF Token</div><div class="imp-now">審核通過、拒絕、刪除等操作目前皆透過 GET 連結觸發，應改為 POST 並加上 CSRF 驗證。</div></div>
-        <div class="imp-item"><div class="imp-name">補齊寫入端的登入檢查</div><div class="imp-now"><code>submit_adoption.php</code>、<code>submit_volunteer.php</code> 直接讀取 Session 中的 user_id，未先驗證是否已登入。</div></div>
-        <div class="imp-item"><div class="imp-name">上傳檔案驗證</div><div class="imp-now"><code>add_dog.php</code>、<code>edit_dog.php</code> 未檢查副檔名、MIME type 與檔案大小。</div></div>
-        <div class="imp-item"><div class="imp-name">輸出一律跳脫</div><div class="imp-now">多數頁面已使用 <code>htmlspecialchars()</code>，但 <code>admin_users.php</code> 直接輸出 username 與 role。</div></div>
-        <div class="imp-item"><div class="imp-name">表單欄位與資料表對齊</div><div class="imp-now"><code>volunteer_signup.php</code> 收集了姓名／電話／備註，但 <code>submit_volunteer.php</code> 僅寫入 event_id 與 user_id；<code>add_dog.php</code> 亦未寫入 health_status 與 description。</div></div>
+        <div class="imp-item"><div class="imp-name">密碼雜湊</div><div class="imp-now">原始課程版本採明碼儲存與比對；公開 Demo 已針對展示安全進行補強，改以獨立資料庫中的展示帳號登入。正式產品環境仍應完整採用 <code>password_hash()</code> / <code>password_verify()</code> 與更完整的帳號安全策略。</div></div>
+        <div class="imp-item"><div class="imp-name">重設密碼流程</div><div class="imp-now">原始課程版本的 <code>forgot_password.php</code> 會直接顯示密碼；公開 Demo 已移除此行為。正式產品仍應改為寄送一次性重設連結（Token + 有效期限）。</div></div>
+        <div class="imp-item"><div class="imp-name">統一使用 Prepared Statement</div><div class="imp-now">原始課程版本多數查詢已參數化，但 <code>delete_user.php</code> 與 <code>admin_adoptions.php</code> 部分刪除／更新語句仍以字串串接組成 SQL，應一併改寫為參數化查詢。</div></div>
+        <div class="imp-item"><div class="imp-name">寫入操作改用 POST + CSRF Token</div><div class="imp-now">原始課程版本的審核通過、拒絕與刪除皆透過 GET 連結觸發，也沒有 CSRF 驗證；公開 Demo 已停用其中的刪除類破壞性操作。正式產品仍應將寫入一律改為 POST 並加上 CSRF Token。</div></div>
+        <div class="imp-item"><div class="imp-name">補齊寫入端的登入檢查</div><div class="imp-now">原始課程版本的 <code>submit_adoption.php</code>、<code>submit_volunteer.php</code> 直接讀取 Session 中的 user_id，未先驗證是否已登入；公開 Demo 以展示帳號登入後操作。正式產品仍應在每個寫入端點補上明確的登入檢查。</div></div>
+        <div class="imp-item"><div class="imp-name">上傳檔案驗證</div><div class="imp-now">原始課程版本的 <code>add_dog.php</code>、<code>edit_dog.php</code> 未檢查副檔名、MIME type 與檔案大小；公開 Demo 已停用檔案上傳功能。正式產品若要開放上傳，仍須補齊完整的檔案驗證。</div></div>
+        <div class="imp-item"><div class="imp-name">輸出一律跳脫</div><div class="imp-now">原始課程版本多數頁面已使用 <code>htmlspecialchars()</code>，但 <code>admin_users.php</code> 直接輸出 username 與 role，應一併補齊。</div></div>
+        <div class="imp-item"><div class="imp-name">表單欄位與資料表對齊</div><div class="imp-now">原始課程版本的 <code>volunteer_signup.php</code> 收集了姓名／電話／備註，但 <code>submit_volunteer.php</code> 僅寫入 event_id 與 user_id；<code>add_dog.php</code> 亦未寫入 health_status 與 description。</div></div>
       </div>
     </div>
 
