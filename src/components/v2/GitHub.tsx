@@ -78,91 +78,87 @@ function CardLabel({ children }: { children: React.ReactNode }) {
 
 // ── Profile card ──────────────────────────────────────────────────────────────
 
-function StatRow({ label, value }: { label: string; value: number }) {
+function MetricCard({ value, label, hint }: { value: number; label: string; hint: string }) {
   return (
-    <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', gap: '12px' }}>
-      <span style={{ fontSize: '0.8125rem', color: 'var(--v2-text-sec)' }}>{label}</span>
-      <span
-        style={{
-          fontFamily: 'var(--font-family-mono)',
-          fontSize: '0.9375rem',
-          fontWeight: 700,
-          color: 'var(--v2-text)',
-        }}
-      >
-        {value}
-      </span>
+    <div className="v2-gh-metric-card">
+      <p className="v2-gh-metric-value">{value.toLocaleString()}</p>
+      <p className="v2-gh-metric-label">{label}</p>
+      <p className="v2-gh-metric-hint">{hint}</p>
     </div>
   );
 }
 
 function ProfileCard({ data }: { data: GitHubData }) {
-  const { profile } = data;
+  const { profile, contributions, languages, repos } = data;
+  const topLanguages = languages.slice(0, 5);
+  const featuredNames = ['portfolio', 'starry-run', 'dog-adoption-volunteer-system', 'mbti-aroma-advisor'];
+  const featuredCount = featuredNames.filter(name => repos.some(repo => repo.name === name)).length;
+  const latestUpdate = repos.reduce<string | null>((latest, repo) => {
+    if (!latest || new Date(repo.updatedAt) > new Date(latest)) return repo.updatedAt;
+    return latest;
+  }, null);
+  const updatedLabel = latestUpdate ? formatUpdated(latestUpdate) : '持續更新中';
 
   return (
-    <Card>
-      <div style={{ display: 'flex', alignItems: 'center', gap: '14px', marginBottom: '20px' }}>
-        <div style={{ position: 'relative', flexShrink: 0, width: 56, height: 56 }}>
+    <Card className="v2-gh-overview-card">
+      <div className="v2-gh-profile-head">
+        <div className="v2-gh-avatar-wrap">
           <ResilientImage
             src={profile.avatarUrl}
             alt=""
-            width={56}
-            height={56}
+            width={64}
+            height={64}
             loading="lazy"
             decoding="async"
             referrerPolicy="no-referrer"
             fallback={<span className="v2-github-avatar-fallback" aria-hidden>GH</span>}
             style={{ width: '100%', height: '100%', borderRadius: '50%', border: '2px solid var(--v2-border)', display: 'block' }}
           />
-          {/* Micro-pixel accent — the single brand mark in this section */}
-          <span
-            aria-hidden
-            className="v2-px-dot"
-            style={{ position: 'absolute', right: -1, bottom: 3 }}
-          />
+          <span aria-hidden className="v2-px-dot v2-gh-avatar-dot" />
         </div>
-        <div style={{ minWidth: 0 }}>
-          <p
-            style={{
-              fontFamily: 'var(--font-family-mono)',
-              fontSize: '0.9375rem',
-              fontWeight: 700,
-              color: 'var(--v2-text)',
-              overflow: 'hidden',
-              textOverflow: 'ellipsis',
-            }}
-          >
-            @{profile.login}
-          </p>
-          <p style={{ fontSize: '0.8125rem', color: 'var(--v2-text-sec)', marginTop: '2px' }}>
-            MING WEI SU
-          </p>
+        <div className="v2-gh-profile-copy">
+          <p className="v2-gh-handle">@{profile.login}</p>
+          <h3>蘇洺崴 <span>Ming-Wei Su</span></h3>
+          <p>{updatedLabel}</p>
         </div>
+        <a
+          href={profile.htmlUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="v2-bubble-btn v2-bubble-btn--soft v2-gh-profile-link"
+        >
+          開啟 GitHub ↗
+        </a>
       </div>
 
-      <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', gap: '8px', marginBottom: '14px' }}>
-        <CardLabel>GitHub Overview</CardLabel>
-        <span style={{ fontSize: '0.65rem', color: 'var(--v2-text-faint)', whiteSpace: 'nowrap' }}>
-          Public activity only
-        </span>
+      <div className="v2-gh-metric-grid">
+        <MetricCard value={profile.publicRepos} label="公開儲存庫" hint="Public repositories" />
+        <MetricCard value={contributions?.total ?? 0} label="年度貢獻" hint="Public contributions" />
+        <MetricCard value={languages.length} label="主要語言" hint="Languages used" />
+        <MetricCard value={featuredCount} label="精選專案" hint="Featured projects" />
       </div>
 
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-        <StatRow label="Repositories" value={profile.publicRepos} />
-        <StatRow label="Followers"    value={profile.followers} />
-        <StatRow label="Following"    value={profile.following} />
-        <StatRow label="Stars"        value={profile.totalStars} />
-      </div>
-
-      <a
-        href={profile.htmlUrl}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="v2-bubble-btn v2-bubble-btn--secondary"
-        style={{ width: '100%', marginTop: '20px' }}
-      >
-        GitHub Profile ↗
-      </a>
+      {topLanguages.length > 0 && (
+        <div className="v2-gh-language-panel">
+          <div className="v2-gh-panel-heading">
+            <div>
+              <h4>主要語言</h4>
+              <p>依公開儲存庫程式碼比例</p>
+            </div>
+          </div>
+          <ul className="v2-gh-language-list">
+            {topLanguages.map(language => (
+              <li key={language.language}>
+                <span className="v2-gh-language-name">{language.language}</span>
+                <span className="v2-gh-language-track" aria-hidden>
+                  <span style={{ width: language.percentage + '%', background: langColor(language.language) }} />
+                </span>
+                <span className="v2-gh-language-percent">{language.percentage.toFixed(1)}%</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
     </Card>
   );
 }
