@@ -427,12 +427,16 @@ function RepoCard({ repo }: { repo: GitHubRepository }) {
             {repo.language}
           </span>
         )}
-        <span style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
-          <MetaIcon path={STAR_PATH} /> {repo.stars}
-        </span>
-        <span style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
-          <MetaIcon path={FORK_PATH} /> {repo.forks}
-        </span>
+        {repo.stars > 0 && (
+          <span style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+            <MetaIcon path={STAR_PATH} /> {repo.stars}
+          </span>
+        )}
+        {repo.forks > 0 && (
+          <span style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+            <MetaIcon path={FORK_PATH} /> {repo.forks}
+          </span>
+        )}
       </div>
 
       <p
