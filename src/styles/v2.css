@@ -1502,3 +1502,266 @@
   transition: opacity 150ms ease;
 }
 .v2-media-img:hover { opacity: 0.88; }
+
+
+/* ============================================================
+   GitHub portfolio dashboard — two-column editorial layout
+   ============================================================ */
+
+.v2-gh-grid {
+  align-items: stretch;
+}
+
+.v2-gh-overview-card,
+.v2-gh-contribution-card {
+  height: 100%;
+  min-width: 0;
+}
+
+.v2-gh-profile-head {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 22px;
+}
+
+.v2-gh-avatar-wrap {
+  position: relative;
+  width: 64px;
+  height: 64px;
+  flex-shrink: 0;
+}
+
+.v2-gh-avatar-dot {
+  position: absolute;
+  right: 0;
+  bottom: 4px;
+}
+
+.v2-gh-profile-copy {
+  min-width: 0;
+}
+
+.v2-gh-handle {
+  margin-bottom: 3px;
+  color: var(--v2-text-muted);
+  font-family: var(--font-family-mono);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.v2-gh-profile-copy h3 {
+  color: var(--v2-text);
+  font-family: var(--font-family-v2-display);
+  font-size: 1.15rem;
+  font-weight: 760;
+  line-height: 1.25;
+}
+
+.v2-gh-profile-copy h3 span {
+  color: var(--v2-text-sec);
+  font-size: 0.78rem;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.v2-gh-profile-copy > p:last-child {
+  margin-top: 5px;
+  color: var(--v2-text-faint);
+  font-size: 0.68rem;
+}
+
+.v2-gh-profile-link {
+  padding-inline: 14px;
+  white-space: nowrap;
+}
+
+.v2-gh-metric-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.v2-gh-metric-card {
+  min-height: 112px;
+  padding: 18px;
+  border: 1px solid var(--v2-border);
+  border-radius: calc(var(--radius) - 2px);
+  background: linear-gradient(145deg, var(--v2-surface), var(--v2-surface-2));
+}
+
+.v2-gh-metric-value {
+  color: var(--v2-text);
+  font-family: var(--font-family-v2-display);
+  font-size: 1.72rem;
+  font-weight: 760;
+  line-height: 1;
+}
+
+.v2-gh-metric-label {
+  margin-top: 10px;
+  color: var(--v2-text-sec);
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.v2-gh-metric-hint {
+  margin-top: 4px;
+  color: var(--v2-text-faint);
+  font-size: 0.65rem;
+}
+
+.v2-gh-language-panel {
+  margin-top: 26px;
+}
+
+.v2-gh-panel-heading h3,
+.v2-gh-panel-heading h4,
+.v2-gh-streak-heading h4 {
+  color: var(--v2-text);
+  font-family: var(--font-family-v2-display);
+  font-size: 1rem;
+  font-weight: 740;
+}
+
+.v2-gh-panel-heading h3 {
+  font-size: 1.08rem;
+}
+
+.v2-gh-panel-heading p,
+.v2-gh-streak-heading p {
+  margin-top: 5px;
+  color: var(--v2-text-muted);
+  font-size: 0.72rem;
+}
+
+.v2-gh-language-list {
+  display: flex;
+  flex-direction: column;
+  gap: 13px;
+  margin: 17px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.v2-gh-language-list li {
+  display: grid;
+  grid-template-columns: 92px minmax(80px, 1fr) 52px;
+  align-items: center;
+  gap: 10px;
+}
+
+.v2-gh-language-name {
+  overflow: hidden;
+  color: var(--v2-text-sec);
+  font-family: var(--font-family-mono);
+  font-size: 0.74rem;
+  font-weight: 650;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.v2-gh-language-track {
+  height: 7px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: var(--v2-surface-2);
+}
+
+.v2-gh-language-track > span {
+  display: block;
+  height: 100%;
+  min-width: 4px;
+  border-radius: inherit;
+}
+
+.v2-gh-language-percent {
+  color: var(--v2-text-muted);
+  font-family: var(--font-family-mono);
+  font-size: 0.68rem;
+  text-align: right;
+}
+
+.v2-gh-contribution-card {
+  display: flex;
+  flex-direction: column;
+}
+
+.v2-gh-contribution-card .v2-heatmap-scroll {
+  margin-top: 24px;
+}
+
+.v2-gh-streak-heading {
+  margin-top: auto;
+  padding-top: 38px;
+}
+
+.v2-gh-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin-top: 20px;
+  padding-top: 24px;
+  border-top: 1px solid var(--v2-border);
+}
+
+.v2-gh-summary-grid > div {
+  padding: 4px 18px;
+  text-align: center;
+}
+
+.v2-gh-summary-grid > div + div {
+  border-left: 1px solid var(--v2-border);
+}
+
+@media (min-width: 1024px) {
+  .v2-gh-grid {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+  }
+}
+
+@media (max-width: 767px) {
+  .v2-gh-profile-head {
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+
+  .v2-gh-profile-link {
+    grid-column: 1 / -1;
+    width: 100%;
+  }
+
+  .v2-gh-language-list li {
+    grid-template-columns: 78px minmax(64px, 1fr) 48px;
+  }
+
+  .v2-gh-summary-grid > div {
+    padding-inline: 8px;
+  }
+}
+
+@media (max-width: 420px) {
+  .v2-gh-metric-card {
+    min-height: 102px;
+    padding: 15px;
+  }
+
+  .v2-gh-metric-value {
+    font-size: 1.48rem;
+  }
+
+  .v2-gh-summary-grid {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .v2-gh-summary-grid > div {
+    padding: 0 0 14px;
+  }
+
+  .v2-gh-summary-grid > div + div {
+    padding-top: 14px;
+    border-top: 1px solid var(--v2-border);
+    border-left: 0;
+  }
+}

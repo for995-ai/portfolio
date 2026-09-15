@@ -78,91 +78,87 @@ function CardLabel({ children }: { children: React.ReactNode }) {
 
 // ── Profile card ──────────────────────────────────────────────────────────────
 
-function StatRow({ label, value }: { label: string; value: number }) {
+function MetricCard({ value, label, hint }: { value: number; label: string; hint: string }) {
   return (
-    <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', gap: '12px' }}>
-      <span style={{ fontSize: '0.8125rem', color: 'var(--v2-text-sec)' }}>{label}</span>
-      <span
-        style={{
-          fontFamily: 'var(--font-family-mono)',
-          fontSize: '0.9375rem',
-          fontWeight: 700,
-          color: 'var(--v2-text)',
-        }}
-      >
-        {value}
-      </span>
+    <div className="v2-gh-metric-card">
+      <p className="v2-gh-metric-value">{value.toLocaleString()}</p>
+      <p className="v2-gh-metric-label">{label}</p>
+      <p className="v2-gh-metric-hint">{hint}</p>
     </div>
   );
 }
 
 function ProfileCard({ data }: { data: GitHubData }) {
-  const { profile } = data;
+  const { profile, contributions, languages, repos } = data;
+  const topLanguages = languages.slice(0, 5);
+  const featuredNames = ['portfolio', 'starry-run', 'dog-adoption-volunteer-system', 'mbti-aroma-advisor'];
+  const featuredCount = featuredNames.filter(name => repos.some(repo => repo.name === name)).length;
+  const latestUpdate = repos.reduce<string | null>((latest, repo) => {
+    if (!latest || new Date(repo.updatedAt) > new Date(latest)) return repo.updatedAt;
+    return latest;
+  }, null);
+  const updatedLabel = latestUpdate ? formatUpdated(latestUpdate) : '持續更新中';
 
   return (
-    <Card>
-      <div style={{ display: 'flex', alignItems: 'center', gap: '14px', marginBottom: '20px' }}>
-        <div style={{ position: 'relative', flexShrink: 0, width: 56, height: 56 }}>
+    <Card className="v2-gh-overview-card">
+      <div className="v2-gh-profile-head">
+        <div className="v2-gh-avatar-wrap">
           <ResilientImage
             src={profile.avatarUrl}
             alt=""
-            width={56}
-            height={56}
+            width={64}
+            height={64}
             loading="lazy"
             decoding="async"
             referrerPolicy="no-referrer"
             fallback={<span className="v2-github-avatar-fallback" aria-hidden>GH</span>}
             style={{ width: '100%', height: '100%', borderRadius: '50%', border: '2px solid var(--v2-border)', display: 'block' }}
           />
-          {/* Micro-pixel accent — the single brand mark in this section */}
-          <span
-            aria-hidden
-            className="v2-px-dot"
-            style={{ position: 'absolute', right: -1, bottom: 3 }}
-          />
+          <span aria-hidden className="v2-px-dot v2-gh-avatar-dot" />
         </div>
-        <div style={{ minWidth: 0 }}>
-          <p
-            style={{
-              fontFamily: 'var(--font-family-mono)',
-              fontSize: '0.9375rem',
-              fontWeight: 700,
-              color: 'var(--v2-text)',
-              overflow: 'hidden',
-              textOverflow: 'ellipsis',
-            }}
-          >
-            @{profile.login}
-          </p>
-          <p style={{ fontSize: '0.8125rem', color: 'var(--v2-text-sec)', marginTop: '2px' }}>
-            MING WEI SU
-          </p>
+        <div className="v2-gh-profile-copy">
+          <p className="v2-gh-handle">@{profile.login}</p>
+          <h3>蘇洺崴 <span>Ming-Wei Su</span></h3>
+          <p>{updatedLabel}</p>
         </div>
+        <a
+          href={profile.htmlUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="v2-bubble-btn v2-bubble-btn--soft v2-gh-profile-link"
+        >
+          開啟 GitHub ↗
+        </a>
       </div>
 
-      <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', gap: '8px', marginBottom: '14px' }}>
-        <CardLabel>GitHub Overview</CardLabel>
-        <span style={{ fontSize: '0.65rem', color: 'var(--v2-text-faint)', whiteSpace: 'nowrap' }}>
-          Public activity only
-        </span>
+      <div className="v2-gh-metric-grid">
+        <MetricCard value={profile.publicRepos} label="公開儲存庫" hint="Public repositories" />
+        <MetricCard value={contributions?.total ?? 0} label="年度貢獻" hint="Public contributions" />
+        <MetricCard value={languages.length} label="主要語言" hint="Languages used" />
+        <MetricCard value={featuredCount} label="精選專案" hint="Featured projects" />
       </div>
 
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-        <StatRow label="Repositories" value={profile.publicRepos} />
-        <StatRow label="Followers"    value={profile.followers} />
-        <StatRow label="Following"    value={profile.following} />
-        <StatRow label="Stars"        value={profile.totalStars} />
-      </div>
-
-      <a
-        href={profile.htmlUrl}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="v2-bubble-btn v2-bubble-btn--secondary"
-        style={{ width: '100%', marginTop: '20px' }}
-      >
-        GitHub Profile ↗
-      </a>
+      {topLanguages.length > 0 && (
+        <div className="v2-gh-language-panel">
+          <div className="v2-gh-panel-heading">
+            <div>
+              <h4>主要語言</h4>
+              <p>依公開儲存庫程式碼比例</p>
+            </div>
+          </div>
+          <ul className="v2-gh-language-list">
+            {topLanguages.map(language => (
+              <li key={language.language}>
+                <span className="v2-gh-language-name">{language.language}</span>
+                <span className="v2-gh-language-track" aria-hidden>
+                  <span style={{ width: language.percentage + '%', background: langColor(language.language) }} />
+                </span>
+                <span className="v2-gh-language-percent">{language.percentage.toFixed(1)}%</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
     </Card>
   );
 }
@@ -296,23 +292,27 @@ function StreakStat({ value, label }: { value: string; label: string }) {
   );
 }
 
-function ContributionCard({ contributions }: { contributions: GitHubContributions | null }) {
+function ContributionCard({
+  contributions,
+  repoCount,
+}: {
+  contributions: GitHubContributions | null;
+  repoCount: number;
+}) {
   if (!contributions) {
-    // Compact state — no dead space, and nothing about why it is empty.
     return (
-      <Card style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '16px', flexWrap: 'wrap' }}>
-        <div>
-          <CardLabel>Contribution Activity</CardLabel>
-          <p style={{ fontSize: '0.8125rem', color: 'var(--v2-text-sec)', marginTop: '-6px' }}>
-            資料同步中
-          </p>
+      <Card className="v2-gh-contribution-card">
+        <div className="v2-gh-panel-heading">
+          <div>
+            <h3>貢獻活動紀錄</h3>
+            <p>GitHub 公開貢獻資料同步中</p>
+          </div>
         </div>
         <a
-          href={`${GITHUB_URL}?tab=overview`}
+          href={GITHUB_URL + '?tab=overview'}
           target="_blank"
           rel="noopener noreferrer"
           className="v2-bubble-btn v2-bubble-btn--soft"
-          style={{ flexShrink: 0 }}
         >
           View on GitHub ↗
         </a>
@@ -320,23 +320,28 @@ function ContributionCard({ contributions }: { contributions: GitHubContribution
     );
   }
 
-  const { total, currentStreak, longestStreak, weeks } = contributions;
+  const { total, longestStreak, weeks } = contributions;
 
   return (
-    <Card style={{ display: 'flex', flexDirection: 'column' }}>
-      <CardLabel>Contribution Activity</CardLabel>
+    <Card className="v2-gh-contribution-card">
+      <div className="v2-gh-panel-heading">
+        <div>
+          <h3>貢獻活動紀錄</h3>
+          <p>GitHub 最近一年的公開貢獻</p>
+        </div>
+      </div>
 
       <Calendar weeks={weeks} />
 
-      <div
-        style={{
-          display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '16px',
-          marginTop: '22px', paddingTop: '18px', borderTop: '1px solid var(--v2-border)',
-        }}
-      >
-        <StreakStat value={total.toLocaleString()}   label="Total Contributions" />
-        <StreakStat value={`${currentStreak} days`}  label="Current Streak" />
-        <StreakStat value={`${longestStreak} days`}  label="Longest Streak" />
+      <div className="v2-gh-streak-heading">
+        <h4>開發成果摘要</h4>
+        <p>以成果與持續投入為主要呈現</p>
+      </div>
+
+      <div className="v2-gh-summary-grid">
+        <StreakStat value={total.toLocaleString()} label="年度公開貢獻" />
+        <StreakStat value={longestStreak + ' days'} label="最長連續貢獻" />
+        <StreakStat value={repoCount.toLocaleString()} label="公開儲存庫" />
       </div>
     </Card>
   );
@@ -422,12 +427,16 @@ function RepoCard({ repo }: { repo: GitHubRepository }) {
             {repo.language}
           </span>
         )}
-        <span style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
-          <MetaIcon path={STAR_PATH} /> {repo.stars}
-        </span>
-        <span style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
-          <MetaIcon path={FORK_PATH} /> {repo.forks}
-        </span>
+        {repo.stars > 0 && (
+          <span style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+            <MetaIcon path={STAR_PATH} /> {repo.stars}
+          </span>
+        )}
+        {repo.forks > 0 && (
+          <span style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+            <MetaIcon path={FORK_PATH} /> {repo.forks}
+          </span>
+        )}
       </div>
 
       <p
@@ -561,44 +570,27 @@ export function GitHub() {
 
       {state.status === 'ready' && (
         <>
-          {/* Top composition.
-              With a synced calendar the classic dashboard applies: profile and
-              languages stacked at left, calendar filling the right. Without it
-              the calendar card is only a slim bar, so putting it in a column
-              would leave a hole — profile and languages go side by side and the
-              bar spans the full width underneath. */}
-          {state.data.contributions ? (
-            <div className="v2-gh-grid">
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-                <ProfileCard data={state.data} />
-                {state.data.languages.length > 0 && (
-                  <LanguageCard languages={state.data.languages} />
-                )}
-              </div>
-              <ContributionCard contributions={state.data.contributions} />
-            </div>
-          ) : (
-            <>
-              <div className="v2-gh-split">
-                <ProfileCard data={state.data} />
-                {state.data.languages.length > 0 && (
-                  <LanguageCard languages={state.data.languages} />
-                )}
-              </div>
-              <div style={{ marginTop: '20px' }}>
-                <ContributionCard contributions={null} />
-              </div>
-            </>
-          )}
+          {/* GitHub overview inspired by the reference: identity and skills on
+              the left, contribution evidence on the right. */}
+          <div className="v2-gh-grid">
+            <ProfileCard data={state.data} />
+            <ContributionCard
+              contributions={state.data.contributions}
+              repoCount={state.data.profile.publicRepos}
+            />
+          </div>
 
           {/* Curated public repositories */}
           {state.data.repos.length > 0 && (
             <>
-              <SubHeading label="Public Repositories" />
+              <SubHeading label="Featured Repositories" />
               <div className="v2-gh-repos">
-                {state.data.repos.map(repo => (
-                  <RepoCard key={repo.id} repo={repo} />
-                ))}
+                {['portfolio', 'starry-run', 'dog-adoption-volunteer-system', 'mbti-aroma-advisor']
+                  .map(name => state.data.repos.find(repo => repo.name === name))
+                  .filter((repo): repo is GitHubRepository => Boolean(repo))
+                  .map(repo => (
+                    <RepoCard key={repo.id} repo={repo} />
+                  ))}
               </div>
             </>
           )}
