@@ -37,6 +37,21 @@ const LANG_COLOR: Record<string, string> = {
 const langColor = (lang: string | null) =>
   (lang && LANG_COLOR[lang]) || 'var(--v2-text-faint)';
 
+const FEATURED_REPO_NAMES = [
+  'portfolio',
+  'starry-run',
+  'dog-adoption-volunteer-system',
+  'mbti-aroma-advisor',
+];
+
+function selectFeaturedRepos(repos: GitHubRepository[]): GitHubRepository[] {
+  const preferred = FEATURED_REPO_NAMES
+    .map(name => repos.find(repo => repo.name === name))
+    .filter((repo): repo is GitHubRepository => Boolean(repo));
+  const fallback = repos.filter(repo => !preferred.some(item => item.id === repo.id));
+  return [...preferred, ...fallback].slice(0, 4);
+}
+
 // ── Shared card shell ─────────────────────────────────────────────────────────
 
 function Card({
@@ -91,8 +106,7 @@ function MetricCard({ value, label, hint }: { value: number; label: string; hint
 function ProfileCard({ data }: { data: GitHubData }) {
   const { profile, contributions, languages, repos } = data;
   const topLanguages = languages.slice(0, 5);
-  const featuredNames = ['portfolio', 'starry-run', 'dog-adoption-volunteer-system', 'mbti-aroma-advisor'];
-  const featuredCount = featuredNames.filter(name => repos.some(repo => repo.name === name)).length;
+  const featuredCount = selectFeaturedRepos(repos).length;
   const latestUpdate = repos.reduce<string | null>((latest, repo) => {
     if (!latest || new Date(repo.updatedAt) > new Date(latest)) return repo.updatedAt;
     return latest;
@@ -585,12 +599,9 @@ export function GitHub() {
             <>
               <SubHeading label="Featured Repositories" />
               <div className="v2-gh-repos">
-                {['portfolio', 'starry-run', 'dog-adoption-volunteer-system', 'mbti-aroma-advisor']
-                  .map(name => state.data.repos.find(repo => repo.name === name))
-                  .filter((repo): repo is GitHubRepository => Boolean(repo))
-                  .map(repo => (
-                    <RepoCard key={repo.id} repo={repo} />
-                  ))}
+                {selectFeaturedRepos(state.data.repos).map(repo => (
+                  <RepoCard key={repo.id} repo={repo} />
+                ))}
               </div>
             </>
           )}
