@@ -292,23 +292,27 @@ function StreakStat({ value, label }: { value: string; label: string }) {
   );
 }
 
-function ContributionCard({ contributions }: { contributions: GitHubContributions | null }) {
+function ContributionCard({
+  contributions,
+  repoCount,
+}: {
+  contributions: GitHubContributions | null;
+  repoCount: number;
+}) {
   if (!contributions) {
-    // Compact state — no dead space, and nothing about why it is empty.
     return (
-      <Card style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '16px', flexWrap: 'wrap' }}>
-        <div>
-          <CardLabel>Contribution Activity</CardLabel>
-          <p style={{ fontSize: '0.8125rem', color: 'var(--v2-text-sec)', marginTop: '-6px' }}>
-            資料同步中
-          </p>
+      <Card className="v2-gh-contribution-card">
+        <div className="v2-gh-panel-heading">
+          <div>
+            <h3>貢獻活動紀錄</h3>
+            <p>GitHub 公開貢獻資料同步中</p>
+          </div>
         </div>
         <a
-          href={`${GITHUB_URL}?tab=overview`}
+          href={GITHUB_URL + '?tab=overview'}
           target="_blank"
           rel="noopener noreferrer"
           className="v2-bubble-btn v2-bubble-btn--soft"
-          style={{ flexShrink: 0 }}
         >
           View on GitHub ↗
         </a>
@@ -316,23 +320,28 @@ function ContributionCard({ contributions }: { contributions: GitHubContribution
     );
   }
 
-  const { total, currentStreak, longestStreak, weeks } = contributions;
+  const { total, longestStreak, weeks } = contributions;
 
   return (
-    <Card style={{ display: 'flex', flexDirection: 'column' }}>
-      <CardLabel>Contribution Activity</CardLabel>
+    <Card className="v2-gh-contribution-card">
+      <div className="v2-gh-panel-heading">
+        <div>
+          <h3>貢獻活動紀錄</h3>
+          <p>GitHub 最近一年的公開貢獻</p>
+        </div>
+      </div>
 
       <Calendar weeks={weeks} />
 
-      <div
-        style={{
-          display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '16px',
-          marginTop: '22px', paddingTop: '18px', borderTop: '1px solid var(--v2-border)',
-        }}
-      >
-        <StreakStat value={total.toLocaleString()}   label="Total Contributions" />
-        <StreakStat value={`${currentStreak} days`}  label="Current Streak" />
-        <StreakStat value={`${longestStreak} days`}  label="Longest Streak" />
+      <div className="v2-gh-streak-heading">
+        <h4>開發成果摘要</h4>
+        <p>以成果與持續投入為主要呈現</p>
+      </div>
+
+      <div className="v2-gh-summary-grid">
+        <StreakStat value={total.toLocaleString()} label="年度公開貢獻" />
+        <StreakStat value={longestStreak + ' days'} label="最長連續貢獻" />
+        <StreakStat value={repoCount.toLocaleString()} label="公開儲存庫" />
       </div>
     </Card>
   );
