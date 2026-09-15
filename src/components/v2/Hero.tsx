@@ -3,6 +3,7 @@ import { publicUrl } from '@/lib/publicUrl';
 import { Container } from '@/components/v2/primitives';
 import { HeroBackdrop } from './HeroBackdrop';
 import { heroBackgrounds } from '@/data/heroBackgrounds';
+import { ResilientImage } from './ResilientImage';
 
 const SCHOOL = '國立聯合大學';
 const DEPT   = characterInfo[1].value;        // 資訊管理學系
@@ -25,13 +26,15 @@ function Avatar() {
         boxShadow: '0 4px 22px rgba(23,21,37,0.16)',
       }}
     >
-      <img
+      <ResilientImage
         src={publicUrl('/images/profile/optimized/su-ming-wei-avatar.webp')}
         alt="蘇洺崴個人照片"
         width={640}
         height={640}
         loading="eager"
         decoding="async"
+        {...{ fetchpriority: 'high' }}
+        fallback={<span className="v2-avatar-fallback" aria-label="蘇洺崴">SM</span>}
       />
     </div>
   );

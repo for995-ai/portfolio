@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { publicUrl } from '@/lib/publicUrl';
+import { ResilientImage } from './ResilientImage';
 
 interface LightboxProps {
   src: string;
@@ -47,9 +48,12 @@ export function Lightbox({ src, alt, onClose }: LightboxProps) {
         style={{ maxWidth: '90vw', maxHeight: '90vh' }}
         onClick={e => e.stopPropagation()}
       >
-        <img
+        <ResilientImage
           src={publicUrl(src)}
           alt={alt}
+          loading="eager"
+          decoding="async"
+          fallback={<span className="v2-lightbox-fallback">高畫質圖片暫時無法載入，請關閉後再試一次</span>}
           style={{
             maxWidth: '88vw',
             maxHeight: '85vh',

@@ -3,15 +3,31 @@ import { publicUrl } from '@/lib/publicUrl';
 import { LEADERSHIP, SERVICE, EXPERIENCE } from '@/data/portfolioV2';
 import { Lightbox } from './Lightbox';
 import { useInView } from '@/hooks/useInView';
+import { ResilientImage } from './ResilientImage';
 
 // ── Activity photos — filenames verified against public/images ────────────────
 
-const IMAGES: Partial<Record<string, string>> = {
-  B2: '/images/資訊管理學系系學會 14th 會長.png',
-  B3: '/images/動物友善推廣社 14th公關.png',
-  B4: '/images/資訊管理學系 排球系隊 114隊長.png',
-  D5: '/images/資訊管理學系 資訊志工 114隊長.png',
-  D3: '/images/偏鄉系統帶班老師.png',
+const IMAGES: Partial<Record<string, { src: string; thumbnailSrc: string }>> = {
+  B2: {
+    src: '/images/資訊管理學系系學會 14th 會長.png',
+    thumbnailSrc: '/images/optimized/cards/leadership-b2.webp',
+  },
+  B3: {
+    src: '/images/動物友善推廣社 14th公關.png',
+    thumbnailSrc: '/images/optimized/cards/leadership-b3.webp',
+  },
+  B4: {
+    src: '/images/資訊管理學系 排球系隊 114隊長.png',
+    thumbnailSrc: '/images/optimized/cards/leadership-b4.webp',
+  },
+  D5: {
+    src: '/images/資訊管理學系 資訊志工 114隊長.png',
+    thumbnailSrc: '/images/optimized/cards/leadership-d5.webp',
+  },
+  D3: {
+    src: '/images/偏鄉系統帶班老師.png',
+    thumbnailSrc: '/images/optimized/cards/experience-d3.webp',
+  },
 };
 
 // ── Unified evidence card model ───────────────────────────────────────────────
@@ -28,6 +44,7 @@ interface EvidenceItem {
   result:  string;
   period:  string;
   src?:    string;
+  thumbnailSrc?: string;
 }
 
 const CARD_IDS = ['B2', 'B1', 'B3', 'B4', 'D5', 'D3'] as const;
@@ -41,7 +58,8 @@ const EVIDENCE: EvidenceItem[] = CARD_IDS.flatMap(id => {
       role:   lead.position,
       result: lead.tasks[0],
       period: lead.period,
-      src:    IMAGES[id],
+      src:    IMAGES[id]?.src,
+      thumbnailSrc: IMAGES[id]?.thumbnailSrc,
     }];
   }
   const svc = SERVICE.find(s => s.id === id);
@@ -52,7 +70,8 @@ const EVIDENCE: EvidenceItem[] = CARD_IDS.flatMap(id => {
       role:   svc.role,
       result: svc.tasks[0],
       period: svc.period,
-      src:    IMAGES[id],
+      src:    IMAGES[id]?.src,
+      thumbnailSrc: IMAGES[id]?.thumbnailSrc,
     }];
   }
   const exp = EXPERIENCE.find(e => e.id === id);
@@ -63,7 +82,8 @@ const EVIDENCE: EvidenceItem[] = CARD_IDS.flatMap(id => {
       role:   exp.position,
       result: exp.tasks[0],
       period: exp.period,
-      src:    IMAGES[id],
+      src:    IMAGES[id]?.src,
+      thumbnailSrc: IMAGES[id]?.thumbnailSrc,
     }];
   }
   return [];
@@ -111,7 +131,7 @@ function EvidenceCard({
   return (
     <article className="v2-card v2-card--elevated" style={{ display: 'flex', flexDirection: 'column' }}>
       {/* Photo */}
-      {item.src ? (
+      {item.src && item.thumbnailSrc ? (
         <button
           type="button"
           aria-label={`查看 ${alt} 活動照片`}
@@ -120,20 +140,24 @@ function EvidenceCard({
             position: 'relative',
             display: 'block',
             width: '100%',
+            aspectRatio: '16/10',
             padding: 0,
             border: 'none',
             background: 'none',
             cursor: 'pointer',
           }}
         >
-          <img
-            src={publicUrl(item.src)}
+          <ResilientImage
+            src={publicUrl(item.thumbnailSrc)}
             alt={alt}
+            width={960}
+            height={540}
             loading="lazy"
             decoding="async"
+            {...{ fetchpriority: 'low' }}
             style={{
               width: '100%',
-              aspectRatio: '16/10',
+              height: '100%',
               objectFit: 'cover',
               display: 'block',
             }}
