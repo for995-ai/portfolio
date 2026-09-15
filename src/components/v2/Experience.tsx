@@ -4,6 +4,7 @@ import { EXPERIENCE, type Experience } from '@/data/portfolioV2';
 import { Lightbox } from './Lightbox';
 import { Pagination, usePagination } from './Pagination';
 import { useInView } from '@/hooks/useInView';
+import { ResilientImage } from './ResilientImage';
 
 // One-line role summary shown on the collapsed card.
 const SUMMARY: Partial<Record<string, string>> = {
@@ -36,9 +37,17 @@ const DETAIL: Partial<Record<string, { heading: string; body: string }>> = {
 
 // Media gallery — array per entry, supports 1 / 2 / 3 / 4+ images.
 // Only confirmed filenames; an empty array renders no media area.
-const MEDIA: Partial<Record<string, string[]>> = {
-  D3: ['/images/偏鄉系統帶班老師.png'],
-  D4: ['/images/Sponya 9th校園大使.png'],
+interface MediaItem { src: string; thumbnailSrc: string }
+
+const MEDIA: Partial<Record<string, MediaItem[]>> = {
+  D3: [{
+    src: '/images/偏鄉系統帶班老師.png',
+    thumbnailSrc: '/images/optimized/cards/experience-d3.webp',
+  }],
+  D4: [{
+    src: '/images/Sponya 9th校園大使.png',
+    thumbnailSrc: '/images/optimized/cards/experience-d4.webp',
+  }],
 };
 
 // External link — only rendered when a real URL exists. No placeholder CTAs.
@@ -109,19 +118,29 @@ function AccordionEntry({
             {/* Media gallery — 1 / 2 / 3 / 4+ */}
             {media.length > 0 && (
               <div className={`v2-exp-media v2-exp-media--${Math.min(media.length, 4)}`}>
-                {media.map((src, i) => (
+                {media.map((image, i) => (
                   <button
-                    key={src}
+                    key={image.src}
                     type="button"
                     aria-label={`查看 ${exp.organization} 照片 ${i + 1}`}
-                    onClick={() => onImgClick({ src, alt: `${exp.organization} ${exp.position}` })}
-                    style={{ padding: 0, border: 'none', background: 'none', cursor: 'pointer' }}
+                    onClick={() => onImgClick({ src: image.src, alt: `${exp.organization} ${exp.position}` })}
+                    style={{
+                      width: '100%',
+                      aspectRatio: '4/3',
+                      padding: 0,
+                      border: 'none',
+                      background: 'none',
+                      cursor: 'pointer',
+                    }}
                   >
-                    <img
-                      src={publicUrl(src)}
+                    <ResilientImage
+                      src={publicUrl(image.thumbnailSrc)}
                       alt={`${exp.organization} ${exp.position}`}
+                      width={960}
+                      height={540}
                       loading="lazy"
                       decoding="async"
+                      {...{ fetchpriority: 'low' }}
                     />
                   </button>
                 ))}

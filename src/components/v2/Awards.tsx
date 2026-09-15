@@ -4,6 +4,7 @@ import { COMPETITIONS, CERTIFICATIONS } from '@/data/portfolioV2';
 import { Lightbox } from './Lightbox';
 import { Pagination, usePagination } from './Pagination';
 import { useInView } from '@/hooks/useInView';
+import { ResilientImage } from './ResilientImage';
 
 // ── Competition certificate images ────────────────────────────────────────────
 // NOTE: three files are stored with a literal "- " filename prefix; it must be
@@ -23,6 +24,17 @@ const CERT_IMAGES: Record<string, string> = {
   E2: '/images/CSEPT 大學院校英語能力測驗 第一級.png',
 };
 
+const THUMBNAILS: Record<string, string> = {
+  C5: '/images/optimized/cards/award-c5.webp',
+  C8: '/images/optimized/cards/award-c8.webp',
+  C3: '/images/optimized/cards/award-c3.webp',
+  C4: '/images/optimized/cards/award-c4.webp',
+  C6: '/images/optimized/cards/award-c6.webp',
+  C7: '/images/optimized/cards/award-c7.webp',
+  E1: '/images/optimized/cards/cert-e1.webp',
+  E2: '/images/optimized/cards/cert-e2.webp',
+};
+
 // ── Gallery model ─────────────────────────────────────────────────────────────
 
 interface GalleryItem {
@@ -30,17 +42,30 @@ interface GalleryItem {
   title:  string;
   result: string;
   src:    string;
+  thumbnailSrc: string;
 }
 
 /** Awards first (medalled results lead), then participation, then certificates. */
 const COMP_ITEMS: GalleryItem[] = COMPETITIONS
   .filter(c => !!COMP_IMAGES[c.id])
-  .map(c => ({ key: c.id, title: c.work, result: c.result, src: COMP_IMAGES[c.id]! }))
+  .map(c => ({
+    key: c.id,
+    title: c.work,
+    result: c.result,
+    src: COMP_IMAGES[c.id]!,
+    thumbnailSrc: THUMBNAILS[c.id],
+  }))
   .sort((a, b) => Number(a.result === '參賽') - Number(b.result === '參賽'));
 
 const CERT_ITEMS: GalleryItem[] = CERTIFICATIONS
   .filter(c => !!CERT_IMAGES[c.id])
-  .map(c => ({ key: c.id, title: c.name, result: c.issuer, src: CERT_IMAGES[c.id] }));
+  .map(c => ({
+    key: c.id,
+    title: c.name,
+    result: c.issuer,
+    src: CERT_IMAGES[c.id],
+    thumbnailSrc: THUMBNAILS[c.id],
+  }));
 
 const GALLERY_ITEMS: GalleryItem[] = [...COMP_ITEMS, ...CERT_ITEMS];
 
@@ -57,7 +82,15 @@ function GalleryCard({ item, onOpen }: { item: GalleryItem; onOpen: (i: GalleryI
       className="v2-card v2-award-card"
     >
       <div className="v2-award-media">
-        <img src={publicUrl(item.src)} alt={item.title} loading="lazy" decoding="async" />
+        <ResilientImage
+          src={publicUrl(item.thumbnailSrc)}
+          alt={item.title}
+          width={960}
+          height={540}
+          loading="lazy"
+          decoding="async"
+          {...{ fetchpriority: 'low' }}
+        />
         <span className="v2-award-zoom" aria-hidden>⤢</span>
       </div>
 

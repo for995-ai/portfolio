@@ -11,6 +11,7 @@ import {
   type GitHubContributionWeek,
 } from '@/lib/github';
 import { useInView } from '@/hooks/useInView';
+import { ResilientImage } from './ResilientImage';
 
 // Restrained language palette — GitHub-adjacent hues, desaturated to sit inside
 // the lavender/purple system rather than fighting it.
@@ -101,15 +102,17 @@ function ProfileCard({ data }: { data: GitHubData }) {
   return (
     <Card>
       <div style={{ display: 'flex', alignItems: 'center', gap: '14px', marginBottom: '20px' }}>
-        <div style={{ position: 'relative', flexShrink: 0 }}>
-          <img
+        <div style={{ position: 'relative', flexShrink: 0, width: 56, height: 56 }}>
+          <ResilientImage
             src={profile.avatarUrl}
             alt=""
             width={56}
             height={56}
             loading="lazy"
             decoding="async"
-            style={{ borderRadius: '50%', border: '2px solid var(--v2-border)', display: 'block' }}
+            referrerPolicy="no-referrer"
+            fallback={<span className="v2-github-avatar-fallback" aria-hidden>GH</span>}
+            style={{ width: '100%', height: '100%', borderRadius: '50%', border: '2px solid var(--v2-border)', display: 'block' }}
           />
           {/* Micro-pixel accent — the single brand mark in this section */}
           <span

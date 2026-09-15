@@ -3,6 +3,7 @@ import { publicUrl } from '@/lib/publicUrl';
 import { Pagination, usePagination } from './Pagination';
 import { PhotoCleanerPreview } from './PhotoCleanerPreview';
 import { useInView } from '@/hooks/useInView';
+import { ResilientImage } from './ResilientImage';
 
 // ── Source chip mapping ───────────────────────────────────────────────────────
 
@@ -28,11 +29,11 @@ const SOURCE_CSS: Record<SourceType, string> = {
 // ── Confirmed project images ──────────────────────────────────────────────────
 
 const PROJECT_IMAGES: Partial<Record<string, string>> = {
-  A2: '/images/project-starryrun.png',
-  A3: '/images/project-soulscent.png',
-  A4: '/images/project-hotpot.png',
-  A5: '/images/project-accommodation.png',
-  A6: '/images/project-dog.png',
+  A2: '/images/optimized/projects/project-starryrun.webp',
+  A3: '/images/optimized/projects/project-soulscent.webp',
+  A4: '/images/optimized/projects/project-hotpot.webp',
+  A5: '/images/optimized/projects/project-accommodation.webp',
+  A6: '/images/optimized/projects/project-dog.webp',
 };
 
 // ── Drawn previews ────────────────────────────────────────────────────────────
@@ -188,7 +189,15 @@ function ProjectCard({ project }: { project: Project }) {
       {/* Image */}
       {src ? (
         <div className="v2-project-media">
-          <img src={publicUrl(src)} alt={project.title} loading="lazy" decoding="async" />
+          <ResilientImage
+            src={publicUrl(src)}
+            alt={project.title}
+            width={1200}
+            height={675}
+            loading="lazy"
+            decoding="async"
+            {...{ fetchpriority: 'low' }}
+          />
         </div>
       ) : Preview ? (
         <div className="v2-project-media">
