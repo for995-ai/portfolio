@@ -566,44 +566,27 @@ export function GitHub() {
 
       {state.status === 'ready' && (
         <>
-          {/* Top composition.
-              With a synced calendar the classic dashboard applies: profile and
-              languages stacked at left, calendar filling the right. Without it
-              the calendar card is only a slim bar, so putting it in a column
-              would leave a hole — profile and languages go side by side and the
-              bar spans the full width underneath. */}
-          {state.data.contributions ? (
-            <div className="v2-gh-grid">
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-                <ProfileCard data={state.data} />
-                {state.data.languages.length > 0 && (
-                  <LanguageCard languages={state.data.languages} />
-                )}
-              </div>
-              <ContributionCard contributions={state.data.contributions} />
-            </div>
-          ) : (
-            <>
-              <div className="v2-gh-split">
-                <ProfileCard data={state.data} />
-                {state.data.languages.length > 0 && (
-                  <LanguageCard languages={state.data.languages} />
-                )}
-              </div>
-              <div style={{ marginTop: '20px' }}>
-                <ContributionCard contributions={null} />
-              </div>
-            </>
-          )}
+          {/* GitHub overview inspired by the reference: identity and skills on
+              the left, contribution evidence on the right. */}
+          <div className="v2-gh-grid">
+            <ProfileCard data={state.data} />
+            <ContributionCard
+              contributions={state.data.contributions}
+              repoCount={state.data.profile.publicRepos}
+            />
+          </div>
 
           {/* Curated public repositories */}
           {state.data.repos.length > 0 && (
             <>
-              <SubHeading label="Public Repositories" />
+              <SubHeading label="Featured Repositories" />
               <div className="v2-gh-repos">
-                {state.data.repos.map(repo => (
-                  <RepoCard key={repo.id} repo={repo} />
-                ))}
+                {['portfolio', 'starry-run', 'dog-adoption-volunteer-system', 'mbti-aroma-advisor']
+                  .map(name => state.data.repos.find(repo => repo.name === name))
+                  .filter((repo): repo is GitHubRepository => Boolean(repo))
+                  .map(repo => (
+                    <RepoCard key={repo.id} repo={repo} />
+                  ))}
               </div>
             </>
           )}
