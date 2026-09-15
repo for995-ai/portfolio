@@ -1033,12 +1033,12 @@
 
 .v2-heatmap {
   min-width: min-content;
-  --cell: 11px;
-  --cell-gap: 3px;
+  --cell: 8px;
+  --cell-gap: 2px;
 }
 
 @media (max-width: 767px) {
-  .v2-heatmap { --cell: 9px; --cell-gap: 2px; }
+  .v2-heatmap { --cell: 8px; --cell-gap: 2px; }
 }
 
 .v2-heatmap-months {
