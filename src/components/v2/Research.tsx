@@ -1,3 +1,4 @@
+import { publicUrl } from '@/lib/publicUrl';
 import { useInView } from '@/hooks/useInView';
 
 // ── Static research items — confirmed from actual work ────────────────────────
@@ -12,11 +13,17 @@ interface ResearchCard {
   title:   string;
   content: string;
   footer:  string;
+  expandable?: boolean;
+  pdfPath?: string;
 }
 
 const CARDS: ResearchCard[] = [
   {
     chip:    '2026.05',
+    expandable: true,
+    // After uploading the PDF, set pdfPath to:
+    // '/documents/research/2026-management-conference/paper.pdf'
+
     title:   '第17屆前瞻管理學術與產業趨勢研討會',
     content: '跟著龍走－𪹚龍文化與互動體驗｜論文發表',
     footer:  '研究／實作摘要',
@@ -72,6 +79,34 @@ function ResearchBanner() {
 // ── Research card ─────────────────────────────────────────────────────────────
 
 function ResearchCardItem({ card }: { card: ResearchCard }) {
+  if (card.expandable) {
+    return (
+      <details className="v2-card v2-research-details" style={{ padding: '20px 22px', boxShadow: 'var(--shadow-xs)' }}>
+        <summary className="v2-research-summary">
+          <span style={{ color: 'var(--v2-purple)', fontSize: '0.75rem', fontWeight: 700 }}>{card.chip}</span>
+          <span className="v2-research-arrow" aria-hidden>⌄</span>
+          <h3 style={{ fontSize: '0.9375rem', fontWeight: 700, lineHeight: 1.5, margin: '14px 24px 14px 0' }}>{card.title}</h3>
+          <p style={{ fontSize: '0.8125rem', color: 'var(--v2-text-sec)', lineHeight: 1.65 }}>{card.content}</p>
+          <span className="v2-research-open-label">展開研究摘要</span>
+          <span className="v2-research-close-label">收合研究摘要</span>
+        </summary>
+        <div style={{ borderTop: '1px solid var(--v2-border)', marginTop: 18, paddingTop: 18, fontSize: '0.8125rem', lineHeight: 1.8, color: 'var(--v2-text-sec)' }}>
+          <h4 style={{ color: 'var(--v2-text)', fontWeight: 700, marginBottom: 8 }}>研究概覽</h4>
+          <p>跟著龍走－𪹚龍文化與互動體驗</p>
+          <ul style={{ paddingLeft: 20, margin: '12px 0 18px' }}>
+            <li>發表場合：第17屆前瞻管理學術與產業趨勢研討會</li>
+            <li>參與角色：論文整合、團隊 PM</li>
+            <li>成果：論文發表</li>
+          </ul>
+          {card.pdfPath ? (
+            <a href={publicUrl(card.pdfPath)} target="_blank" rel="noopener noreferrer" className="v2-bubble-btn v2-bubble-btn--soft">論文全文（PDF）↗</a>
+          ) : (
+            <p style={{ color: 'var(--v2-text-muted)', fontSize: '0.75rem' }}>論文全文尚未上傳</p>
+          )}
+        </div>
+      </details>
+    );
+  }
   return (
     <div
       className="v2-card"
@@ -158,7 +193,7 @@ export function Research() {
   return (
     <div ref={ref} className={`v2-reveal ${inView ? 'is-visible' : ''}`}>
       <ResearchBanner />
-      <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
+      <div className="grid grid-cols-1 gap-5 md:grid-cols-3" style={{ alignItems: 'start' }}>
         {CARDS.map(card => (
           <ResearchCardItem key={card.chip} card={card} />
         ))}
