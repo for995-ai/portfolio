@@ -93,7 +93,7 @@ function CardLabel({ children }: { children: React.ReactNode }) {
 
 // ── Profile card ──────────────────────────────────────────────────────────────
 
-function MetricCard({ value, label, hint }: { value: number; label: string; hint: string }) {
+function MetricCard({ value, label, hint }: { value: number | string; label: string; hint: string }) {
   return (
     <div className="v2-gh-metric-card">
       <p className="v2-gh-metric-value">{value.toLocaleString()}</p>
@@ -107,11 +107,13 @@ function ProfileCard({ data }: { data: GitHubData }) {
   const { profile, contributions, languages, repos } = data;
   const topLanguages = languages.slice(0, 5);
   const featuredCount = selectFeaturedRepos(repos).length;
-  const latestUpdate = repos.reduce<string | null>((latest, repo) => {
-    if (!latest || new Date(repo.updatedAt) > new Date(latest)) return repo.updatedAt;
-    return latest;
-  }, null);
-  const updatedLabel = latestUpdate ? formatUpdated(latestUpdate) : '持續更新中';
+  const syncedAt = data.generatedAt ? new Date(data.generatedAt) : null;
+  const updatedLabel = syncedAt && !Number.isNaN(syncedAt.getTime())
+    ? '資料同步：' + new Intl.DateTimeFormat('zh-TW', {
+        timeZone: 'Asia/Taipei', year: 'numeric', month: '2-digit',
+        day: '2-digit', hour: '2-digit', minute: '2-digit', hour12: false,
+      }).format(syncedAt) + '（台灣時間）'
+    : '即時資料；同步時間未提供';
 
   return (
     <Card className="v2-gh-overview-card">
@@ -147,8 +149,8 @@ function ProfileCard({ data }: { data: GitHubData }) {
 
       <div className="v2-gh-metric-grid">
         <MetricCard value={profile.publicRepos} label="公開儲存庫" hint="Public repositories" />
-        <MetricCard value={contributions?.total ?? 0} label="年度貢獻" hint="Public contributions" />
-        <MetricCard value={languages.length} label="主要語言" hint="Languages used" />
+        <MetricCard value={contributions?.total ?? '—'} label="近一年貢獻" hint="Public contributions" />
+        <MetricCard value={languages.length} label="偵測到的程式碼語言" hint="Detected languages" />
         <MetricCard value={featuredCount} label="精選專案" hint="Featured projects" />
       </div>
 
@@ -156,8 +158,8 @@ function ProfileCard({ data }: { data: GitHubData }) {
         <div className="v2-gh-language-panel">
           <div className="v2-gh-panel-heading">
             <div>
-              <h4>主要語言</h4>
-              <p>依公開儲存庫程式碼比例</p>
+              <h4>程式碼語言分布（前 5 種）</h4>
+              <p>依公開儲存庫程式碼大小計算，非熟練度</p>
             </div>
           </div>
           <ul className="v2-gh-language-list">
@@ -349,12 +351,12 @@ function ContributionCard({
 
       <div className="v2-gh-streak-heading">
         <h4>開發成果摘要</h4>
-        <p>以成果與持續投入為主要呈現</p>
+        <p>統計截至上方資料同步時間</p>
       </div>
 
       <div className="v2-gh-summary-grid">
-        <StreakStat value={total.toLocaleString()} label="年度公開貢獻" />
-        <StreakStat value={longestStreak + ' days'} label="最長連續貢獻" />
+        <StreakStat value={total.toLocaleString()} label="近一年公開貢獻" />
+        <StreakStat value={longestStreak + ' days'} label="近一年最長連續貢獻" />
         <StreakStat value={repoCount.toLocaleString()} label="公開儲存庫" />
       </div>
     </Card>
