@@ -24,7 +24,7 @@ const CARDS: ResearchCard[] = [
     chip:    '2026.05.23',
     expandable: true,
     pdfPath: '/documents/research/2026-management-conference/paper.pdf',
-    certificatePath: '/documents/research/2026-management-conference/certificate.pdf',
+    certificatePath: '/documents/research/2026-management-conference/certificate.pdf?v=29251547',
     acceptancePath: '/documents/research/2026-management-conference/acceptance-certificate.jpg',
 
     title:   '第17屆前瞻管理學術與產業趨勢研討會',
