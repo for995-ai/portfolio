@@ -15,13 +15,17 @@ interface ResearchCard {
   footer:  string;
   expandable?: boolean;
   pdfPath?: string;
+  certificatePath?: string;
+  acceptancePath?: string;
 }
 
 const CARDS: ResearchCard[] = [
   {
-    chip:    '2026.05',
+    chip:    '2026.05.23',
     expandable: true,
     pdfPath: '/documents/research/2026-management-conference/paper.pdf',
+    certificatePath: '/documents/research/2026-management-conference/certificate.pdf',
+    acceptancePath: '/documents/research/2026-management-conference/acceptance-certificate.jpg',
 
     title:   '第17屆前瞻管理學術與產業趨勢研討會',
     content: '跟著龍走－𪹚龍文化與互動體驗｜論文發表',
@@ -103,11 +107,19 @@ function ResearchCardItem({ card }: { card: ResearchCard }) {
             <li>參與角色：論文整合、團隊 PM</li>
             <li>成果：論文發表</li>
           </ul>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10 }}>
+          {card.certificatePath && (
+            <a href={publicUrl(card.certificatePath)} target="_blank" rel="noopener noreferrer" className="v2-bubble-btn v2-bubble-btn--soft">論文發表證明（PDF）↗</a>
+          )}
+          {card.acceptancePath && (
+            <a href={publicUrl(card.acceptancePath)} target="_blank" rel="noopener noreferrer" className="v2-bubble-btn v2-bubble-btn--soft">論文收錄證明（圖片）↗</a>
+          )}
           {card.pdfPath ? (
             <a href={publicUrl(card.pdfPath)} target="_blank" rel="noopener noreferrer" className="v2-bubble-btn v2-bubble-btn--soft">論文全文（PDF）↗</a>
           ) : (
             <p style={{ color: 'var(--v2-text-muted)', fontSize: '0.75rem' }}>論文全文尚未上傳</p>
           )}
+          </div>
         </div>
       </details>
     );
