@@ -1793,3 +1793,13 @@
     width: 84px; height: 84px; font-size: 1rem;
   }
 }
+
+/* Native research disclosure supports keyboard interaction without downloads. */
+.v2-research-summary { list-style: none; cursor: pointer; position: relative; }
+.v2-research-summary::-webkit-details-marker { display: none; }
+.v2-research-summary:focus-visible { outline: 2px solid var(--v2-purple); outline-offset: 6px; border-radius: 4px; }
+.v2-research-arrow { position: absolute; right: 0; top: 0; color: var(--v2-purple); font-size: 1.3rem; }
+.v2-research-details[open] .v2-research-arrow { transform: rotate(180deg); }
+.v2-research-open-label, .v2-research-close-label { display: block; margin-top: 16px; color: var(--v2-purple); font-size: .75rem; }
+.v2-research-close-label, .v2-research-details[open] .v2-research-open-label { display: none; }
+.v2-research-details[open] .v2-research-close-label { display: block; }
