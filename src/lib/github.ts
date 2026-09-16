@@ -30,6 +30,7 @@ const SNAPSHOT_URL = publicUrl('/data/github.json');
 const featuredPublicRepoNames: string[] = [
   'portfolio',
   'starry-run',
+  'dog-adoption-volunteer-system',
   'mbti-aroma-advisor',
   'ai-food-ordering',
   'work-exchange-platform',
