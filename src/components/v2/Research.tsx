@@ -21,8 +21,7 @@ const CARDS: ResearchCard[] = [
   {
     chip:    '2026.05',
     expandable: true,
-    // After uploading the PDF, set pdfPath to:
-    // '/documents/research/2026-management-conference/paper.pdf'
+    pdfPath: '/documents/research/2026-management-conference/paper.pdf',
 
     title:   '第17屆前瞻管理學術與產業趨勢研討會',
     content: '跟著龍走－𪹚龍文化與互動體驗｜論文發表',
@@ -92,7 +91,13 @@ function ResearchCardItem({ card }: { card: ResearchCard }) {
         </summary>
         <div style={{ borderTop: '1px solid var(--v2-border)', marginTop: 18, paddingTop: 18, fontSize: '0.8125rem', lineHeight: 1.8, color: 'var(--v2-text-sec)' }}>
           <h4 style={{ color: 'var(--v2-text)', fontWeight: 700, marginBottom: 8 }}>研究概覽</h4>
-          <p>跟著龍走－𪹚龍文化與互動體驗</p>
+          <p>本研究以苗栗客家𪹚龍文化為核心，提出結合 AI 音樂生成、體感互動與遊戲化學習的網頁體驗，將文化知識、工藝與儀式流程轉化為可參與的數位內容。</p>
+          <ul style={{ paddingLeft: 20, margin: '12px 0' }}>
+            <li>運用 Meta MusicGen 生成具客家八音特色的配樂。</li>
+            <li>結合 Python、OpenCV 與 MediaPipe 設計體感舞龍互動。</li>
+            <li>以 GDevelop 設計糊龍任務，融入客語與文化知識。</li>
+          </ul>
+          <p style={{ fontSize: '0.75rem' }}>以上依本篇研討會論文整理。</p>
           <ul style={{ paddingLeft: 20, margin: '12px 0 18px' }}>
             <li>發表場合：第17屆前瞻管理學術與產業趨勢研討會</li>
             <li>參與角色：論文整合、團隊 PM</li>
