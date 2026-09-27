@@ -108,10 +108,10 @@ export const EDUCATION: readonly Education[] = [
 export const PROJECTS: readonly Project[] = [
   {
     id: 'A1',
-    date: '2025.07–',
+    date: '2025.07–2026.09',
     title: '跟著龍走－苗栗𪹚龍文化互動學習平台',
-    role: '團隊 PM、UI/UX 設計、地圖／系統整合',
-    skills: ['專案管理', 'API 串接', '跨域整合'],
+    role: '團隊 PM、UI/UX、前端／RPG 地圖整合、Unity WebGL 系統整合',
+    skills: ['Tiled / PixiJS', 'Next.js', 'Unity WebGL', 'ACE-Step + LoRA', 'API 串接'],
     displayLevel: 'featured',
     featuredRank: 1,
   },
