@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" role="img" aria-labelledby="title desc">
+  <title id="title">HakkaDragon project preview</title>
+  <desc id="desc">A visual summary of the RPG map, Unity stages, and AI Hakka Bayin generation.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#171525"/>
+      <stop offset=".55" stop-color="#281f52"/>
+      <stop offset="1" stop-color="#143b49"/>
+    </linearGradient>
+    <linearGradient id="path" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#8b6ef0"/>
+      <stop offset="1" stop-color="#54c7d9"/>
+    </linearGradient>
+    <filter id="glow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="12" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <rect width="1200" height="675" rx="28" fill="url(#bg)"/>
+  <circle cx="1050" cy="95" r="180" fill="#7457e8" opacity=".10"/>
+  <circle cx="160" cy="610" r="220" fill="#54c7d9" opacity=".08"/>
+
+  <text x="72" y="92" fill="#ffffff" font-family="Arial, sans-serif" font-size="42" font-weight="700">HAKKA DRAGON</text>
+  <text x="74" y="130" fill="#c4bfda" font-family="Arial, sans-serif" font-size="18" letter-spacing="4">RPG MAP × UNITY WEBGL × AI BAYIN</text>
+
+  <!-- map card -->
+  <g transform="translate(72 180)">
+    <rect width="620" height="390" rx="28" fill="#ffffff" opacity=".96"/>
+    <text x="28" y="42" fill="#171525" font-family="Arial, sans-serif" font-size="19" font-weight="700">MIAOLI RPG MAP</text>
+    <text x="28" y="70" fill="#666273" font-family="Arial, sans-serif" font-size="13">Tiled · PixiJS · Next.js</text>
+
+    <path d="M72 300 C135 238, 170 270, 228 204 S340 130, 404 172 S495 252, 550 115"
+          fill="none" stroke="url(#path)" stroke-width="12" stroke-linecap="round" opacity=".9"/>
+
+    <g fill="#fff" stroke="#7457e8" stroke-width="7">
+      <circle cx="72" cy="300" r="19"/><circle cx="170" cy="254" r="19"/>
+      <circle cx="260" cy="170" r="19"/><circle cx="365" cy="153" r="19"/>
+      <circle cx="465" cy="222" r="19"/><circle cx="550" cy="115" r="19"/>
+    </g>
+    <g fill="#171525" font-family="Arial, sans-serif" font-size="12" font-weight="700" text-anchor="middle">
+      <text x="72" y="337">01</text><text x="170" y="291">02</text><text x="260" y="207">03</text>
+      <text x="365" y="190">04</text><text x="465" y="259">05</text><text x="550" y="152">06</text>
+    </g>
+    <g fill="#7457e8">
+      <path d="M91 278 l32 -13 l-16 30 z"/>
+      <path d="M204 223 l28 -22 l-7 34 z"/>
+      <path d="M320 151 l31 -5 l-22 24 z"/>
+      <path d="M418 176 l28 17 l-34 5 z"/>
+      <path d="M505 183 l22 -29 l6 35 z"/>
+    </g>
+  </g>
+
+  <!-- AI panel -->
+  <g transform="translate(735 180)">
+    <rect width="393" height="390" rx="28" fill="#0f1720" stroke="#54c7d9" stroke-opacity=".35"/>
+    <text x="28" y="42" fill="#ffffff" font-family="Arial, sans-serif" font-size="19" font-weight="700">AI HAKKA BAYIN</text>
+    <text x="28" y="70" fill="#9fb7c0" font-family="Arial, sans-serif" font-size="13">ACE-Step 1.5 + Hakka Bayin LoRA</text>
+
+    <g transform="translate(28 118)" fill="none" stroke="#54c7d9" stroke-width="5" stroke-linecap="round">
+      <path d="M0 72 L18 72 L34 24 L52 120 L70 49 L88 85 L106 62 L124 72 L142 72"/>
+      <path d="M164 72 L182 72 L198 38 L216 106 L234 30 L252 93 L270 55 L288 72 L306 72"/>
+    </g>
+
+    <g transform="translate(28 230)">
+      <rect width="337" height="104" rx="18" fill="#ffffff" opacity=".08"/>
+      <circle cx="32" cy="34" r="9" fill="#54c7d9" filter="url(#glow)"/>
+      <text x="54" y="39" fill="#ffffff" font-family="Arial, sans-serif" font-size="14" font-weight="700">Kaggle Tesla T4</text>
+      <text x="24" y="72" fill="#9fb7c0" font-family="Arial, sans-serif" font-size="12">Generate → Preview → Confirm → Unity</text>
+    </g>
+  </g>
+
+  <g transform="translate(72 610)">
+    <rect width="230" height="34" rx="17" fill="#7457e8"/>
+    <text x="115" y="22" text-anchor="middle" fill="#fff" font-family="Arial, sans-serif" font-size="12" font-weight="700">6 CULTURAL STAGES</text>
+    <rect x="245" width="220" height="34" rx="17" fill="#54c7d9"/>
+    <text x="355" y="22" text-anchor="middle" fill="#10222b" font-family="Arial, sans-serif" font-size="12" font-weight="700">AI MUSIC GENERATION</text>
+    <rect x="480" width="230" height="34" rx="17" fill="#ffffff" opacity=".12"/>
+    <text x="595" y="22" text-anchor="middle" fill="#fff" font-family="Arial, sans-serif" font-size="12" font-weight="700">WEB ↔ UNITY BRIDGE</text>
+  </g>
+</svg>
