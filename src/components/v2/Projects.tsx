@@ -29,6 +29,7 @@ const SOURCE_CSS: Record<SourceType, string> = {
 // ── Confirmed project images ──────────────────────────────────────────────────
 
 const PROJECT_IMAGES: Partial<Record<string, string>> = {
+  A1: '/images/projects/project-hakkadragon.svg',
   A2: '/images/optimized/projects/project-starryrun.webp',
   A3: '/images/optimized/projects/project-soulscent.webp',
   A4: '/images/optimized/projects/project-hotpot.webp',
@@ -52,8 +53,12 @@ interface Blurb { summary: string; highlights: string[] }
 
 const BLURB: Partial<Record<string, Blurb>> = {
   A1: {
-    summary: '苗栗𪹚龍文化互動學習平台，整合地圖、文化資訊與互動學習內容。',
-    highlights: ['擔任團隊 PM 並負責 UI/UX 設計', '地圖與系統整合、API 串接'],
+    summary: '以苗栗𪹚龍六部曲為核心的文化互動學習平台，整合網頁 RPG 地圖、Unity WebGL 任務與 AI 客家八音生成。',
+    highlights: [
+      '以 Tiled + PixiJS + Next.js 建構苗栗市 RPG 探索地圖，透過 Web ↔ Unity Bridge 啟動六部曲互動',
+      '以 ACE-Step 1.5 + 自行訓練的 Hakka Bayin LoRA 於 Kaggle T4 生成、試聽並套用六部曲專屬八音',
+      '負責團隊 PM、UI/UX 與跨模組整合；Claude、Codex 用於開發除錯與測試輔助',
+    ],
   },
   A2: {
     summary: '路跑活動報名網站，承接 2026 全球品牌大賽高雄初賽企劃。',
@@ -100,7 +105,7 @@ interface ProjectLink { label: string; url: string; type: LinkType }
  * being added. A project with no entry renders no action buttons at all —
  * never a placeholder, never a "coming soon".
  *
- * A1 跟著龍走      — repository is team-owned; ownership unresolved
+ * A1 跟著龍走      — team-owned private repository; expose the public case study only
  *
  * A6 狗狗領養 is a PHP/MySQL application. Its 查看作品 button points at the
  * public, safety-hardened demo (recorded on the project itself in
@@ -112,6 +117,9 @@ interface ProjectLink { label: string; url: string; type: LinkType }
  * and the site root everywhere else.
  */
 const EXTRA_LINKS: Partial<Record<string, ProjectLink[]>> = {
+  A1: [
+    { label: 'Case Study', url: '/case-studies/hakka-dragon/', type: 'case-study' },
+  ],
   A2: [
     { label: '查看作品', url: 'https://for995-ai.github.io/starry-run/',   type: 'demo' },
     { label: 'GitHub',   url: 'https://github.com/for995-ai/starry-run',    type: 'github' },
