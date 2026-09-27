@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>跟著龍走－苗栗𪹚龍文化互動學習平台｜Case Study — 蘇洺崴</title>
+<meta name="description" content="整合 Tiled + PixiJS RPG 地圖、Unity WebGL 六部曲互動與 ACE-Step 1.5 + Hakka Bayin LoRA AI 客家八音生成的文化科技專題 Case Study。" />
+<meta name="theme-color" content="#F7F8FC" />
+<script>
+(function () {
+  var p = location.pathname;
+  if (p.charAt(p.length - 1) !== '/' && !/\.html?$/i.test(p)) {
+    document.write('<base href="' + p + '/">');
+  }
+})();
+</script>
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Noto+Sans+TC:wght@400;500;700;900&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+<style>
+:root{
+  --bg:#F7F8FC;--surface:#fff;--lav:#F3F0FF;--border:#E6E2ED;
+  --purple:#7457E8;--purple2:#8B6EF0;--cyan:#54C7D9;--cyan-dim:rgba(84,199,217,.12);
+  --text:#171525;--sec:#666273;--muted:#9590A8;--faint:#C4BFDA;
+  --shadow:0 2px 12px rgba(23,21,37,.07),0 1px 3px rgba(23,21,37,.05);
+  --sans:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif;
+  --display:"Space Grotesk","Noto Sans TC",system-ui,sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,Consolas,monospace;
+}
+*{box-sizing:border-box} html{scroll-behavior:smooth} body{margin:0;background:var(--bg);color:var(--text);font-family:var(--sans);line-height:1.75;-webkit-font-smoothing:antialiased}
+a{color:var(--purple);text-decoration:none} a:hover{color:var(--purple2)}
+.wrap{width:min(1040px,calc(100% - 36px));margin:auto}
+.topbar{position:sticky;top:0;z-index:20;background:rgba(247,248,252,.9);backdrop-filter:blur(12px);border-bottom:1px solid rgba(230,226,237,.7)}
+.topbar .wrap{height:58px;display:flex;align-items:center;justify-content:space-between;gap:12px}.back{font-family:var(--display);font-weight:600;color:var(--text)}.tag{font:500 11px var(--mono);letter-spacing:.1em;color:var(--muted)}
+.hero{padding:54px 0 32px}.chips{display:flex;flex-wrap:wrap;gap:8px;align-items:center}.chip{padding:4px 11px;border-radius:999px;background:rgba(116,87,232,.10);color:var(--purple);font-weight:700;font-size:12px}.chip.cyan{background:var(--cyan-dim);color:#0C7A8C}.date{font:500 12px var(--mono);color:var(--muted)}
+h1{font-family:var(--display);font-size:clamp(32px,5vw,52px);line-height:1.18;margin:16px 0 8px}.en{font:500 13px var(--mono);letter-spacing:.08em;color:var(--muted);margin:0 0 20px}.lede{max-width:880px;color:var(--sec);font-size:17px}.lede strong{color:var(--text)}
+.hero-img{margin-top:28px;border-radius:24px;overflow:hidden;box-shadow:var(--shadow);border:1px solid var(--border);background:#171525}.hero-img img{width:100%;display:block}
+.note{margin-top:18px;padding:15px 18px;border-left:3px solid var(--purple);background:var(--lav);border-radius:10px;color:var(--sec);font-size:14px}.note strong{color:var(--text)}
+.nav{display:flex;flex-wrap:wrap;gap:8px;margin-top:24px}.nav a{padding:6px 12px;border-radius:999px;border:1px solid var(--border);background:#fff;font:600 12px var(--display);color:var(--sec)}
+.section{padding:38px 0;scroll-margin-top:72px}.section+.section{border-top:1px solid rgba(230,226,237,.8)}h2{font-family:var(--display);font-size:24px;margin:0}.eyebrow{font:500 11px var(--mono);letter-spacing:.1em;color:var(--faint);margin-bottom:4px}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:18px}.card{background:#fff;border:1px solid var(--border);border-radius:20px;padding:20px;box-shadow:0 1px 3px rgba(23,21,37,.04)}.card h3{margin:0 0 8px;font:700 16px var(--display)}.card p{margin:0;color:var(--sec);font-size:14px}
+.spec{display:grid;grid-template-columns:160px 1fr;margin:0}.spec dt,.spec dd{padding:11px 0;border-bottom:1px solid rgba(230,226,237,.7)}.spec dt{font-weight:700;color:var(--muted);font-size:13px}.spec dd{margin:0}.spec dt:last-of-type,.spec dd:last-of-type{border-bottom:0}
+.flow{display:grid;gap:10px;margin-top:18px}.row{display:flex;align-items:stretch;gap:8px}.node{flex:1;background:#fff;border:1px solid var(--border);border-radius:14px;padding:13px}.node.purple{background:var(--lav)}.node.cyan{background:var(--cyan-dim)}.node b{display:block;font:700 13px var(--display)}.node small{display:block;margin-top:4px;color:var(--muted);font-size:12px;line-height:1.5}.arrow{align-self:center;color:var(--faint)}
+.list{margin:12px 0 0;padding:0;list-style:none}.list li{position:relative;padding-left:19px;margin:9px 0;color:var(--sec)}.list li:before{content:"▸";position:absolute;left:0;color:var(--purple)}.list strong{color:var(--text)}
+.stack{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}.stack span{padding:5px 10px;border-radius:999px;background:#fff;border:1px solid var(--border);font:600 11px var(--mono);color:var(--sec)}
+.status{display:grid;grid-template-columns:1.3fr .7fr;gap:14px;margin-top:18px}.done{border-left:4px solid var(--cyan)}.next{border-left:4px solid #D89D3B}.footer{padding:34px 0 50px;border-top:1px solid var(--border);color:var(--muted);font-size:13px}
+@media(max-width:720px){.grid,.status{grid-template-columns:1fr}.row{flex-direction:column}.arrow{align-self:flex-start;padding-left:8px}.arrow:after{content:"↓"}.arrow{font-size:0}.spec{grid-template-columns:1fr}.spec dt{padding-bottom:0;border-bottom:0}.hero{padding-top:36px}.tag{display:none}}
+</style>
+</head>
+<body>
+<header class="topbar"><div class="wrap"><a class="back" href="../../#projects">← 返回作品集</a><span class="tag">CASE STUDY · A1</span></div></header>
+
+<main>
+<section class="wrap hero">
+  <div class="chips"><span class="chip">畢業專題</span><span class="chip cyan">核心功能完成</span><span class="date">2025.07–2026.09</span></div>
+  <h1>跟著龍走－苗栗𪹚龍文化互動學習平台</h1>
+  <p class="en">HAKKA DRAGON · CULTURAL INTERACTIVE LEARNING PLATFORM</p>
+  <p class="lede">以苗栗𪹚龍文化為核心，將<strong>六部曲儀式流程</strong>轉化為可探索、可互動的數位學習體驗。系統整合 <strong>Tiled + PixiJS 的網頁 RPG 地圖</strong>、<strong>Unity WebGL 六部曲任務</strong>與<strong>ACE-Step 1.5 + Hakka Bayin LoRA</strong> 的 AI 客家八音生成。</p>
+  <div class="hero-img"><img src="../../images/projects/project-hakkadragon.svg" alt="HakkaDragon 系統架構主視覺" /></div>
+  <div class="note"><strong>目前狀態：</strong>專題核心功能已完成並可作為作品集封版。現階段仍保留的工作屬於正式營運強化，例如把 Kaggle Quick Tunnel 換成固定 GPU 服務、把生成音檔改存雲端物件儲存；這些不影響目前專題展示與系統流程。</div>
+  <nav class="nav"><a href="#overview">Overview</a><a href="#role">My Role</a><a href="#map">RPG Map</a><a href="#unity">Unity Stages</a><a href="#bayin">AI Bayin</a><a href="#architecture">Architecture</a><a href="#tools">Tools</a><a href="#status">Status</a></nav>
+</section>
+
+<section class="wrap section" id="overview">
+  <div class="eyebrow">01 · PROJECT OVERVIEW</div><h2>專案概觀</h2>
+  <div class="card" style="margin-top:18px"><dl class="spec">
+    <dt>主題</dt><dd>苗栗𪹚龍文化數位學習與觀光互動</dd>
+    <dt>核心體驗</dt><dd>客家八音 → 苗栗市 RPG 地圖探索 → 六部曲文化任務 → 完成旅程</dd>
+    <dt>六部曲</dt><dd>糊龍、祥龍點睛、迎龍、跈龍、𪹚龍、化龍返天</dd>
+    <dt>前端</dt><dd>Next.js 16、React 19、PixiJS 8、pixi-viewport</dd>
+    <dt>遊戲</dt><dd>Unity WebGL、C#、react-unity-webgl</dd>
+    <dt>AI</dt><dd>ACE-Step 1.5 + Hakka Bayin LoRA、MediaPipe Tasks Vision、客語發音特徵比對</dd>
+    <dt>狀態管理</dt><dd>Product State / LocalStorage：六部曲進度、八音設定、生成音樂 URL 與相關參數</dd>
+  </dl></div>
+</section>
+
+<section class="wrap section" id="role">
+  <div class="eyebrow">02 · MY ROLE</div><h2>我的角色</h2>
+  <div class="grid">
+    <div class="card"><h3>團隊 PM / 系統整合</h3><p>統整六部曲、RPG 地圖、AI 客家八音與 Web / Unity 模組的開發進度，處理跨模組契約、測試與整合。</p></div>
+    <div class="card"><h3>UI/UX / 前端互動</h3><p>規劃使用者從八音體驗、地圖探索到六部曲任務的操作流程，並參與前端畫面與互動設計。</p></div>
+    <div class="card"><h3>RPG 地圖整合</h3><p>以 Tiled 製作苗栗市 RPG 場景，搭配 PixiJS / Next.js 建立角色移動、文化節點與任務入口。</p></div>
+    <div class="card"><h3>AI / WebGL 串接</h3><p>整合 ACE-Step 生成服務與 Unity WebGL 任務，使生成的八音、遊戲進度與地圖狀態能在同一產品流程中協作。</p></div>
+  </div>
+</section>
+
+<section class="wrap section" id="map">
+  <div class="eyebrow">03 · RPG MAP</div><h2>苗栗市 RPG 地圖</h2>
+  <p style="color:var(--sec)">地圖不是單純導覽頁，而是六部曲旅程的主要操作介面。Tiled 負責場景與圖層配置，PixiJS 負責網頁端 2D 渲染與角色互動，Next.js 管理 UI、任務卡與產品狀態。</p>
+  <ul class="list">
+    <li><strong>Tiled Map Editor：</strong>編排地形、建築、碰撞區與節點素材。</li>
+    <li><strong>PixiJS / pixi-viewport：</strong>角色移動、鏡頭、節點狀態與地圖渲染。</li>
+    <li><strong>Next.js / React：</strong>任務卡、地圖介面、AI 服務與 Unity Stage Host。</li>
+    <li><strong>Product State：</strong>依 completedStageIds 控制六部曲的完成狀態與下一階段解鎖。</li>
+  </ul>
+</section>
+
+<section class="wrap section" id="unity">
+  <div class="eyebrow">04 · UNITY WEBGL</div><h2>六部曲互動任務</h2>
+  <div class="flow">
+    <div class="row"><div class="node"><b>01 糊龍</b><small>文化知識卡、教學、自訂著色</small></div><span class="arrow">→</span><div class="node"><b>02 祥龍點睛</b><small>七步點睛儀式與口訣</small></div><span class="arrow">→</span><div class="node"><b>03 迎龍</b><small>迎龍納福與店家互動</small></div></div>
+    <div class="row"><div class="node"><b>04 跈龍</b><small>客語翻牌與發音挑戰</small></div><span class="arrow">→</span><div class="node"><b>05 𪹚龍</b><small>MediaPipe Pose 舞龍動作辨識</small></div><span class="arrow">→</span><div class="node"><b>06 化龍返天</b><small>移動火把、燃燒動畫與結尾</small></div></div>
+  </div>
+  <div class="note"><strong>整合方式：</strong>地圖透過 Web ↔ Unity Bridge 啟動指定 Stage；Unity 完成任務後再由 completion bridge 回寫 Product State，避免每個 Unity mission 自己直接修改網頁進度。</div>
+</section>
+
+<section class="wrap section" id="bayin">
+  <div class="eyebrow">05 · AI HAKKA BAYIN</div><h2>AI 客家八音生成</h2>
+  <p style="color:var(--sec)">使用者可以為六部曲分別選擇樂器並生成客家八音，試聽後確認使用，確認的音樂再由網站傳給對應 Unity 任務播放。</p>
+  <div class="flow">
+    <div class="row"><div class="node purple"><b>使用者選擇樂器</b><small>六部曲各自保存設定</small></div><span class="arrow">→</span><div class="node"><b>Next.js Server API</b><small>同源 API，不暴露 GPU 服務網址</small></div><span class="arrow">→</span><div class="node cyan"><b>Kaggle Tesla T4</b><small>ACE-Step 1.5 + Hakka Bayin LoRA</small></div></div>
+    <div class="row"><div class="node"><b>生成 MP3</b><small>Server 取得生成音訊</small></div><span class="arrow">→</span><div class="node"><b>試聽 / 確認</b><small>Product State 保存 URL 與生成參數</small></div><span class="arrow">→</span><div class="node purple"><b>Unity 六部曲</b><small>stage music manifest 套用該部曲音樂</small></div></div>
+  </div>
+  <div class="note"><strong>目前暫存：</strong>開發版由 Next.js Server 將生成 MP3 暫存於網站 generated 音訊目錄；瀏覽器 Product State 只保存 audioUrl、seed、generationId、樂器與模型資訊，不把 MP3 本體塞進 LocalStorage。</div>
+</section>
+
+<section class="wrap section" id="architecture">
+  <div class="eyebrow">06 · SYSTEM ARCHITECTURE</div><h2>系統整合架構</h2>
+  <div class="flow">
+    <div class="row"><div class="node"><b>Next.js / React</b><small>UI、音樂流程、API、Product State</small></div><span class="arrow">→</span><div class="node purple"><b>Tiled + PixiJS Map</b><small>苗栗市 RPG 探索與六部曲節點</small></div><span class="arrow">→</span><div class="node"><b>Unity WebGL</b><small>六部曲文化互動任務</small></div></div>
+    <div class="row"><div class="node cyan"><b>AI Music Backend</b><small>Kaggle T4 / ACE-Step / LoRA</small></div><span class="arrow">→</span><div class="node"><b>Next.js Server</b><small>Health、Job Polling、Audio Fetch</small></div><span class="arrow">→</span><div class="node purple"><b>Product State</b><small>Music + Progress + Appearance</small></div></div>
+  </div>
+</section>
+
+<section class="wrap section" id="tools">
+  <div class="eyebrow">07 · TOOLS & TECHNOLOGIES</div><h2>使用工具與技術</h2>
+  <div class="stack">
+    <span>Tiled Map Editor</span><span>PixiJS 8</span><span>pixi-viewport</span><span>Next.js 16</span><span>React 19</span>
+    <span>Unity WebGL</span><span>C#</span><span>react-unity-webgl</span><span>MediaPipe Tasks Vision</span><span>ACE-Step 1.5</span>
+    <span>Hakka Bayin LoRA</span><span>Kaggle Tesla T4</span><span>Cloudflare Tunnel</span><span>Git / GitHub</span>
+  </div>
+  <div class="note"><strong>AI 開發輔助：</strong>Claude 與 Codex 用於程式整合、除錯、回歸測試與文件整理；它們屬於開發工具，不是使用者操作專題時的 runtime AI 模組。</div>
+</section>
+
+<section class="wrap section" id="status">
+  <div class="eyebrow">08 · STATUS & NEXT</div><h2>完成狀態與後續</h2>
+  <div class="status">
+    <div class="card done"><h3>目前可視為完成</h3><ul class="list">
+      <li>苗栗市 RPG 地圖與六部曲節點流程</li>
+      <li>六部曲 Unity WebGL 任務與完成回報</li>
+      <li>AI 客家八音生成、試聽、確認與 Unity 套用</li>
+      <li>Product State 跨頁狀態整合</li>
+      <li>Stage 5 MediaPipe Pose 與 Stage 4 發音挑戰</li>
+    </ul></div>
+    <div class="card next"><h3>正式營運時再強化</h3><ul class="list">
+      <li>Quick Tunnel → 固定 GPU API / 正式部署</li>
+      <li>本機 generated 音檔 → 雲端 Object Storage</li>
+      <li>Memory Job Store → 持久化佇列 / 資料庫</li>
+    </ul></div>
+  </div>
+</section>
+</main>
+
+<footer class="footer"><div class="wrap">蘇洺崴 · HakkaDragon Case Study · <a href="../../#projects">返回 Projects</a></div></footer>
+</body>
+</html>
