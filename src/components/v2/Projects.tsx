@@ -53,7 +53,7 @@ interface Blurb { summary: string; highlights: string[] }
 
 const BLURB: Partial<Record<string, Blurb>> = {
   A1: {
-    summary: '以苗栗龍六個核心階段為學習架構，整合文化場域、客家八音聲景、2D RPG、客語互動任務與苗栗觀光資訊的文化互動學習平台。',
+    summary: '以苗栗𪹚龍六個核心階段為學習架構，整合文化場域、客家八音聲景、2D RPG、客語互動任務與苗栗觀光資訊的文化互動學習平台。',
     highlights: [
       '以 Tiled + PixiJS + Next.js 建構苗栗市 RPG 探索地圖，透過 Web ↔ Unity Bridge 啟動六部曲互動',
       '以 ACE-Step 1.5 + 自行訓練的 Hakka Bayin LoRA 於 Kaggle T4 生成、試聽並套用六部曲專屬八音',
@@ -105,7 +105,7 @@ interface ProjectLink { label: string; url: string; type: LinkType }
  * being added. A project with no entry renders no action buttons at all —
  * never a placeholder, never a "coming soon".
  *
- * A1 跟著祥龍走    — team-owned private repository; public demo video and case study
+ * A1 跟著祥龍走－苗栗𪹚龍文化與互動體驗學習平台 — team-owned private repository; public demo video and case study
  *
  * A6 狗狗領養 is a PHP/MySQL application. Its 查看作品 button points at the
  * public, safety-hardened demo (recorded on the project itself in
