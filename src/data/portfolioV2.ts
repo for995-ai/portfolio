@@ -41,6 +41,14 @@ export interface Research {
   role: string;
   result: string;
   displayLevel: DisplayLevel;
+  chip: string;
+  title: string;
+  content: string;
+  footer: string;
+  overview: string;
+  bullets: string[];
+  meta: { label: string; value: string }[];
+  links: { label: string; path: string }[];
 }
 
 export interface Competition {
@@ -109,7 +117,7 @@ export const PROJECTS: readonly Project[] = [
   {
     id: 'A1',
     date: '2025.07–2026.09',
-    title: '跟著龍走－苗栗𪹚龍文化互動學習平台',
+    title: '跟著祥龍走－苗栗龍文化與互動體驗學習平台',
     role: '團隊 PM、UI/UX、前端／RPG 地圖整合、Unity WebGL 系統整合',
     skills: ['Tiled / PixiJS', 'Next.js', 'Unity WebGL', 'ACE-Step + LoRA', 'API 串接'],
     displayLevel: 'featured',
@@ -170,7 +178,7 @@ export const PROJECTS: readonly Project[] = [
   },
 ];
 
-// ─── Research (C2) ────────────────────────────────────────────────────────────
+// ─── Conference research ─────────────────────────────────────────────────────
 
 export const RESEARCH: readonly Research[] = [
   {
@@ -181,6 +189,54 @@ export const RESEARCH: readonly Research[] = [
     role: '論文整合、團隊 PM',
     result: '論文發表',
     displayLevel: 'featured',
+    chip: '2026.05.23',
+    title: '第17屆前瞻管理學術與產業趨勢研討會',
+    content: '跟著龍走－𪹚龍文化與互動體驗｜論文發表',
+    footer: '研究／實作摘要',
+    overview: '本研究以苗栗客家𪹚龍文化為核心，提出結合 AI 音樂生成、體感互動與遊戲化學習的網頁體驗，將文化知識、工藝與儀式流程轉化為可參與的數位內容。',
+    bullets: [
+      '運用 Meta MusicGen 生成具客家八音特色的配樂。',
+      '結合 Python、OpenCV 與 MediaPipe 設計體感舞龍互動。',
+      '以 GDevelop 設計糊龍任務，融入客語與文化知識。',
+    ],
+    meta: [
+      { label: '發表場合', value: '第17屆前瞻管理學術與產業趨勢研討會' },
+      { label: '參與角色', value: '論文整合、團隊 PM' },
+      { label: '成果', value: '論文發表' },
+    ],
+    links: [
+      { label: '論文發表證明（PDF）', path: '/documents/research/2026-management-conference/certificate.pdf?v=29251547' },
+      { label: '論文收錄證明（圖片）', path: '/documents/research/2026-management-conference/acceptance-certificate.jpg' },
+      { label: '論文全文（PDF）', path: '/documents/research/2026-management-conference/paper.pdf' },
+    ],
+  },
+  {
+    id: 'HHT2026',
+    date: '2026',
+    event: '2026 第一屆客家人文科技研討會暨成果展',
+    work: '跟著祥龍走－苗栗龍文化與互動體驗學習平台',
+    role: '海報發表',
+    result: '海報發表',
+    displayLevel: 'featured',
+    chip: 'HHT 2026',
+    title: '2026 第一屆客家人文科技研討會暨成果展',
+    content: '〈跟著祥龍走－苗栗龍文化與互動體驗學習平台〉｜海報發表',
+    footer: '研究／海報發表',
+    overview: '本研究以苗栗𪹚龍文化為核心，採文化內容整理、場域對應與遊戲化轉譯方法，將儀式流程、地方場域、客語學習與客家八音聲景整合為文化互動學習平台。',
+    bullets: [
+      '以糊龍、祥龍點睛、迎龍、跈龍、𪹚龍、化龍返天六個核心階段作為學習架構。',
+      '依各階段儀式情境與主要樂器配置，將使用者選擇轉換為結構化提示詞（structured prompts），透過生成式音樂模型產生六段個人化客家八音聲景。',
+      '整合祥龍角色客製化、2D RPG、客語互動任務與苗栗觀光資訊，讓文化內容連結地方場域與遊戲化學習。',
+      '依序探索玉清宮前廣場、玉清宮、苗栗市全民運動館、貓裏喵親子公園、經國路河濱公園與西山聖帝廟，體驗龍被設計、點睛、蒐集紅包、客語學習、舞步辨識教學及化龍儀式。',
+    ],
+    meta: [
+      { label: '發表場合', value: '2026 第一屆客家人文科技研討會暨成果展' },
+      { label: '發表形式', value: '海報發表' },
+      { label: '目前進度', value: '已完成核心互動流程之功能原型' },
+    ],
+    links: [
+      { label: '研討會論文（PDF）', path: '/documents/research/2026-hakka-humanities-tech/paper.pdf' },
+    ],
   },
 ];
 
@@ -427,9 +483,9 @@ export const CERTIFICATIONS: readonly Certification[] = [
 
 // ─── Derived Counts ───────────────────────────────────────────────────────────
 
-export const projectCount = PROJECTS.length;          // 7
+export const projectCount = 9;                       // Portfolio headline total
 export const competitionCount = COMPETITIONS.length;  // 7
-export const researchCount = RESEARCH.length;         // 1
+export const researchCount = RESEARCH.length;         // 2
 
 // ─── Selectors ────────────────────────────────────────────────────────────────
 

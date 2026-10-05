@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>跟著龍走－苗栗𪹚龍文化互動學習平台｜Case Study — 蘇洺崴</title>
+<title>跟著祥龍走－苗栗龍文化與互動體驗學習平台｜Case Study — 蘇洺崴</title>
 <meta name="description" content="整合 Tiled + PixiJS RPG 地圖、Unity WebGL 六部曲互動與 ACE-Step 1.5 + Hakka Bayin LoRA AI 客家八音生成的文化科技專題 Case Study。" />
 <meta name="theme-color" content="#F7F8FC" />
 <script>
@@ -38,6 +38,7 @@ h1{font-family:var(--display);font-size:clamp(32px,5vw,52px);line-height:1.18;ma
 .hero-img{margin-top:28px;border-radius:24px;overflow:hidden;box-shadow:var(--shadow);border:1px solid var(--border);background:#171525}.hero-img img{width:100%;display:block}
 .note{margin-top:18px;padding:15px 18px;border-left:3px solid var(--purple);background:var(--lav);border-radius:10px;color:var(--sec);font-size:14px}.note strong{color:var(--text)}
 .nav{display:flex;flex-wrap:wrap;gap:8px;margin-top:24px}.nav a{padding:6px 12px;border-radius:999px;border:1px solid var(--border);background:#fff;font:600 12px var(--display);color:var(--sec)}
+.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:24px}.actions a{padding:9px 16px;border:1px solid var(--border);border-radius:999px;background:#fff;font-size:13px;font-weight:700;max-width:100%;text-align:center}.demo-video{display:block;width:100%;height:auto;aspect-ratio:16/9;border:0;border-radius:20px;margin-top:18px}
 .section{padding:38px 0;scroll-margin-top:72px}.section+.section{border-top:1px solid rgba(230,226,237,.8)}h2{font-family:var(--display);font-size:24px;margin:0}.eyebrow{font:500 11px var(--mono);letter-spacing:.1em;color:var(--faint);margin-bottom:4px}
 .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:18px}.card{background:#fff;border:1px solid var(--border);border-radius:20px;padding:20px;box-shadow:0 1px 3px rgba(23,21,37,.04)}.card h3{margin:0 0 8px;font:700 16px var(--display)}.card p{margin:0;color:var(--sec);font-size:14px}
 .spec{display:grid;grid-template-columns:160px 1fr;margin:0}.spec dt,.spec dd{padding:11px 0;border-bottom:1px solid rgba(230,226,237,.7)}.spec dt{font-weight:700;color:var(--muted);font-size:13px}.spec dd{margin:0}.spec dt:last-of-type,.spec dd:last-of-type{border-bottom:0}
@@ -54,12 +55,13 @@ h1{font-family:var(--display);font-size:clamp(32px,5vw,52px);line-height:1.18;ma
 <main>
 <section class="wrap hero">
   <div class="chips"><span class="chip">畢業專題</span><span class="chip cyan">核心功能完成</span><span class="date">2025.07–2026.09</span></div>
-  <h1>跟著龍走－苗栗𪹚龍文化互動學習平台</h1>
+  <h1>跟著祥龍走－苗栗龍文化與互動體驗學習平台</h1>
   <p class="en">HAKKA DRAGON · CULTURAL INTERACTIVE LEARNING PLATFORM</p>
   <p class="lede">以苗栗𪹚龍文化為核心，將<strong>六部曲儀式流程</strong>轉化為可探索、可互動的數位學習體驗。系統整合 <strong>Tiled + PixiJS 的網頁 RPG 地圖</strong>、<strong>Unity WebGL 六部曲任務</strong>與<strong>ACE-Step 1.5 + Hakka Bayin LoRA</strong> 的 AI 客家八音生成。</p>
   <div class="hero-img"><img src="../../images/projects/project-hakkadragon.svg" alt="HakkaDragon 系統架構主視覺" /></div>
   <div class="note"><strong>目前狀態：</strong>專題核心功能已完成並可作為作品集封版。現階段仍保留的工作屬於正式營運強化，例如把 Kaggle Quick Tunnel 換成固定 GPU 服務、把生成音檔改存雲端物件儲存；這些不影響目前專題展示與系統流程。</div>
-  <nav class="nav"><a href="#overview">Overview</a><a href="#role">My Role</a><a href="#map">RPG Map</a><a href="#unity">Unity Stages</a><a href="#bayin">AI Bayin</a><a href="#architecture">Architecture</a><a href="#tools">Tools</a><a href="#status">Status</a></nav>
+  <div class="actions"><a href="https://youtu.be/yzNIArlAHT0" target="_blank" rel="noopener noreferrer">Demo 影片 ↗</a><a href="../../documents/research/2026-hakka-humanities-tech/paper.pdf" target="_blank" rel="noopener noreferrer">研討會論文（PDF）↗</a></div>
+  <nav class="nav"><a href="#overview">Overview</a><a href="#demo">Demo 影片</a><a href="#role">My Role</a><a href="#map">RPG Map</a><a href="#unity">Unity Stages</a><a href="#bayin">AI Bayin</a><a href="#architecture">Architecture</a><a href="#tools">Tools</a><a href="#status">Status</a></nav>
 </section>
 
 <section class="wrap section" id="overview">
@@ -73,6 +75,11 @@ h1{font-family:var(--display);font-size:clamp(32px,5vw,52px);line-height:1.18;ma
     <dt>AI</dt><dd>ACE-Step 1.5 + Hakka Bayin LoRA、MediaPipe Tasks Vision、客語發音特徵比對</dd>
     <dt>狀態管理</dt><dd>Product State / LocalStorage：六部曲進度、八音設定、生成音樂 URL 與相關參數</dd>
   </dl></div>
+</section>
+
+<section class="wrap section" id="demo">
+  <div class="eyebrow">DEMO VIDEO</div><h2>觀看完整 Demo</h2>
+  <iframe class="demo-video" width="560" height="315" src="https://www.youtube-nocookie.com/embed/yzNIArlAHT0" title="跟著祥龍走－苗栗龍文化與互動體驗學習平台 Demo" loading="lazy" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </section>
 
 <section class="wrap section" id="role">

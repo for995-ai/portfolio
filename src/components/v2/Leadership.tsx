@@ -31,9 +31,9 @@ const IMAGES: Partial<Record<string, { src: string; thumbnailSrc: string }>> = {
 };
 
 // ── Unified evidence card model ───────────────────────────────────────────────
-// Six cards per Figma. Sourced from LEADERSHIP (B*), SERVICE (D5) and
+// Five visible cards. Sourced from LEADERSHIP (B*), SERVICE (D5) and
 // EXPERIENCE (D3) — same card language, no split between "leadership" and
-// "service". The 6th card ("系統帶班") is factually EXPERIENCE.D3, not
+// "service". The last card ("系統帶班") is factually EXPERIENCE.D3, not
 // SERVICE.D11 — D11 is a separate, earlier role ("大學伴") in the same
 // programme and must not be relabeled to match the card title.
 
@@ -47,7 +47,7 @@ interface EvidenceItem {
   thumbnailSrc?: string;
 }
 
-const CARD_IDS = ['B2', 'B1', 'B3', 'B4', 'D5', 'D3'] as const;
+const CARD_IDS = ['B2', 'B3', 'B4', 'D5', 'D3'] as const;
 
 const EVIDENCE: EvidenceItem[] = CARD_IDS.flatMap(id => {
   const lead = LEADERSHIP.find(l => l.id === id);
