@@ -249,7 +249,7 @@ export const COMPETITIONS: readonly Competition[] = [
     event: '2026 全球品牌大賽－六都創新永續城市行銷競賽',
     work: '星空探險隊',
     role: '路跑網站建置、活動企劃',
-    result: '高雄市初賽入選',
+    result: '佳作獎',
     displayLevel: 'featured',
   },
   {

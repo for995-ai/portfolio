@@ -715,6 +715,28 @@
    Award / certificate card
    ============================================================ */
 
+.v2-evidence-filter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+
+.v2-evidence-filter-btn {
+  box-shadow: none;
+  color: var(--v2-text-sec);
+}
+
+.v2-evidence-filter-btn[aria-pressed="true"] {
+  background: var(--v2-lavender);
+  border-color: var(--v2-purple-glow);
+  color: var(--v2-purple);
+}
+
+.v2-evidence-filter-btn:focus-visible {
+  outline-color: var(--v2-purple);
+}
+
 .v2-award-card {
   display: flex;
   flex-direction: column;
