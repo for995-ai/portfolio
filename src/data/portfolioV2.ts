@@ -483,7 +483,7 @@ export const CERTIFICATIONS: readonly Certification[] = [
 
 // ─── Derived Counts ───────────────────────────────────────────────────────────
 
-export const projectCount = 9;                       // Portfolio headline total
+export const projectCount = PROJECTS.length;
 export const competitionCount = COMPETITIONS.length;  // 7
 export const researchCount = RESEARCH.length;         // 2
 
