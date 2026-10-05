@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import {
   projectCount,
   competitionCount,
@@ -17,6 +18,7 @@ import { Footer }     from '@/components/v2/Footer';
 import { Container, Section } from '@/components/v2/primitives';
 import { useInView } from '@/hooks/useInView';
 import { useCountUp } from '@/hooks/useCountUp';
+import { scrollToSection } from '@/lib/scrollToSection';
 
 // ── Section heading ───────────────────────────────────────────────────────────
 
@@ -146,6 +148,18 @@ function StatCards() {
 // ── Page ──────────────────────────────────────────────────────────────────────
 
 export function PortfolioV2() {
+  useEffect(() => {
+    const sectionId = window.location.hash.slice(1);
+    if (![
+      'about', 'education', 'experience', 'projects', 'github',
+      'research', 'awards', 'leadership', 'contact',
+    ].includes(sectionId)) return;
+
+    // Cross-page anchors can be looked up before React mounts the sections.
+    const frameId = window.requestAnimationFrame(() => scrollToSection(sectionId));
+    return () => window.cancelAnimationFrame(frameId);
+  }, []);
+
   return (
     <div className="min-h-svh bg-v2-bg text-v2-text">
       <Header />
