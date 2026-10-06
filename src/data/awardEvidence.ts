@@ -1,6 +1,11 @@
 import { COMPETITIONS, CERTIFICATIONS } from './portfolioV2';
 
-export type EvidenceCategory = 'competition' | 'certification' | 'leadership' | 'service';
+export type EvidenceCategory =
+  | 'competition'
+  | 'certification'
+  | 'leadership'
+  | 'service'
+  | 'experience';
 
 export interface GalleryItem {
   key: string;
@@ -14,9 +19,10 @@ export interface GalleryItem {
 
 export const EVIDENCE_CATEGORIES: readonly { id: EvidenceCategory; label: string }[] = [
   { id: 'competition', label: '競賽獎項' },
-  { id: 'certification', label: '專業證照' },
+  { id: 'certification', label: '專業證明' },
   { id: 'leadership', label: '幹部證明' },
   { id: 'service', label: '服務證明' },
+  { id: 'experience', label: '經歷證明' },
 ];
 
 // Preserve the literal "- " prefix on the existing certificate filenames.
@@ -77,11 +83,95 @@ const CERT_ITEMS: GalleryItem[] = CERTIFICATIONS
   }));
 
 /**
- * Add future formal leadership/service certificates here with their full image,
+ * Add formal credentials here with their full image,
  * thumbnail and optional original document. Activity photos are not evidence.
  * A populated category appears in the public filter automatically.
  */
-export const ADDITIONAL_EVIDENCE: readonly GalleryItem[] = [];
+export const ADDITIONAL_EVIDENCE: readonly GalleryItem[] = [
+  {
+    key: 'P2',
+    category: 'certification',
+    title: 'MATLAB Onramp',
+    result: 'Course Completion',
+    src: '/images/evidence/certifications/matlab-onramp.png',
+    thumbnailSrc: '/images/optimized/evidence/cert-matlab-onramp.webp',
+    documentPath: '/documents/evidence/certifications/matlab-onramp.pdf',
+  },
+  {
+    key: 'P1',
+    category: 'certification',
+    title: '華緣領袖教育培訓工作坊',
+    result: '8 小時培訓',
+    src: '/images/evidence/certifications/huayuan-leadership-workshop.png',
+    thumbnailSrc: '/images/optimized/evidence/cert-huayuan-workshop.webp',
+  },
+  {
+    key: 'L1',
+    category: 'leadership',
+    title: '國立聯合大學學生幹部經歷暨事蹟證明',
+    result: '幹部經歷證明',
+    // Public image and thumbnail mask the student ID and government ID values.
+    // The unredacted original stays private and is not a public asset.
+    src: '/images/evidence/leadership/nuu-student-leadership-record.png',
+    thumbnailSrc: '/images/optimized/evidence/leadership-nuu.webp',
+  },
+  // Service certificates: newest service period first; one card per activity.
+  {
+    key: 'S2',
+    category: 'service',
+    title: '新埔國小寒假友善宣導營',
+    result: '24 小時',
+    // 2026.02.04–2026.02.06
+    src: '/images/evidence/service/xinpu-friendly-winter-camp.png',
+    thumbnailSrc: '/images/optimized/evidence/service-xinpu.webp',
+  },
+  {
+    key: 'S4',
+    category: 'service',
+    title: '梅林小小領袖成長營志工｜32 小時',
+    result: '志工服務',
+    // 2026.01.18–2026.01.21
+    src: '/images/evidence/service/meilin-junior-leaders-camp.png',
+    thumbnailSrc: '/images/optimized/evidence/service-meilin.webp',
+  },
+  {
+    key: 'S3',
+    category: 'service',
+    title: '同安國小寒假返鄉服務營隊',
+    result: '24 小時',
+    // 2025.01.22–2025.01.24
+    src: '/images/evidence/service/tongan-winter-homecoming-camp.png',
+    thumbnailSrc: '/images/optimized/evidence/service-tongan.webp',
+  },
+  {
+    key: 'S1',
+    category: 'service',
+    title: '偏鄉地區中小學網路課業輔導',
+    result: '36 小時服務證明',
+    // 2023.09.18–2024.05.30; separate from cumulative tutoring hours.
+    src: '/images/evidence/service/rural-online-tutoring.png',
+    thumbnailSrc: '/images/optimized/evidence/service-rural-tutoring.webp',
+  },
+  {
+    key: 'X1',
+    category: 'experience',
+    title: '微靠右行有限公司｜暑期前端實習',
+    result: '300 小時',
+    // 2026.07.01–2026.08.24; evidence does not alter the Experience section.
+    src: '/images/evidence/experience/rightway-summer-internship.png',
+    thumbnailSrc: '/images/optimized/evidence/experience-rightway.webp',
+  },
+  {
+    key: 'X2',
+    category: 'experience',
+    title: 'Sponya 第九屆校園大使',
+    result: '結業證書',
+    // 2025.09.03–2026.06.30
+    src: '/images/evidence/experience/sponya-9th-campus-ambassador.png',
+    thumbnailSrc: '/images/optimized/evidence/experience-sponya.webp',
+    documentPath: '/documents/evidence/experience/sponya-9th-campus-ambassador.pdf',
+  },
+];
 
 export const GALLERY_ITEMS: readonly GalleryItem[] = [
   ...COMP_ITEMS,

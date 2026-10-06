@@ -11,7 +11,7 @@ const NAV_LINKS = [
   { href: '#projects',   label: '專案'   },
   { href: '#github',     label: 'GitHub' },
   { href: '#research',   label: '研究'   },
-  { href: '#awards',     label: '獎項證明' },
+  { href: '#awards',     label: '獎項與證明' },
   { href: '#leadership', label: '社團服務' },
   { href: '#contact',    label: '聯絡'   },
 ] as const;

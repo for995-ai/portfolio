@@ -215,10 +215,10 @@ export function PortfolioV2() {
           </Container>
         </Section>
 
-        {/* 07 — Awards & Certifications */}
+        {/* 07 — Awards & Credentials */}
         <Section id="awards" className="py-12 md:py-14">
           <Container>
-            <SectionHeading en="Awards & Certifications" zh="獎項證明" />
+            <SectionHeading en="Awards & Credentials" zh="獎項與證明" />
             <Awards />
           </Container>
         </Section>

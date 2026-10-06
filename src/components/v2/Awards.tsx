@@ -64,7 +64,7 @@ function EvidenceGallery({ items }: { items: readonly GalleryItem[] }) {
         totalPages={totalPages}
         onPrevious={onPrevious}
         onNext={onNext}
-        label="獎項證明分頁"
+        label="獎項與證明分頁"
       />
 
       {lightbox && (
