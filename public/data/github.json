@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-08T10:31:35.740Z",
+  "generatedAt": "2026-10-09T10:29:50.055Z",
   "profile": {
     "login": "for995-ai",
     "name": null,
@@ -14,42 +14,42 @@
     {
       "language": "TypeScript",
       "bytes": 1039607,
-      "percentage": 67.87594637862458
+      "percentage": 67.8803782888723
     },
     {
       "language": "HTML",
-      "bytes": 245205,
-      "percentage": 16.009435711543535
+      "bytes": 245105,
+      "percentage": 16.003951609111947
     },
     {
       "language": "CSS",
       "bytes": 143325,
-      "percentage": 9.357689987385971
+      "percentage": 9.358300990905814
     },
     {
       "language": "JavaScript",
       "bytes": 51734,
-      "percentage": 3.377713126163794
+      "percentage": 3.3779336714705837
     },
     {
       "language": "PHP",
       "bytes": 44208,
-      "percentage": 2.8863405474436354
+      "percentage": 2.8865290089374795
     },
     {
       "language": "Hack",
       "bytes": 5265,
-      "percentage": 0.34375187708764793
+      "percentage": 0.3437743221149075
     },
     {
       "language": "Python",
       "bytes": 2284,
-      "percentage": 0.1491223717508429
+      "percentage": 0.14913210858697978
     }
   ],
   "contributions": {
-    "total": 93,
-    "currentStreak": 0,
+    "total": 95,
+    "currentStreak": 1,
     "longestStreak": 3,
     "weeks": [
       {
@@ -2106,12 +2106,27 @@
             "date": "2026-10-08",
             "count": 0,
             "level": 0
+          },
+          {
+            "date": "2026-10-09",
+            "count": 2,
+            "level": 1
           }
         ]
       }
     ]
   },
   "repos": [
+    {
+      "id": 1336223700,
+      "name": "starry-run",
+      "description": "星空探險 Starry Run｜路跑活動報名網站（作品集展示版本，報名流程為模擬送出）",
+      "htmlUrl": "https://github.com/for995-ai/starry-run",
+      "language": "HTML",
+      "stars": 0,
+      "forks": 0,
+      "updatedAt": "2026-10-09T09:53:42Z"
+    },
     {
       "id": 1310593962,
       "name": "portfolio",
@@ -2120,7 +2135,7 @@
       "language": "TypeScript",
       "stars": 0,
       "forks": 0,
-      "updatedAt": "2026-10-07T10:13:04Z"
+      "updatedAt": "2026-10-08T10:31:42Z"
     },
     {
       "id": 1350816273,
@@ -2151,16 +2166,6 @@
       "stars": 0,
       "forks": 0,
       "updatedAt": "2026-08-17T10:33:01Z"
-    },
-    {
-      "id": 1336223700,
-      "name": "starry-run",
-      "description": "星空探險 Starry Run｜路跑活動報名網站（作品集展示版本，報名流程為模擬送出）",
-      "htmlUrl": "https://github.com/for995-ai/starry-run",
-      "language": "HTML",
-      "stars": 0,
-      "forks": 0,
-      "updatedAt": "2026-08-16T18:09:34Z"
     },
     {
       "id": 1336210062,
