@@ -105,7 +105,7 @@ interface ProjectLink { label: string; url: string; type: LinkType }
  * being added. A project with no entry renders no action buttons at all —
  * never a placeholder, never a "coming soon".
  *
- * A1 跟著祥龍走－苗栗𪹚龍文化與互動體驗學習平台 — team-owned private repository; public interactive demo, video and case study
+ * A1 跟著祥龍走－苗栗𪹚龍文化與互動體驗學習平台 — team-owned private repository; public demo video and case study
  *
  * A6 狗狗領養 is a PHP/MySQL application. Its 查看作品 button points at the
  * public, safety-hardened demo (recorded on the project itself in
@@ -118,7 +118,6 @@ interface ProjectLink { label: string; url: string; type: LinkType }
  */
 const EXTRA_LINKS: Partial<Record<string, ProjectLink[]>> = {
   A1: [
-    { label: '線上互動體驗', url: '/case-studies/hakka-dragon/demo/', type: 'demo' },
     { label: 'Demo 影片', url: 'https://youtu.be/yzNIArlAHT0', type: 'video' },
     { label: 'Case Study', url: '/case-studies/hakka-dragon/', type: 'case-study' },
   ],
