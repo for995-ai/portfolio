@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<title>跟著祥龍走｜線上互動體驗 Demo</title>
+<meta name="description" content="跟著祥龍走－苗栗𪹚龍文化與互動體驗學習平台之手機友善線上互動展示。" />
+<meta name="theme-color" content="#120d18" />
+<style>
+:root{--bg:#120d18;--panel:#1d1424;--panel2:#281a2f;--line:#4c344f;--paper:#fff4d6;--text:#fff8e8;--muted:#c9b9c8;--red:#e14d3f;--gold:#f0bc4c;--jade:#6fc6a7;--blue:#77b5ff;--shadow:0 18px 60px rgba(0,0,0,.35);font-family:"Noto Sans TC","Microsoft JhengHei",system-ui,sans-serif}*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(circle at 20% 0,#3a1c32 0,transparent 38%),linear-gradient(180deg,#140d19,#0d0911 70%);color:var(--text);min-height:100vh}button,a{font:inherit}.shell{width:min(1180px,calc(100% - 28px));margin:auto}.top{position:sticky;top:0;z-index:30;background:rgba(18,13,24,.82);backdrop-filter:blur(14px);border-bottom:1px solid rgba(255,255,255,.08)}.top .shell{height:58px;display:flex;align-items:center;justify-content:space-between;gap:14px}.brand{display:flex;align-items:center;gap:10px;font-weight:900}.brand i{width:12px;height:12px;border-radius:50%;background:var(--gold);box-shadow:0 0 18px var(--gold)}.top a{color:var(--paper);text-decoration:none;font-size:13px}.hero{padding:54px 0 28px;display:grid;grid-template-columns:1.15fr .85fr;gap:34px;align-items:center}.tag{display:inline-flex;gap:8px;align-items:center;border:1px solid #6d4a68;background:rgba(255,255,255,.04);padding:6px 11px;border-radius:999px;font-size:12px;color:#e8d5e4}.tag b{color:var(--gold)}h1{font-size:clamp(38px,7vw,74px);line-height:1.02;margin:16px 0 16px;letter-spacing:-.035em}.hero p{font-size:16px;line-height:1.85;color:var(--muted);max-width:720px}.cta{display:flex;flex-wrap:wrap;gap:10px;margin-top:24px}.btn{border:0;border-radius:13px;padding:12px 18px;font-weight:900;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:7px}.btn.primary{background:linear-gradient(135deg,var(--red),#ff7654);color:white;box-shadow:0 10px 26px rgba(225,77,63,.28)}.btn.secondary{background:#2a1c31;color:var(--paper);border:1px solid #5c3f5e}.poster{background:#08070a;border:1px solid #51364e;border-radius:24px;padding:12px;box-shadow:var(--shadow);transform:rotate(1deg)}.poster img{width:100%;display:block;border-radius:15px}.notice{margin:14px 0 0;padding:12px 14px;border:1px solid #6e5430;background:rgba(240,188,76,.08);color:#ead9ad;border-radius:13px;font-size:12px;line-height:1.7}.section{padding:32px 0}.section-title{display:flex;align-items:end;justify-content:space-between;gap:16px;margin-bottom:14px}.section-title h2{margin:0;font-size:25px}.section-title span{color:#98889a;font-size:12px}.demo{display:grid;grid-template-columns:1fr 340px;gap:18px}.map{min-height:590px;border:1px solid #51364e;border-radius:24px;overflow:hidden;position:relative;background-color:#2c4432;background-image:linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px),linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),radial-gradient(circle at 75% 25%,#49613c 0 13%,transparent 14%),radial-gradient(circle at 24% 70%,#315342 0 17%,transparent 18%),linear-gradient(145deg,#385b3d 0 31%,#b49c6b 32% 38%,#4c6c45 39% 67%,#44648a 68% 74%,#385b3d 75%);background-size:32px 32px,32px 32px,100% 100%,100% 100%,100% 100%}.map:after{content:"苗栗市 RPG 體驗地圖 · Portfolio Demo";position:absolute;left:18px;top:16px;background:rgba(16,10,18,.82);border:1px solid rgba(255,255,255,.16);border-radius:11px;padding:8px 11px;font-weight:800;font-size:12px}.route{position:absolute;inset:92px 9% 72px;pointer-events:none}.route svg{width:100%;height:100%;overflow:visible}.route path{fill:none;stroke:#ffd978;stroke-width:5;stroke-linecap:round;stroke-dasharray:8 12;opacity:.82}.stages{position:absolute;inset:0}.stage{position:absolute;transform:translate(-50%,-50%);width:48px;height:48px;border-radius:50%;border:4px solid #fff0c0;background:#c9483d;color:white;font-weight:900;box-shadow:0 7px 20px rgba(0,0,0,.35);cursor:pointer;transition:.2s}.stage:hover,.stage.active{scale:1.12;background:#ff755e}.stage.done{background:#418d70}.stage.locked{filter:grayscale(1);opacity:.6}.s1{left:16%;top:75%}.s2{left:29%;top:60%}.s3{left:42%;top:45%}.s4{left:59%;top:39%}.s5{left:73%;top:55%}.s6{left:86%;top:30%}.dragon{position:absolute;left:11%;top:84%;transform:translate(-50%,-50%);font-size:38px;filter:drop-shadow(0 6px 5px #0008);transition:left .65s ease,top .65s ease}.side{display:flex;flex-direction:column;gap:12px}.panel{background:linear-gradient(180deg,#24172b,#1a121f);border:1px solid #50354f;border-radius:20px;padding:17px}.panel h3{margin:0 0 10px;font-size:17px}.panel p{margin:0;color:var(--muted);font-size:13px;line-height:1.7}.mission{font-size:12px;color:#d9c6d6;margin-top:10px}.progress{height:8px;background:#38243c;border-radius:999px;overflow:hidden;margin:13px 0 6px}.progress i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--red),var(--gold));transition:.3s}.stage-list{display:grid;gap:7px;margin-top:11px}.stage-row{display:flex;align-items:center;gap:10px;padding:8px 9px;border-radius:11px;background:rgba(255,255,255,.035);font-size:12px}.stage-row b{width:25px;height:25px;display:grid;place-items:center;border-radius:8px;background:#4a304c}.stage-row.done b{background:#347a61}.assistant{background:#25162b;border:1px solid #6b466b;border-radius:20px;padding:16px}.assistant .head{display:flex;align-items:center;gap:10px;font-weight:900}.bot{width:38px;height:38px;display:grid;place-items:center;border-radius:13px;background:linear-gradient(135deg,#d64e40,#f0bc4c);font-size:22px}.chat{margin:12px 0;padding:11px 12px;border-radius:13px;background:#140e18;color:#e8dbe5;font-size:12px;line-height:1.7;min-height:64px}.qs{display:flex;flex-wrap:wrap;gap:6px}.qs button{border:1px solid #61425f;background:#332039;color:#f2e6ef;padding:7px 9px;border-radius:999px;font-size:11px;cursor:pointer}.bayin{display:grid;grid-template-columns:.8fr 1.2fr;gap:16px}.bayin-card{border:1px solid #50354f;border-radius:20px;background:#1d1424;padding:18px}.selects{display:grid;gap:9px}.selects button{border:1px solid #684563;background:#2c1c32;color:white;padding:10px;border-radius:12px;text-align:left;cursor:pointer}.selects button.active{border-color:var(--gold);background:#4a302c}.wave{height:180px;border-radius:16px;background:linear-gradient(180deg,#100b13,#211529);display:flex;align-items:center;justify-content:center;gap:5px;overflow:hidden}.wave i{width:5px;height:30px;border-radius:99px;background:linear-gradient(#f0bc4c,#df4f42);animation:wave .75s ease-in-out infinite alternate;animation-play-state:paused}.wave.play i{animation-play-state:running}.wave i:nth-child(2n){animation-delay:.12s}.wave i:nth-child(3n){animation-delay:.24s}.wave i:nth-child(5n){animation-delay:.36s}@keyframes wave{to{height:130px}}.small{color:#a996a7;font-size:12px;line-height:1.7}.qr-area{display:grid;grid-template-columns:220px 1fr;gap:22px;align-items:center;background:#fff6db;color:#25171d;border-radius:24px;padding:22px}.qr-area img{width:100%;background:white;padding:10px;border-radius:14px}.qr-area h2{margin:0 0 10px}.qr-area p{color:#6d5459;line-height:1.8}.footer{padding:36px 0 54px;color:#8f808e;font-size:12px;text-align:center}@media(max-width:850px){.hero,.demo,.bayin{grid-template-columns:1fr}.poster{max-width:620px}.map{min-height:520px}.side{display:grid;grid-template-columns:1fr 1fr}.qr-area{grid-template-columns:150px 1fr}}@media(max-width:560px){.shell{width:min(100% - 18px,1180px)}.hero{padding-top:30px}.side{grid-template-columns:1fr}.map{min-height:490px}.stage{width:42px;height:42px}.dragon{font-size:31px}.qr-area{grid-template-columns:1fr;text-align:center}.qr-area img{width:170px;margin:auto}.btn{width:100%}}
+</style>
+</head>
+<body>
+<header class="top"><div class="shell"><div class="brand"><i></i>跟著祥龍走 · LIVE DEMO</div><a href="../">Case Study ↗</a></div></header>
+<main>
+<section class="shell hero">
+<div>
+<span class="tag"><b>QR 可直接體驗</b> · GitHub Pages 輕量互動版</span>
+<h1>跟著祥龍走<br>苗栗𪹚龍文化互動體驗</h1>
+<p>從客家八音、苗栗市 RPG 地圖到𪹚龍六部曲，透過一個手機即可操作的互動 Demo，快速理解完整專題的使用流程與技術整合。</p>
+<div class="cta"><button class="btn primary" id="startBtn">開始互動體驗 →</button><a class="btn secondary" href="https://youtu.be/yzNIArlAHT0" target="_blank" rel="noopener">觀看完整系統影片</a></div>
+<div class="notice">此頁為作品集用的「輕量互動展示」，用來讓評審與使用者掃 QR 後立即理解操作流程；完整系統包含 Next.js、Unity WebGL、Kaggle ACE-Step + Hakka Bayin LoRA、客語語音服務與 AI 小龍助手。</div>
+</div>
+<div class="poster"><img src="../../../images/projects/project-hakkadragon.svg" alt="跟著祥龍走專題主視覺"></div>
+</section>
+
+<section class="shell section" id="experience">
+<div class="section-title"><h2>01｜走一次六部曲</h2><span>點地圖紅色節點推進</span></div>
+<div class="demo">
+<div class="map" id="map">
+<div class="route"><svg viewBox="0 0 800 400" preserveAspectRatio="none"><path d="M65 340 C180 310 160 245 280 225 S420 135 505 165 S610 270 690 145 S760 80 780 70"/></svg></div>
+<div class="stages">
+<button class="stage s1 active" data-stage="0">1</button><button class="stage s2 locked" data-stage="1">2</button><button class="stage s3 locked" data-stage="2">3</button><button class="stage s4 locked" data-stage="3">4</button><button class="stage s5 locked" data-stage="4">5</button><button class="stage s6 locked" data-stage="5">6</button>
+</div><div class="dragon" id="dragon">🐉</div>
+</div>
+<div class="side">
+<div class="panel"><h3 id="stageTitle">第一部曲｜糊龍</h3><p id="stageDesc">認識龍身工藝與結構，從文化知識進入六部曲旅程。</p><div class="mission" id="mission">任務：點擊地圖上的「1」完成此部曲。</div><div class="progress"><i id="bar"></i></div><p><span id="count">0</span> / 6 已完成</p><div class="stage-list" id="stageList"></div></div>
+<div class="assistant"><div class="head"><div class="bot">🐲</div><div>AI 小龍助手</div></div><div class="chat" id="chat">嗨！我可以協助你了解𪹚龍六部曲、客家八音、遊戲玩法與苗栗探索。</div><div class="qs"><button data-q="culture">𪹚龍六部曲？</button><button data-q="bayin">客家八音？</button><button data-q="next">我現在要做什麼？</button></div></div>
+</div>
+</div>
+</section>
+
+<section class="shell section">
+<div class="section-title"><h2>02｜感受 AI 客家八音</h2><span>ACE-Step 1.5 + Hakka Bayin LoRA</span></div>
+<div class="bayin">
+<div class="bayin-card"><h3>選擇儀式情境</h3><p class="small">正式系統會依六部曲、樂器與主奏產生 structured prompt，送往 Kaggle T4 上的 ACE-Step 1.5 + 自訓 Hakka Bayin LoRA。</p><div class="selects" id="musicSelects"></div></div>
+<div class="bayin-card"><div class="wave" id="wave"></div><div class="cta"><button class="btn primary" id="generateBtn">模擬生成八音</button></div><p class="small" id="musicStatus">選一個部曲後按下按鈕。此作品集頁只展示互動流程，不會消耗正式 GPU 資源。</p></div>
+</div>
+</section>
+
+<section class="shell section">
+<div class="qr-area"><img src="qr.svg" alt="本互動 Demo QR Code"><div><h2>掃描即可在手機體驗</h2><p>QR Code 指向這個 GitHub Pages 互動 Demo。適合放在海報、三折頁、Demo Day 手拿板與作品集。使用者不用登入、不用安裝 APP，打開瀏覽器即可操作。</p><div class="cta"><a class="btn primary" href="../">查看完整 Case Study</a><a class="btn secondary" href="https://youtu.be/yzNIArlAHT0" target="_blank" rel="noopener">完整 Demo 影片</a></div></div></div>
+</section>
+</main>
+<footer class="shell footer">HakkaDragon · Portfolio Interactive Demo · GitHub Pages</footer>
+<script>
+const names=['糊龍','祥龍點睛','迎龍','跈龍','𪹚龍','化龍返天'];
+const desc=['認識龍身工藝與結構，從文化知識進入六部曲旅程。','透過點睛儀式理解祥龍被賦予生命與神性的象徵。','進入地方場域，認識迎龍與祈福的文化脈絡。','結合客語學習與語音互動，體驗「跟著龍走」的語言任務。','以舞龍姿態辨識呈現𪹚龍動作與節慶互動。','移動火把完成化龍儀式，為六部曲旅程收束。'];
+const pos=[['16%','75%'],['29%','60%'],['42%','45%'],['59%','39%'],['73%','55%'],['86%','30%']];
+let completed=Number(localStorage.getItem('hakkaDemoProgress')||0); completed=Math.max(0,Math.min(6,completed));
+const stages=[...document.querySelectorAll('.stage')],bar=document.getElementById('bar'),count=document.getElementById('count'),dragon=document.getElementById('dragon'),title=document.getElementById('stageTitle'),stageDesc=document.getElementById('stageDesc'),mission=document.getElementById('mission'),stageList=document.getElementById('stageList');
+function render(){count.textContent=completed;bar.style.width=(completed/6*100)+'%';stageList.innerHTML=names.map((n,i)=>`<div class="stage-row ${i<completed?'done':''}"><b>${i<completed?'✓':i+1}</b><span>${n}</span></div>`).join('');stages.forEach((s,i)=>{s.classList.toggle('done',i<completed);s.classList.toggle('locked',i>completed);s.classList.toggle('active',i===completed&&completed<6)});let current=Math.min(completed,5);title.textContent=`第${['一','二','三','四','五','六'][current]}部曲｜${names[current]}`;stageDesc.textContent=desc[current];mission.textContent=completed===6?'旅程完成！你已走過𪹚龍六部曲。':`任務：點擊地圖上的「${completed+1}」完成此部曲。`;let p=pos[Math.min(completed,5)];dragon.style.left=p[0];dragon.style.top=p[1];}
+stages.forEach((s,i)=>s.addEventListener('click',()=>{if(i>completed)return;if(i===completed&&completed<6){completed++;localStorage.setItem('hakkaDemoProgress',completed)}else if(i<completed){title.textContent=`第${['一','二','三','四','五','六'][i]}部曲｜${names[i]}`;stageDesc.textContent=desc[i]}render()}));
+document.getElementById('startBtn').onclick=()=>document.getElementById('experience').scrollIntoView({behavior:'smooth'});
+const replies={culture:'六部曲依序為糊龍、祥龍點睛、迎龍、跈龍、𪹚龍與化龍返天。平台把每個儀式階段轉化成可操作的文化任務。',bayin:'客家八音是專題重要的聲景元素。正式系統使用 ACE-Step 1.5 搭配自行訓練的 Hakka Bayin LoRA 生成六部曲專屬音樂。',next:'目前請沿著 RPG 地圖依序完成解鎖的部曲。完成一關後，下一個文化場域就會開放。'};
+document.querySelectorAll('[data-q]').forEach(b=>b.onclick=()=>document.getElementById('chat').textContent=replies[b.dataset.q]);
+const music=document.getElementById('musicSelects');names.forEach((n,i)=>{let b=document.createElement('button');b.textContent=`${i+1}. ${n}`;b.onclick=()=>{[...music.children].forEach(x=>x.classList.remove('active'));b.classList.add('active');music.dataset.stage=n};music.appendChild(b)});music.firstChild.classList.add('active');music.dataset.stage=names[0];
+const wave=document.getElementById('wave');wave.innerHTML='<i></i>'.repeat(38);document.getElementById('generateBtn').onclick=()=>{const st=music.dataset.stage;document.getElementById('musicStatus').textContent=`正在模擬「${st}」AI 八音生成流程…`;wave.classList.add('play');setTimeout(()=>{document.getElementById('musicStatus').textContent=`「${st}」生成完成示意：正式系統會下載 MP3、試聽並寫入 Product State。`;},1500)};
+render();
+</script>
+</body>
+</html>
