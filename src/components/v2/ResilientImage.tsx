@@ -16,6 +16,14 @@ interface ResilientImageProps
   onPermanentError?: () => void;
 }
 
+const HAKKA_DRAGON_COVER =
+  'https://hakka-dragon-web-vercel-git-main-sms-projects-f4d9e27e.vercel.app/assets/intro/camera-01/qa-browser-final.png?v=20261015';
+
+function resolveImageSrc(src: string): string {
+  if (src.includes('project-hakkadragon-cover')) return HAKKA_DRAGON_COVER;
+  return src;
+}
+
 function retryUrl(src: string, attempt: number): string {
   if (attempt === 0) return src;
   const separator = src.includes('?') ? '&' : '?';
@@ -26,8 +34,8 @@ function retryUrl(src: string, attempt: number): string {
  * An image that retries transient CDN/network failures without leaving a
  * browser broken-image icon in the layout.
  *
- * The cache-busting query is added only after an actual failure, so successful
- * requests keep using the browser/CDN cache normally.
+ * The HakkaDragon portfolio cover is served directly from the deployed project
+ * so the card uses the same high-resolution final artwork as the live app.
  */
 export function ResilientImage({
   src,
@@ -39,6 +47,7 @@ export function ResilientImage({
   style,
   ...imgProps
 }: ResilientImageProps) {
+  const resolvedSrc = resolveImageSrc(src);
   const [attempt, setAttempt] = useState(0);
   const [waiting, setWaiting] = useState(false);
   const [failed, setFailed] = useState(false);
@@ -51,7 +60,7 @@ export function ResilientImage({
     return () => {
       if (timer.current !== null) window.clearTimeout(timer.current);
     };
-  }, [src]);
+  }, [resolvedSrc]);
 
   if (failed) return <>{fallback}</>;
 
@@ -59,7 +68,7 @@ export function ResilientImage({
     <img
       {...imgProps}
       key={attempt}
-      src={retryUrl(src, attempt)}
+      src={retryUrl(resolvedSrc, attempt)}
       style={{ ...style, visibility: waiting ? 'hidden' : style?.visibility }}
       onLoad={event => {
         setWaiting(false);
