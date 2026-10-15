@@ -20,6 +20,15 @@
       type="image/webp"
       href="%BASE_URL%images/profile/optimized/su-ming-wei-avatar.webp"
     />
+    <!-- The featured project is visible immediately when opening #projects,
+         so start fetching its local cover before React mounts. -->
+    <link
+      rel="preload"
+      as="image"
+      type="image/png"
+      href="%BASE_URL%images/projects/project-hakkadragon-cover.png?v=20261015-fast"
+      fetchpriority="high"
+    />
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
