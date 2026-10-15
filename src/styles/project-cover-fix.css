@@ -1,8 +1,14 @@
-/* Keep the HakkaDragon pixel-art cover crisp when the 1200×675 artwork is
-   downscaled into the project card. The other project screenshots continue to
-   use the browser's normal image interpolation. */
-.v2-reveal > .grid > .v2-project-card:first-of-type .v2-project-media img {
-  image-rendering: -webkit-optimize-contrast;
-  image-rendering: crisp-edges;
-  image-rendering: pixelated;
+/* HakkaDragon project cover.
+   Use the dedicated sharp raster asset instead of the old embedded SVG/WebP
+   preview, which produced large interpolation blocks on the live card. */
+.v2-project-media:has(> img[src*="project-hakkadragon.svg"]) {
+  background-image: url('/portfolio/images/projects/project-hakkadragon-sharp.jpg');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.v2-project-media > img[src*="project-hakkadragon.svg"] {
+  opacity: 0;
+  image-rendering: auto;
 }
