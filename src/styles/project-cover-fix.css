@@ -1,19 +1,7 @@
-/* HakkaDragon project cover fallback.
-   The live-project CDN image can occasionally fail to load on GitHub Pages.
-   Keep the dedicated local 16:9 SVG/WebP artwork as the card background so
-   the first project never becomes a blank white block. The selector targets
-   the unique "專題" project card instead of relying on a transient img URL. */
-.v2-project-card:has(.v2-source-chip--project) .v2-project-media {
-  background-color: #171525;
-  background-image: url('/portfolio/images/projects/project-hakkadragon.svg?v=20261015-2');
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-}
-
-/* Force the stable local artwork. ResilientImage may retry the external source
-   and eventually swap to a fallback node; neither should cover this background. */
-.v2-project-card:has(.v2-source-chip--project) .v2-project-media > img,
-.v2-project-card:has(.v2-source-chip--project) .v2-project-media > .v2-image-fallback {
-  opacity: 0;
+/* HakkaDragon cover rendering.
+   The first project now uses its own local 16:9 JPEG asset directly through
+   ResilientImage. Keep normal browser interpolation so the pixel artwork stays
+   crisp without the oversized block artifacts caused by the old fallback. */
+.v2-project-media > img[src*="project-hakkadragon-cover.jpg"] {
+  image-rendering: auto;
 }
