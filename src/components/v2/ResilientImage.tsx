@@ -16,14 +16,6 @@ interface ResilientImageProps
   onPermanentError?: () => void;
 }
 
-const HAKKA_DRAGON_COVER =
-  'https://hakka-dragon-web-vercel-git-main-sms-projects-f4d9e27e.vercel.app/assets/intro/camera-01/qa-browser-final.png?v=20261015';
-
-function resolveImageSrc(src: string): string {
-  if (src.includes('project-hakkadragon-cover')) return HAKKA_DRAGON_COVER;
-  return src;
-}
-
 function retryUrl(src: string, attempt: number): string {
   if (attempt === 0) return src;
   const separator = src.includes('?') ? '&' : '?';
@@ -34,8 +26,8 @@ function retryUrl(src: string, attempt: number): string {
  * An image that retries transient CDN/network failures without leaving a
  * browser broken-image icon in the layout.
  *
- * The HakkaDragon portfolio cover is served directly from the deployed project
- * so the card uses the same high-resolution final artwork as the live app.
+ * Project covers are served from the portfolio's own public assets so the
+ * rendered card always uses the exact local artwork selected for that project.
  */
 export function ResilientImage({
   src,
@@ -47,7 +39,7 @@ export function ResilientImage({
   style,
   ...imgProps
 }: ResilientImageProps) {
-  const resolvedSrc = resolveImageSrc(src);
+  const resolvedSrc = src;
   const [attempt, setAttempt] = useState(0);
   const [waiting, setWaiting] = useState(false);
   const [failed, setFailed] = useState(false);
