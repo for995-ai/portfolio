@@ -1,7 +1,16 @@
-/* HakkaDragon cover rendering.
-   The first project now uses its own local 16:9 JPEG asset directly through
-   ResilientImage. Keep normal browser interpolation so the pixel artwork stays
-   crisp without the oversized block artifacts caused by the old fallback. */
-.v2-project-media > img[src*="project-hakkadragon-cover.jpg"] {
-  image-rendering: auto;
+/* HakkaDragon project cover.
+   Use the final local PNG the user placed in public/images/projects.
+   The project data still points at the legacy JPG, so this small override keeps
+   the component untouched while making the visible card use the intended art. */
+.v2-project-card:has(.v2-source-chip--project) .v2-project-media {
+  background-color: #171525;
+  background-image: url('/portfolio/images/projects/project-hakkadragon-cover.png?v=20261015-user-final');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.v2-project-card:has(.v2-source-chip--project) .v2-project-media > img,
+.v2-project-card:has(.v2-source-chip--project) .v2-project-media > .v2-image-fallback {
+  opacity: 0;
 }
