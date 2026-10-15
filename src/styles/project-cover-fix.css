@@ -1,0 +1,8 @@
+/* Keep the HakkaDragon pixel-art cover crisp when the 1200×675 artwork is
+   downscaled into the project card. The other project screenshots continue to
+   use the browser's normal image interpolation. */
+.v2-reveal > .grid > .v2-project-card:first-of-type .v2-project-media img {
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+  image-rendering: pixelated;
+}
