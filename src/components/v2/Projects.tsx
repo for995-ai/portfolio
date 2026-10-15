@@ -29,7 +29,7 @@ const SOURCE_CSS: Record<SourceType, string> = {
 // ── Confirmed project images ──────────────────────────────────────────────────
 
 const PROJECT_IMAGES: Partial<Record<string, string>> = {
-  A1: '/images/projects/project-hakkadragon-cover.jpg?v=20261015-final',
+  A1: '/images/projects/project-hakkadragon-cover.png?v=20261015-fast',
   A2: '/images/optimized/projects/project-starryrun.webp',
   A3: '/images/optimized/projects/project-soulscent.webp',
   A4: '/images/optimized/projects/project-hotpot.webp',
@@ -192,6 +192,7 @@ function ProjectCard({ project }: { project: Project }) {
   const sourceType = SOURCE_MAP[project.id];
   const blurb      = BLURB[project.id];
   const links      = linksFor(project);
+  const isFeaturedCover = project.id === 'A1';
 
   return (
     <article className="v2-card v2-project-card">
@@ -203,9 +204,9 @@ function ProjectCard({ project }: { project: Project }) {
             alt={project.title}
             width={1200}
             height={675}
-            loading="lazy"
+            loading={isFeaturedCover ? 'eager' : 'lazy'}
             decoding="async"
-            {...{ fetchpriority: 'low' }}
+            {...{ fetchpriority: isFeaturedCover ? 'high' : 'low' }}
           />
         </div>
       ) : Preview ? (
