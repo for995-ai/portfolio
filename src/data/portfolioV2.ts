@@ -120,7 +120,7 @@ export const PROJECTS: readonly Project[] = [
     title: '跟著祥龍走－苗栗𪹚龍文化與互動體驗學習平台',
     role: '團隊 PM、UI/UX、前端／RPG 地圖整合、Unity WebGL 系統整合',
     skills: ['Tiled / PixiJS', 'Next.js', 'Unity WebGL', 'Meta MusicGen-Style', 'Hugging Face ZeroGPU', 'Vercel'],
-    demo: 'https://hakka-dragon-web-vercel-git-main-sms-projects-f4d9e27e.vercel.app/',
+    demo: 'https://hakka-dragon-web-vercel.vercel.app/',
     displayLevel: 'featured',
     featuredRank: 1,
   },
