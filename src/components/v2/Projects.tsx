@@ -31,7 +31,7 @@ const SOURCE_CSS: Record<SourceType, string> = {
 
 const PROJECT_IMAGES: Partial<Record<string, string>> = {
   A1: '/images/projects/project-hakkadragon-home-1200x675.webp?v=20261016-verified',
-  A8: '/images/projects/project-miaogo-ai.svg',
+  A8: '/images/projects/project-miaogo-ai.webp?v=20261023-approved',
   A2: '/images/optimized/projects/project-starryrun.webp',
   A3: '/images/optimized/projects/project-soulscent.webp',
   A4: '/images/optimized/projects/project-hotpot.webp',
