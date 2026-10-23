@@ -131,6 +131,9 @@ const EXTRA_LINKS: Partial<Record<string, ProjectLink[]>> = {
     { label: 'Demo 影片', url: 'https://youtu.be/yzNIArlAHT0', type: 'video' },
     { label: 'Case Study', url: '/case-studies/hakka-dragon/', type: 'case-study' },
   ],
+  A8: [
+    { label: 'Demo 影片', url: 'https://youtu.be/Nu6qX5d7jwM', type: 'video' },
+  ],
   A2: [
     { label: '查看作品', url: 'https://for995-ai.github.io/starry-run/',   type: 'demo' },
     { label: 'GitHub',   url: 'https://github.com/for995-ai/starry-run',    type: 'github' },
