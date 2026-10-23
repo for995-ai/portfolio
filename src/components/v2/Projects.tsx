@@ -11,6 +11,7 @@ type SourceType = '專題' | '競賽' | '課程' | '自行開發';
 
 const SOURCE_MAP: Record<string, SourceType> = {
   A1: '專題',
+  A8: '競賽',
   A2: '競賽',
   A3: '競賽',
   A4: '競賽',
@@ -30,6 +31,7 @@ const SOURCE_CSS: Record<SourceType, string> = {
 
 const PROJECT_IMAGES: Partial<Record<string, string>> = {
   A1: '/images/projects/project-hakkadragon-home-1200x675.webp?v=20261016-verified',
+  A8: '/images/projects/project-miaogo-ai.svg',
   A2: '/images/optimized/projects/project-starryrun.webp',
   A3: '/images/optimized/projects/project-soulscent.webp',
   A4: '/images/optimized/projects/project-hotpot.webp',
@@ -58,6 +60,14 @@ const BLURB: Partial<Record<string, Blurb>> = {
       '以 Tiled + PixiJS + Next.js 建構苗栗市 RPG 探索地圖，透過 Web ↔ Unity Bridge 啟動六部曲互動',
       '以 Meta MusicGen-Style 串接 Hugging Face ZeroGPU，依六部曲樂器配置生成 30 秒客家八音聲景，並以 Vercel 提供正式線上體驗',
       '負責團隊 PM、UI/UX 與跨模組整合；Claude、Codex 用於開發除錯與測試輔助',
+    ],
+  },
+  A8: {
+    summary: '以「讓燈會的熱度，留在苗栗的店家裡」為核心，結合 AI 旅遊規劃、互動路線與地方店家資訊，讓旅客從燈會延伸探索苗栗。',
+    highlights: [
+      '以 2027 苗栗燈會觀光情境切入，串連地方景點與在地商圈',
+      '透過地圖路線與旅遊節點呈現規劃流程，鼓勵旅客走入周邊店家',
+      '參與產品企劃、UI/UX 與系統展示，完成可直接體驗的線上版本',
     ],
   },
   A2: {
