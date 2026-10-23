@@ -111,7 +111,7 @@ export const EDUCATION: readonly Education[] = [
   },
 ];
 
-// ─── Projects (A1–A7) ─────────────────────────────────────────────────────────
+// ─── Projects (A1–A8) ─────────────────────────────────────────────────────────
 
 export const PROJECTS: readonly Project[] = [
   {
@@ -125,13 +125,23 @@ export const PROJECTS: readonly Project[] = [
     featuredRank: 1,
   },
   {
+    id: 'A8',
+    date: '2026.10',
+    title: '苗準出發 MiaoGo AI',
+    role: '產品企劃、UI/UX、旅遊服務流程與系統展示整合',
+    skills: ['AI 旅遊規劃', '地圖路線', '在地商圈', '旅遊科技', 'Vercel'],
+    demo: 'https://miaogo-ai-preview.vercel.app/',
+    displayLevel: 'featured',
+    featuredRank: 2,
+  },
+  {
     id: 'A2',
     date: '2026.07',
     title: '星空探險－路跑報名網站',
     role: '網站建置、企劃',
     skills: ['需求分析', '流程設計', '前端實作'],
     displayLevel: 'featured',
-    featuredRank: 2,
+    featuredRank: 3,
   },
   {
     id: 'A3',
