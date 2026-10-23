@@ -1,0 +1,101 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1200 675" width="1200" height="675" role="img" aria-labelledby="title desc">
+  <title id="title">苗準出發 MiaoGo AI — 旅遊探索與在地商圈路線</title>
+  <desc id="desc">藍黃主題的專案示意封面：燈會燈籠、苗栗路線地圖與手機上的旅遊節點。</desc>
+  <defs>
+    <linearGradient id="night" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#101B3B"/>
+      <stop offset=".58" stop-color="#163C75"/>
+      <stop offset="1" stop-color="#2471A1"/>
+    </linearGradient>
+    <linearGradient id="phone" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#F9FDFF"/>
+      <stop offset="1" stop-color="#E1F2FD"/>
+    </linearGradient>
+    <linearGradient id="sun" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#FFE88E"/>
+      <stop offset="1" stop-color="#FBBE40"/>
+    </linearGradient>
+    <filter id="shadow" x="-30%" y="-30%" width="160%" height="180%">
+      <feDropShadow dx="0" dy="16" stdDeviation="23" flood-color="#041026" flood-opacity=".38"/>
+    </filter>
+    <filter id="glow" x="-130%" y="-130%" width="360%" height="360%">
+      <feGaussianBlur stdDeviation="14"/>
+    </filter>
+    <pattern id="grid" width="52" height="52" patternUnits="userSpaceOnUse">
+      <path d="M52 0H0V52" fill="none" stroke="#D1F1FF" stroke-opacity=".075" stroke-width="1"/>
+    </pattern>
+  </defs>
+  <rect width="1200" height="675" fill="url(#night)"/>
+  <rect width="1200" height="675" fill="url(#grid)"/>
+  <circle cx="1095" cy="72" r="220" fill="#70C5FF" opacity=".09"/>
+  <circle cx="1010" cy="535" r="300" fill="#F9BD42" opacity=".075"/>
+  <path d="M0 598C160 546 252 613 385 573C494 540 592 543 740 610V675H0Z" fill="#081D42" opacity=".64"/>
+  <path d="M0 647C225 598 299 645 450 615C582 591 705 597 842 661V675H0Z" fill="#07234D" opacity=".75"/>
+  <g opacity=".85">
+    <circle cx="80" cy="91" r="3" fill="#FFE59C"/>
+    <circle cx="512" cy="78" r="2" fill="#8FD8FF"/>
+    <circle cx="598" cy="130" r="3" fill="#FFE59C"/>
+    <circle cx="480" cy="490" r="2" fill="#8FD8FF"/>
+    <circle cx="665" cy="358" r="2" fill="#FFE59C"/>
+    <circle cx="1113" cy="535" r="2.5" fill="#FFE59C"/>
+  </g>
+  <g transform="translate(89 81)">
+    <rect width="310" height="42" rx="21" fill="#F5C54E" opacity=".17"/>
+    <circle cx="24" cy="21" r="8" fill="#FFC94E"/>
+    <text x="45" y="28" fill="#FFE59C" font-family="Noto Sans TC, PingFang TC, Microsoft JhengHei, sans-serif" font-size="19" font-weight="700">2027 苗栗燈會 × 智慧旅遊</text>
+  </g>
+  <text x="84" y="247" fill="#FFFFFF" font-family="Noto Sans TC, PingFang TC, Microsoft JhengHei, sans-serif" font-size="92" font-weight="900" letter-spacing="2">苗準出發</text>
+  <text x="89" y="326" fill="#FFD262" font-family="Arial, Space Grotesk, sans-serif" font-size="68" font-weight="900" letter-spacing=".5">MiaoGo AI</text>
+  <path d="M89 361H512" stroke="#70C9EF" stroke-opacity=".7" stroke-width="3" stroke-linecap="round"/>
+  <text x="88" y="414" fill="#EAF6FF" font-family="Noto Sans TC, PingFang TC, Microsoft JhengHei, sans-serif" font-size="29" font-weight="600">讓燈會的熱度，</text>
+  <text x="88" y="455" fill="#EAF6FF" font-family="Noto Sans TC, PingFang TC, Microsoft JhengHei, sans-serif" font-size="29" font-weight="600">留在苗栗的店家裡。</text>
+  <g font-family="Noto Sans TC, PingFang TC, Microsoft JhengHei, sans-serif" font-size="19" font-weight="700">
+    <rect x="89" y="506" width="148" height="48" rx="24" fill="#FFFFFF" fill-opacity=".13" stroke="#FFFFFF" stroke-opacity=".30"/>
+    <text x="163" y="537" fill="#FFFFFF" text-anchor="middle">AI 行程規劃</text>
+    <rect x="248" y="506" width="148" height="48" rx="24" fill="#FFFFFF" fill-opacity=".13" stroke="#FFFFFF" stroke-opacity=".30"/>
+    <text x="322" y="537" fill="#FFFFFF" text-anchor="middle">互動路線</text>
+    <rect x="407" y="506" width="148" height="48" rx="24" fill="#FFFFFF" fill-opacity=".13" stroke="#FFFFFF" stroke-opacity=".30"/>
+    <text x="481" y="537" fill="#FFFFFF" text-anchor="middle">在地店家</text>
+  </g>
+  <g transform="translate(1100 69)">
+    <path d="M0 -65V-6" stroke="#FFDE79" stroke-width="3"/>
+    <ellipse cx="0" cy="47" rx="43" ry="75" fill="#FAC253" opacity=".45" filter="url(#glow)"/>
+    <rect x="-27" y="-13" width="54" height="97" rx="24" fill="#FFCE56"/>
+    <path d="M-19 1V74M0-4V78M19 1V74" stroke="#F09936" stroke-width="4" opacity=".7"/>
+    <rect x="-32" y="-15" width="64" height="12" rx="6" fill="#FFE79B"/>
+    <rect x="-32" y="75" width="64" height="12" rx="6" fill="#F6AC3D"/>
+    <path d="M0 85V103" stroke="#FFE79B" stroke-width="3"/>
+  </g>
+  <g transform="translate(850 36) scale(.62)">
+    <path d="M0 -42V0" stroke="#FFE19A" stroke-width="3"/>
+    <ellipse cx="0" cy="41" rx="28" ry="49" fill="#F6AE3B" opacity=".3" filter="url(#glow)"/>
+    <rect x="-27" y="0" width="54" height="82" rx="22" fill="#FFDA78"/>
+    <path d="M-12 4V77M12 4V77" stroke="#ECA645" stroke-width="3"/>
+    <rect x="-30" y="-4" width="60" height="11" rx="6" fill="#FFF1BD"/>
+    <rect x="-30" y="75" width="60" height="11" rx="6" fill="#F5AC3B"/>
+  </g>
+  <g transform="translate(778 120) rotate(7 160 231)" filter="url(#shadow)">
+    <rect width="325" height="472" rx="39" fill="#102B55" stroke="#A6DEF5" stroke-width="5"/>
+    <rect x="13" y="14" width="299" height="444" rx="29" fill="url(#phone)"/>
+    <rect x="118" y="18" width="88" height="13" rx="7" fill="#102B55"/>
+    <text x="38" y="77" fill="#184F89" font-family="Arial, sans-serif" font-size="25" font-weight="900">MiaoGo AI</text>
+    <text x="39" y="102" fill="#5F829F" font-family="Noto Sans TC, PingFang TC, Microsoft JhengHei, sans-serif" font-size="14">探索苗栗 · 發現好店</text>
+    <rect x="31" y="122" width="263" height="257" rx="20" fill="#D7EAF1"/>
+    <path d="M31 164L111 143L176 173L294 136M31 219L108 246L188 212L294 258M70 379L129 291L213 329L280 285" fill="none" stroke="#B8D5DC" stroke-width="20" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M46 360L102 318L129 291L169 238L230 195L268 149" fill="none" stroke="#FFFFFF" stroke-width="13" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M46 360L102 318L129 291L169 238L230 195L268 149" fill="none" stroke="#F4AD2F" stroke-width="8" stroke-dasharray="2 16" stroke-linecap="round" stroke-linejoin="round"/>
+    <g fill="#1D6AA6" stroke="#FFFFFF" stroke-width="5">
+      <circle cx="68" cy="342" r="14"/>
+      <circle cx="169" cy="238" r="14"/>
+      <circle cx="268" cy="149" r="14"/>
+    </g>
+    <circle cx="169" cy="238" r="6" fill="#FFD45D"/>
+    <rect x="46" y="276" width="90" height="39" rx="19" fill="#FFFFFF" stroke="#BED6E5"/>
+    <text x="91" y="302" text-anchor="middle" font-family="Noto Sans TC, PingFang TC, Microsoft JhengHei, sans-serif" font-size="18" font-weight="700" fill="#144A7B">苗栗景點</text>
+    <rect x="167" y="322" width="108" height="39" rx="19" fill="#FFF0BA" stroke="#F3C452"/>
+    <text x="221" y="348" text-anchor="middle" font-family="Noto Sans TC, PingFang TC, Microsoft JhengHei, sans-serif" font-size="18" font-weight="700" fill="#745321">在地好店</text>
+    <rect x="31" y="395" width="263" height="45" rx="22" fill="url(#sun)"/>
+    <text x="162" y="425" text-anchor="middle" font-family="Noto Sans TC, PingFang TC, Microsoft JhengHei, sans-serif" font-size="18" font-weight="800" fill="#1A416A">開始探索旅程 →</text>
+  </g>
+  <text x="1100" y="650" text-anchor="end" fill="#C0DCED" font-family="Arial, sans-serif" font-size="13" letter-spacing="1.6" opacity=".7">MIAOLI · ROUTES · LOCAL SHOPS</text>
+</svg>
