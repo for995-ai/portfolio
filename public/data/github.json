@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-11-17T11:46:39.289Z",
+  "generatedAt": "2026-11-18T11:35:50.355Z",
   "profile": {
     "login": "for995-ai",
     "name": null,
     "avatarUrl": "https://avatars.githubusercontent.com/u/265744366?v=4",
     "htmlUrl": "https://github.com/for995-ai",
-    "publicRepos": 10,
+    "publicRepos": 11,
     "followers": 0,
     "following": 0,
     "totalStars": 1
@@ -14,42 +14,42 @@
     {
       "language": "TypeScript",
       "bytes": 1040961,
-      "percentage": 67.89289348047272
+      "percentage": 64.36575712362708
     },
     {
       "language": "HTML",
-      "bytes": 245463,
-      "percentage": 16.009431008844015
+      "bytes": 289137,
+      "percentage": 17.878212457002867
     },
     {
       "language": "CSS",
       "bytes": 143325,
-      "percentage": 9.347851608358768
+      "percentage": 8.862216874353459
     },
     {
       "language": "JavaScript",
-      "bytes": 51734,
-      "percentage": 3.374161905507292
+      "bytes": 92079,
+      "percentage": 5.693522187849936
     },
     {
       "language": "PHP",
       "bytes": 44208,
-      "percentage": 2.8833059403615873
+      "percentage": 2.7335139269591324
     },
     {
       "language": "Hack",
       "bytes": 5265,
-      "percentage": 0.3433904672458324
+      "percentage": 0.32555082395584134
     },
     {
       "language": "Python",
       "bytes": 2284,
-      "percentage": 0.14896558920977798
+      "percentage": 0.1412266062516888
     }
   ],
   "contributions": {
-    "total": 127,
-    "currentStreak": 0,
+    "total": 130,
+    "currentStreak": 1,
     "longestStreak": 3,
     "weeks": [
       {
@@ -2094,6 +2094,11 @@
           },
           {
             "date": "2026-11-17",
+            "count": 3,
+            "level": 1
+          },
+          {
+            "date": "2026-11-18",
             "count": 0,
             "level": 0
           }
@@ -2102,6 +2107,16 @@
     ]
   },
   "repos": [
+    {
+      "id": 1461441039,
+      "name": "popisle-demo",
+      "description": "翻頁島 PopIsle — 把教材變成立體書島嶼的學習平台 DEMO",
+      "htmlUrl": "https://github.com/for995-ai/popisle-demo",
+      "language": "HTML",
+      "stars": 0,
+      "forks": 0,
+      "updatedAt": "2026-11-17T13:25:09Z"
+    },
     {
       "id": 1310593962,
       "name": "portfolio",
