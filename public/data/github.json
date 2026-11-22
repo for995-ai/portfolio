@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-11-21T10:56:58.428Z",
+  "generatedAt": "2026-11-22T11:16:10.657Z",
   "profile": {
     "login": "for995-ai",
     "name": null,
     "avatarUrl": "https://avatars.githubusercontent.com/u/265744366?v=4",
     "htmlUrl": "https://github.com/for995-ai",
-    "publicRepos": 11,
+    "publicRepos": 12,
     "followers": 0,
     "following": 0,
     "totalStars": 1
@@ -13,84 +13,45 @@
   "languages": [
     {
       "language": "TypeScript",
-      "bytes": 1040961,
-      "percentage": 64.36575712362708
+      "bytes": 1041648,
+      "percentage": 62.39221427048318
     },
     {
       "language": "HTML",
-      "bytes": 289137,
-      "percentage": 17.878212457002867
+      "bytes": 340707,
+      "percentage": 20.407531284515994
     },
     {
       "language": "CSS",
       "bytes": 143325,
-      "percentage": 8.862216874353459
+      "percentage": 8.584823385939398
     },
     {
       "language": "JavaScript",
       "bytes": 92079,
-      "percentage": 5.693522187849936
+      "percentage": 5.515311024272903
     },
     {
       "language": "PHP",
       "bytes": 44208,
-      "percentage": 2.7335139269591324
+      "percentage": 2.647953059449565
     },
     {
       "language": "Hack",
       "bytes": 5265,
-      "percentage": 0.32555082395584134
+      "percentage": 0.31536085907532485
     },
     {
       "language": "Python",
       "bytes": 2284,
-      "percentage": 0.1412266062516888
+      "percentage": 0.1368061162636357
     }
   ],
   "contributions": {
-    "total": 130,
-    "currentStreak": 0,
+    "total": 133,
+    "currentStreak": 1,
     "longestStreak": 3,
     "weeks": [
-      {
-        "contributionDays": [
-          {
-            "date": "2025-11-16",
-            "count": 0,
-            "level": 0
-          },
-          {
-            "date": "2025-11-17",
-            "count": 0,
-            "level": 0
-          },
-          {
-            "date": "2025-11-18",
-            "count": 0,
-            "level": 0
-          },
-          {
-            "date": "2025-11-19",
-            "count": 0,
-            "level": 0
-          },
-          {
-            "date": "2025-11-20",
-            "count": 0,
-            "level": 0
-          },
-          {
-            "date": "2025-11-21",
-            "count": 0,
-            "level": 0
-          },
-          {
-            "date": "2025-11-22",
-            "count": 0,
-            "level": 0
-          }
-        ]
-      },
       {
         "contributionDays": [
           {
@@ -2118,10 +2079,29 @@
             "level": 0
           }
         ]
+      },
+      {
+        "contributionDays": [
+          {
+            "date": "2026-11-22",
+            "count": 3,
+            "level": 1
+          }
+        ]
       }
     ]
   },
   "repos": [
+    {
+      "id": 1467297766,
+      "name": "xiaying-fireworks",
+      "description": "《夏映的煙火》劇集介紹網站",
+      "htmlUrl": "https://github.com/for995-ai/xiaying-fireworks",
+      "language": "HTML",
+      "stars": 0,
+      "forks": 0,
+      "updatedAt": "2026-11-22T07:04:38Z"
+    },
     {
       "id": 1461441039,
       "name": "popisle-demo",
