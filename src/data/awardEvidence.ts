@@ -27,6 +27,8 @@ export const EVIDENCE_CATEGORIES: readonly { id: EvidenceCategory; label: string
 
 // Preserve the literal "- " prefix on the existing certificate filenames.
 const COMP_IMAGES: Partial<Record<string, string>> = {
+  // Department award poster, perspective-corrected from an on-site photo.
+  C9: '/images/awards/2026-ict-innovative-services-hakka-dragon-honorable-mention.jpg',
   C1: '/images/awards/2026-global-brand-starry-run-honorable-mention.png',
   C5: '/images/- 2025第十四屆全國連鎖加盟產業創新提案競賽暨高中職學校小論文競賽-C.打造具連鎖潛力的創業品牌企劃組 優勝.png',
   C8: '/images/- 2024僑光行流盃「全國大國大專校院曁高中職創意行銷」競賽 大專院校-創新廣告金句組-佳作.png',
@@ -42,6 +44,7 @@ const CERT_IMAGES: Record<string, string> = {
 };
 
 const THUMBNAILS: Record<string, string> = {
+  C9: '/images/optimized/cards/award-c9.webp',
   C1: '/images/optimized/cards/award-c1.webp',
   C5: '/images/optimized/cards/award-c5.webp',
   C8: '/images/optimized/cards/award-c8.webp',

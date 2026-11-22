@@ -57,6 +57,7 @@ const BLURB: Partial<Record<string, Blurb>> = {
   A1: {
     summary: '以苗栗𪹚龍六個核心階段為學習架構，整合文化場域、客家八音聲景、2D RPG、客語互動任務與苗栗觀光資訊的文化互動學習平台。',
     highlights: [
+      '榮獲 2026 第31屆大專校院資訊應用服務創新競賽 觀光創新應用組 佳作',
       '以 Tiled + PixiJS + Next.js 建構苗栗市 RPG 探索地圖，透過 Web ↔ Unity Bridge 啟動六部曲互動',
       '以 Meta MusicGen-Style 串接 Hugging Face ZeroGPU，依六部曲樂器配置生成 30 秒客家八音聲景，並以 Vercel 提供正式線上體驗',
       '負責團隊 PM、UI/UX 與跨模組整合；Claude、Codex 用於開發除錯與測試輔助',

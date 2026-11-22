@@ -255,6 +255,15 @@ export const RESEARCH: readonly Research[] = [
 
 export const COMPETITIONS: readonly Competition[] = [
   {
+    id: 'C9',
+    date: '2026.11',
+    event: '2026 第31屆大專校院資訊應用服務創新競賽－觀光創新應用組',
+    work: '跟著祥龍走－苗栗𪹚龍文化與互動體驗學習平台',
+    role: '團隊 PM、UI/UX、前端／RPG 地圖整合、Unity WebGL 系統整合',
+    result: '觀光創新應用組 佳作',
+    displayLevel: 'featured',
+  },
+  {
     id: 'C1',
     date: '2026.07',
     event: '2026 全球品牌大賽－六都創新永續城市行銷競賽',
@@ -495,7 +504,7 @@ export const CERTIFICATIONS: readonly Certification[] = [
 // ─── Derived Counts ───────────────────────────────────────────────────────────
 
 export const projectCount = PROJECTS.length;
-export const competitionCount = COMPETITIONS.length;  // 7
+export const competitionCount = COMPETITIONS.length;  // 8
 export const researchCount = RESEARCH.length;         // 2
 
 // ─── Selectors ────────────────────────────────────────────────────────────────
